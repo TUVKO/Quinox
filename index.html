@@ -200,7 +200,8 @@ input[type="password"]{padding-right:46px;}
 #sec-home .action-btn:nth-child(4){transform:translateY(-4px);}
 .action-btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none;}
 .action-btn:active{transform:scale(.95);filter:brightness(1.15);}
-.btn-icon{font-size:22px;}
+.btn-icon{display:flex;align-items:center;justify-content:center;line-height:1;}
+.btn-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 
 
 
@@ -323,9 +324,10 @@ input[type="password"]{padding-right:46px;}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1F3B2C;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 2px;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
 .nav-item:active{transform:scale(.92);}
-.nav-icon{font-size:20px;line-height:1;filter:grayscale(1) opacity(.55);transition:filter .2s;}
+.nav-icon{display:flex;align-items:center;justify-content:center;line-height:1;color:#8a93a6;transition:color .2s;}
+.nav-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nav-item.active .nav-icon{color:#E8C97A;}
 .nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.1px;color:#8a93a6;white-space:nowrap;transition:color .2s;}
-.nav-item.active .nav-icon{filter:none;}
 .nav-item.active .nav-label{color:#E8C97A;font-weight:800;}
 
 
@@ -619,11 +621,11 @@ input[type="password"]{padding-right:46px;}
 
  <div class="section">
  <div class="action-grid">
- <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon">💰</span>Invest</button>
- <button class="action-btn btn-withdraw" onclick="switchTab('withdraw')"><span class="btn-icon">💸</span>Withdraw</button>
- <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon">🔁</span>Re-invest</button>
- <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon">📋</span>Ledger</button>
- <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon">👥</span>Network</button>
+ <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Invest</button>
+ <button class="action-btn btn-withdraw" onclick="switchTab('withdraw')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg></span>Withdraw</button>
+ <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M4 4v6h6M20 20v-6h-6M4.5 15a8 8 0 0 0 14.3 3.5M19.5 9A8 8 0 0 0 5.2 5.5"/></svg></span>Re-invest</button>
+ <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Ledger</button>
+ <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16" cy="9.5" r="2.5"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 20c0-2.2-.7-4-2-5.3.8-.4 1.7-.7 2.7-.7 2.8 0 5 2.2 5 5"/></svg></span>Network</button>
  </div>
  </div>
  <div class="section">
@@ -864,24 +866,6 @@ input[type="password"]{padding-right:46px;}
  <p style="margin-bottom:14px;">Beyond trading, Equinox Wallet rewards you for growing our community. Share your referral link and earn 10% on deposits from anyone you refer directly, 4% from their referrals, and 2% from the level after that — three tiers of ongoing income for building your network.</p>
  <p style="margin-bottom:18px;">Whether you invest UGX 10,000 or UGX 100 million, our commitment is the same: disciplined trading, transparent daily payouts, and reliable access to your funds.</p>
 
- <div style="border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.15);">
- <div style="background:linear-gradient(135deg,#E8C97A,#8F6A2E);color:#1F3B2C;text-align:center;font-weight:800;font-size:14px;padding:14px 12px;line-height:1.4;">
- Equinox Wallet Growth Plan — Consistent Daily Growth for 80 Days
- </div>
- <div style="overflow-x:auto;">
- <table style="width:100%;border-collapse:collapse;background:#1F3B2C;font-family:'Inter',sans-serif;">
- <thead>
- <tr style="background:#183024;">
- <th style="color:#E8C97A;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
- <th style="color:#E8C97A;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">Daily Profit (10%)</th>
- <th style="color:#E8C97A;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">80-Day Total (UGX)</th>
- </tr>
- </thead>
- <tbody id="growth-plan-table-body"></tbody>
- </table>
- </div>
- </div>
-
  <div style="border-top:1px solid var(--border);padding-top:14px;font-size:13px;color:var(--muted);">
  Headquartered in Kenya 🇰🇪, with our Uganda 🇺🇬 office opening in November 2026.
  </div>
@@ -890,11 +874,11 @@ input[type="password"]{padding-right:46px;}
  </div>
 
  <nav class="bottom-nav">
- <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
- <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon">👥</span><span class="nav-label">Network</span></div>
- <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon">📊</span><span class="nav-label">Grow</span></div>
- <div class="nav-item" onclick="switchTab('history')"><span class="nav-icon">📋</span><span class="nav-label">Ledger</span></div>
- <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon">👤</span><span class="nav-label">Account</span></div>
+ <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span><span class="nav-label">Home</span></div>
+ <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16" cy="9.5" r="2.5"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 20c0-2.2-.7-4-2-5.3.8-.4 1.7-.7 2.7-.7 2.8 0 5 2.2 5 5"/></svg></span><span class="nav-label">Network</span></div>
+ <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="nav-label">Grow</span></div>
+ <div class="nav-item" onclick="switchTab('history')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="nav-label">Ledger</span></div>
+ <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span><span class="nav-label">Account</span></div>
  </nav>
 
 
