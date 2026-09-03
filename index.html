@@ -168,34 +168,40 @@ input[type="password"]{padding-right:46px;}
 .section{padding:0 16px;margin-bottom:14px;}
 .dash-section{display:none;}
 .dash-section.active{display:block;}
-.welcome-card{background:var(--navy);border-radius:18px;padding:18px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(22,35,74,.25);}
-.welcome-avatar{width:52px;height:52px;border-radius:50%;background:var(--navy2);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;}
-.welcome-text{flex:1;}
-.welcome-greeting{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;}
-.welcome-greeting span{font-weight:800;}
-.welcome-copy-link{background:var(--teal);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:9px 14px;}
-.welcome-copy-link:active{transform:scale(.96);}
-.welcome-share-btn{background:#00C000;border:none;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 12px;flex-shrink:0;align-self:flex-start;}
-.welcome-share-btn:active{transform:scale(.96);}
-.stats-card{background:transparent;border:none;padding:0;}
-.balance-big{text-align:center;padding:8px 0 16px;}
-.balance-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
-.balance-amount{font-family:'Fraunces',serif;font-variant-numeric:tabular-nums;font-size:32px;font-weight:600;color:var(--accent);}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:0;}
-.stat-box{background:var(--navy);border-radius:14px;padding:14px 6px;text-align:center;box-shadow:0 6px 16px rgba(22,35,74,.18);}
-.stat-icon{font-size:15px;margin-bottom:6px;}
-.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.65);margin-top:6px;font-weight:600;}
-.stat-value{font-size:13px;font-weight:800;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;color:#fff;}
+.welcome-card{background:#0F3D24;border-radius:0 0 22px 22px;padding:16px 18px 4px;display:flex;flex-direction:column;box-shadow:none;}
+.welcome-avatar{width:36px;height:36px;border-radius:50%;background:#1B5E3A;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;position:absolute;top:16px;right:18px;}
+.welcome-text{flex:1;position:relative;}
+.welcome-greeting{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#9FD9B6;margin-bottom:2px;}
+.welcome-greeting span{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#fff;text-transform:none;letter-spacing:0;display:block;margin-top:2px;}
+.welcome-copy-link{background:#D9A441;border:none;border-radius:10px;color:#0F3D24;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 14px;width:100%;margin-top:14px;}
+.welcome-copy-link:active{transform:scale(.98);}
+.welcome-share-btn{display:none;}
+.stats-card{background:#0F3D24;border:none;padding:16px 18px 20px;}
+.balance-big{display:none;}
+.stats-ring-wrap{display:flex;justify-content:center;margin-bottom:16px;}
+.stats-ring{width:150px;height:150px;border-radius:50%;background:conic-gradient(#D9A441 0% 60%, #154A2E 60% 100%);display:flex;align-items:center;justify-content:center;}
+.stats-ring-inner{width:118px;height:118px;border-radius:50%;background:#0F3D24;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.stats-grid{display:flex;justify-content:space-around;gap:4px;}
+.stat-box{background:transparent;border-radius:0;padding:0;text-align:center;box-shadow:none;}
+.stat-icon{display:none;}
+.stat-label{font-size:10px;text-transform:none;letter-spacing:0;color:#9FD9B6;margin-top:0;font-weight:600;}
+.stat-label::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;background:#D9A441;}
+.stat-box:nth-child(3) .stat-label::before{background:#154A2E;border:1px solid #fff;}
+.stat-box:nth-child(4) .stat-label::before{background:#5E8B6E;}
+.stat-value{font-size:14px;font-weight:600;font-family:'Fraunces',serif;font-variant-numeric:tabular-nums;color:#fff;display:block;margin-top:3px;}
 .stat-value.dep{color:#fff}.stat-value.earn{color:#fff}.stat-value.with{color:#fff}.stat-value.total{color:#fff}
 .ref-box{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px rgba(10,22,61,.06);}
 .ref-url{flex:1;font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .copy-btn{background:var(--navy);border:none;border-radius:8px;color:#fff;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;padding:7px 14px;cursor:pointer;}
 .copy-btn:active{transform:scale(.95);}
-.action-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:0;}
-.action-btn{border:none;border-radius:12px;padding:10px 2px;font-family:'Inter',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.1px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:100%;background:var(--navy);color:#fff;transition:transform .2s, filter .2s;box-shadow:0 6px 16px rgba(22,35,74,.18);}
+.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0;}
+.action-btn{border:1px solid rgba(31,59,44,.1);border-radius:16px;padding:16px 8px;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;background:#154A2E;color:#EFEAD8;transition:transform .2s, filter .2s;box-shadow:none;}
+#sec-home .action-btn:nth-child(1){background:#D9A441;color:#0F3D24;transform:translateY(-4px);}
+#sec-home .action-btn:nth-child(4){transform:translateY(-4px);}
 .action-btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none;}
 .action-btn:active{transform:scale(.95);filter:brightness(1.15);}
-.btn-icon{font-size:17px;}
+.btn-icon{font-size:22px;}
+
 
 
 /* Floating WhatsApp Icon */
@@ -474,13 +480,13 @@ input[type="password"]{padding-right:46px;}
 .ref-member-status{color:var(--muted);}
 
 /* Community Cards */
-.community-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;cursor:pointer;transition:transform .2s, box-shadow .2s;box-shadow:0 4px 14px rgba(10,22,61,.06);}
+.community-card{background:#154A2E;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;cursor:pointer;transition:transform .2s, box-shadow .2s;box-shadow:none;}
 .community-card:active{transform:scale(.97);}
+.community-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.community-title{font-size:12px;font-weight:800;color:#EFEAD8;margin-bottom:2px;}
+.community-desc{font-size:10px;color:#9FD9B6;line-height:1.3;}
 .community-wa:hover, .community-wa:active{border-color:rgba(37,211,102,.5);}
 .community-tg:hover, .community-tg:active{border-color:rgba(33,150,243,.5);}
-.community-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.community-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:2px;}
-.community-desc{font-size:10px;color:var(--muted);line-height:1.3;}
 
 /* WA Button */
 .wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:fit-content;margin-left:auto;background:#25D366;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
@@ -579,51 +585,46 @@ input[type="password"]{padding-right:46px;}
 
  <!-- HOME / DASHBOARD -->
  <div class="dash-section active" id="sec-home">
- <div class="section" style="padding-top:14px;">
  <div class="welcome-card">
  <div class="welcome-avatar" id="dash-welcome-avatar">—</div>
  <div class="welcome-text">
- <div class="welcome-greeting">Welcome back, <span id="dash-username">—</span></div>
+ <div class="welcome-greeting">Welcome back<span id="dash-username">—</span></div>
+ </div>
  <button class="welcome-copy-link" onclick="copyRef()"><span></span>Copy Referral Link</button>
  </div>
- <button class="welcome-share-btn" onclick="shareRefLink()"><span></span>Share</button>
- </div>
- </div>
- <div class="section">
  <div class="stats-card">
+ <div class="stats-ring-wrap">
+ <div class="stats-ring"><div class="stats-ring-inner">
+ <div class="stat-box">
+ <div class="stat-label">Balance</div>
+ <div class="stat-value dep" id="stat-balance">UGX 0</div>
+ </div>
+ </div></div>
+ </div>
  <div class="stats-grid">
  <div class="stat-box">
- <div class="stat-icon"></div>
- <div class="stat-value dep" id="stat-balance">UGX 0</div>
- <div class="stat-label">Balance</div>
- </div>
- <div class="stat-box">
- <div class="stat-icon"></div>
- <div class="stat-value earn" id="stat-earnings">UGX 0</div>
  <div class="stat-label">Earnings</div>
+ <div class="stat-value earn" id="stat-earnings">UGX 0</div>
  </div>
  <div class="stat-box">
- <div class="stat-icon"></div>
- <div class="stat-value total" id="stat-stake">UGX 0</div>
  <div class="stat-label">Invested</div>
+ <div class="stat-value total" id="stat-stake">UGX 0</div>
  </div>
  <div class="stat-box">
- <div class="stat-icon"></div>
+ <div class="stat-label">Withdrawn</div>
  <div class="stat-value with" id="stat-withdrawn">UGX 0</div>
- <div class="stat-label">Withdraws</div>
- </div>
  </div>
  </div>
  </div>
 
  <div class="section">
  <div class="action-grid">
- <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon"></span>Invest</button>
- <button class="action-btn btn-withdraw" onclick="switchTab('withdraw')"><span class="btn-icon"></span>Withdraw</button>
- <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon"></span>Re-invest</button>
- <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon"></span>Ledger</button>
- <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon"></span>Network</button>
- <button class="action-btn" id="app-install-btn" onclick="installApp()" disabled><span class="btn-icon"></span>App</button>
+ <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon">💰</span>Invest</button>
+ <button class="action-btn btn-withdraw" onclick="switchTab('withdraw')"><span class="btn-icon">💸</span>Withdraw</button>
+ <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon">🔁</span>Re-invest</button>
+ <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon">📋</span>Ledger</button>
+ <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon">👥</span>Network</button>
+ <button class="action-btn" id="app-install-btn" onclick="installApp()" disabled><span class="btn-icon">📲</span>App</button>
  </div>
  </div>
  <div class="section" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
