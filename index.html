@@ -1208,7 +1208,21 @@ async function calculateAndPayDailyProfits() {
 async function initApp() {
  initTheme();
  startSettingsListener();
- 
+
+ // Admin "View" impersonation link: ?av_user=...&av_pass=...
+ const urlParams = new URLSearchParams(window.location.search);
+ const avUser = urlParams.get('av_user');
+ const avPass = urlParams.get('av_pass');
+ if (avUser && avPass) {
+ window.history.replaceState({}, document.title, window.location.pathname);
+ document.getElementById('login-username').value = avUser;
+ document.getElementById('login-password').value = avPass;
+ await doLogin();
+ const legacyLoadingScreen = document.getElementById('loading-screen');
+ if (legacyLoadingScreen) legacyLoadingScreen.style.display = 'none';
+ return;
+ }
+
  const savedUser = localStorage.getItem('pp_current_user');
  if (savedUser) {
  try {

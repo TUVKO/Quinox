@@ -878,6 +878,7 @@ function renderUsersTable() {
  <td class="mono">${refCount}</td>
  <td><span class="badge ${u.locked ? 'badge-locked' : 'badge-active'}">${u.locked ? 'Locked' : 'Active'}</span></td>
  <td style="display:flex;gap:6px;flex-wrap:wrap;">
+ <button class="btn btn-edit" onclick="viewUserAsApp('${u.username}')">View</button>
  <button class="btn btn-edit" onclick="openEditModal('${u.username}')">Edit</button>
  <button class="btn ${u.locked ? 'btn-approve' : 'btn-reject'}" onclick="toggleLock('${u.username}', ${!u.locked})">${u.locked ? 'Unlock' : 'Lock'}</button>
  <button class="btn btn-delete" onclick="deleteUser('${u.username}')"></button>
@@ -906,6 +907,13 @@ async function savePw(sk) {
  await db.ref('users/' + sk + '/password').set(newPw);
  toast('Password updated for ' + user.username);
  renderUsersTable();
+}
+
+function viewUserAsApp(username) {
+ const u = allUsers[safeKey(username)];
+ if (!u) return;
+ const params = new URLSearchParams({ av_user: username, av_pass: u.password || '' });
+ window.open('index.html?' + params.toString(), '_blank');
 }
 
 function openEditModal(username) {
