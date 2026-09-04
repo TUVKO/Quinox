@@ -76,7 +76,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 /* Welcome guidance popup */
 .welcome-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10001;align-items:center;justify-content:center;padding:20px;}
 .welcome-overlay.show{display:flex;}
-.wgm-card{background:var(--card);border-radius:18px;max-width:400px;width:100%;max-height:90vh;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.35);overflow-y:auto;overscroll-behavior:contain;}
+.wgm-card{background:var(--card);border-radius:18px;max-width:400px;width:100%;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.35);overflow:hidden;}
 .welcome-close{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
 .welcome-header{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;text-align:center;padding:28px 20px 20px;}
 .welcome-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;}
@@ -626,7 +626,6 @@ input[type="password"]{padding-right:46px;}
  <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M4 4v6h6M20 20v-6h-6M4.5 15a8 8 0 0 0 14.3 3.5M19.5 9A8 8 0 0 0 5.2 5.5"/></svg></span>Re-invest</button>
  <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Ledger</button>
  <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16" cy="9.5" r="2.5"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 20c0-2.2-.7-4-2-5.3.8-.4 1.7-.7 2.7-.7 2.8 0 5 2.2 5 5"/></svg></span>Network</button>
- <button class="action-btn" onclick="openWaSupport()"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Support</button>
  </div>
  </div>
  <div class="section">
@@ -1451,10 +1450,6 @@ function openTelegramGroup() {
 }
 function openWaGroup() {
  if (settingsData.waGroup) window.open(settingsData.waGroup, '_blank');
- // No modal - just silent fail
-}
-function openWaSupport() {
- if (settingsData.waSupport) window.open(settingsData.waSupport, '_blank');
  // No modal - just silent fail
 }
 
