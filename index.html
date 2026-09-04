@@ -112,12 +112,10 @@ input[type="password"]{padding-right:46px;}
 .field-hint{font-size:10px;color:var(--muted);margin-top:5px;padding-left:4px;}
 .field-error{font-size:10px;color:var(--warn);margin-top:5px;padding-left:4px;display:none;}
 .field-error.show{display:block;}
-.pw-strength{display:flex;gap:4px;margin-top:8px;}
-.pw-bar{flex:1;height:3px;border-radius:3px;background:var(--surface2);}
-.pw-bar.weak{background:var(--warn)}.pw-bar.medium{background:var(--gold)}.pw-bar.strong{background:var(--accent3)}
 .submit-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:14px;padding:16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;cursor:pointer;margin-top:6px;transition:transform .2s;}
 .submit-btn:active{transform:scale(.98);}
 .auth-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--muted);}
+.auth-forgot-link{text-align:center;margin-top:12px;font-size:12.5px;color:var(--accent);font-weight:600;cursor:pointer;}
 .auth-switch a{color:var(--accent);font-weight:700;cursor:pointer;text-decoration:none;}
 
 /* Phone Prefix */
@@ -476,9 +474,9 @@ input[type="password"]{padding-right:46px;}
  <div class="auth-title">Welcome Back</div>
  <div class="auth-subtitle">Sign in to your investment account</div>
  <div class="field-group">
- <label class="field-label">Username</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="text" id="login-username" placeholder="Enter your username"></div>
- <div class="field-error" id="login-user-err">Please enter your username</div>
+ <label class="field-label">Username, Phone, or Email</label>
+ <div class="field-wrap"><span class="field-icon"></span><input type="text" id="login-username" placeholder="Enter username, phone, or email"></div>
+ <div class="field-error" id="login-user-err">Please enter your username, phone, or email</div>
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
@@ -487,7 +485,33 @@ input[type="password"]{padding-right:46px;}
  </div>
  <div class="field-error" id="login-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
  <button class="submit-btn" onclick="doLogin()">Login</button>
+ <div class="auth-forgot-link" onclick="showAuth('forgot-page')">Forgot Password?</div>
  <div class="auth-switch">Don't have an account? <a onclick="showAuth('register-page')">Register Now</a></div>
+ </div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div class="auth-page" id="forgot-page">
+ <div class="auth-corner-logo"><img src="logo.png" alt="Equinox Wallet"></div>
+ <div class="auth-hero">
+ <div class="auth-brand">Equinox Wallet</div>
+ <div class="auth-tagline">Account Recovery</div>
+ </div>
+ <div class="auth-card">
+ <div class="auth-title">Forgot Password</div>
+ <div class="auth-subtitle">Enter your details and our support team will help you reset it</div>
+ <div class="field-group">
+ <label class="field-label">Username</label>
+ <div class="field-wrap"><span class="field-icon"></span><input type="text" id="forgot-username" placeholder="Enter your username"></div>
+ <div class="field-error" id="forgot-user-err">Please enter your username</div>
+ </div>
+ <div class="field-group">
+ <label class="field-label">Registered Phone Number</label>
+ <div class="field-wrap"><span class="field-icon"></span><input type="tel" id="forgot-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
+ <div class="field-error" id="forgot-phone-err">Enter 10 digits starting with 0</div>
+ </div>
+ <button class="submit-btn" onclick="submitForgotPassword()">Continue</button>
+ <div class="auth-switch">Remembered it? <a onclick="showAuth('login-page')">Back to Sign In</a></div>
  </div>
 </div>
 
@@ -531,9 +555,8 @@ input[type="password"]{padding-right:46px;}
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 6 characters" oninput="checkStrength(this.value)"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
- <div class="pw-strength"><div class="pw-bar" id="pw-b1"></div><div class="pw-bar" id="pw-b2"></div><div class="pw-bar" id="pw-b3"></div></div>
- <div class="field-error" id="reg-pw-err">Password must be at least 6 characters</div>
+ <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 4 characters"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
+ <div class="field-error" id="reg-pw-err">Password must be at least 4 characters</div>
  </div>
  <div class="field-error" id="reg-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
  <button class="submit-btn" onclick="doRegister()">Register</button>
@@ -698,7 +721,7 @@ input[type="password"]{padding-right:46px;}
  <div class="settings-form" id="pwd-form">
  <div class="settings-form-inner">
  <div class="field-group"><label class="field-label">Current Password</label><input type="password" id="cp-old-pw" placeholder="Enter current password"></div>
- <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 6 characters"></div>
+ <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 4 characters"></div>
  <div class="field-group"><label class="field-label">Confirm New Password</label><input type="password" id="cp-confirm-pw" placeholder="Repeat new password"></div>
  <div class="field-error" id="cp-pw-err">Error</div>
  <div class="settings-form-actions">
@@ -1277,15 +1300,6 @@ function toggleEye(inputId, btn) {
  else { inp.type = 'password'; btn.textContent = 'Show'; }
 }
 
-function checkStrength(pw) {
- const b = [document.getElementById('pw-b1'), document.getElementById('pw-b2'), document.getElementById('pw-b3')];
- b.forEach(x => { if (x) x.className = 'pw-bar'; });
- if (!pw) return;
- if (pw.length >= 6) { if (b[0]) b[0].classList.add('weak'); }
- if (pw.length >= 8 && /[0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('medium'); }
- if (pw.length >= 10 && /[^A-Za-z0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('strong'); if (b[2]) b[2].classList.add('strong'); }
-}
-
 function updateRegPrefix() {
  // Country dropdown now shows the phone prefix directly (+256 / +254); no separate badge to update.
 }
@@ -1678,7 +1692,7 @@ async function submitChangePassword() {
  const newPw = document.getElementById('cp-new-pw').value;
  const confirmPw = document.getElementById('cp-confirm-pw').value;
  if (!oldPw || oldPw !== currentUser.password) { setErr('cp-pw-err', true, 'Current password is incorrect'); return; }
- if (!newPw || newPw.length < 6) { setErr('cp-pw-err', true, 'New password must be at least 6 characters'); return; }
+ if (!newPw || newPw.length < 4) { setErr('cp-pw-err', true, 'New password must be at least 4 characters'); return; }
  if (newPw !== confirmPw) { setErr('cp-pw-err', true, 'New passwords do not match'); return; }
  try {
  await db.ref('users/' + safeKey(currentUsername)).update({ password: newPw });
@@ -2291,18 +2305,60 @@ async function doReinvest() {
  btn.disabled = false; btn.textContent = 'BOOST NOW';
 }
 
+async function findUserByIdentifier(identifier) {
+ // 1) Try as username (direct key lookup)
+ const directSnap = await db.ref('users/' + safeKey(identifier)).get();
+ if (directSnap.exists()) return { username: identifier, data: directSnap.val() };
+
+ // 2) Try as email
+ if (identifier.includes('@')) {
+ const q = await db.ref('users').orderByChild('email').equalTo(identifier).limitToFirst(1).get();
+ if (q.exists()) {
+ const val = q.val();
+ const key = Object.keys(val)[0];
+ return { username: val[key].username, data: val[key] };
+ }
+ return null;
+ }
+
+ // 3) Try as phone number - normalize common formats
+ const digits = identifier.replace(/\D/g, '');
+ const variants = new Set();
+ if (identifier.startsWith('+')) variants.add(identifier);
+ if (digits.length === 10 && digits.startsWith('0')) {
+ variants.add('+256' + digits.slice(1));
+ variants.add('+254' + digits.slice(1));
+ }
+ if (digits.length === 9) {
+ variants.add('+256' + digits);
+ variants.add('+254' + digits);
+ }
+ if (digits.startsWith('256') || digits.startsWith('254')) variants.add('+' + digits);
+
+ for (const v of variants) {
+ const q = await db.ref('users').orderByChild('phone').equalTo(v).limitToFirst(1).get();
+ if (q.exists()) {
+ const val = q.val();
+ const key = Object.keys(val)[0];
+ return { username: val[key].username, data: val[key] };
+ }
+ }
+ return null;
+}
+
 async function doLogin() {
  clearErrors('login-user-err', 'login-pw-err');
  setErr('login-general-err', false);
- const username = document.getElementById('login-username').value.trim();
+ const identifier = document.getElementById('login-username').value.trim();
  const password = document.getElementById('login-password').value;
- if (!username) { setErr('login-user-err', true); return; }
+ if (!identifier) { setErr('login-user-err', true); return; }
  if (!password) { setErr('login-pw-err', true); return; }
  try {
- const userSnap = await db.ref('users/' + safeKey(username)).get();
- if (!userSnap.exists()) { setErr('login-general-err', true, 'Invalid username or password'); return; }
- const userData = userSnap.val();
- if (userData.password !== password) { setErr('login-general-err', true, 'Invalid username or password'); return; }
+ const found = await findUserByIdentifier(identifier);
+ if (!found) { setErr('login-general-err', true, 'Invalid username, phone, email, or password'); return; }
+ const username = found.username;
+ const userData = found.data;
+ if (userData.password !== password) { setErr('login-general-err', true, 'Invalid username, phone, email, or password'); return; }
  if (userData.locked) { setErr('login-general-err', true, 'Your account has been locked. Contact support.'); return; }
  currentUser = userData;
  currentUsername = username;
@@ -2335,6 +2391,20 @@ async function doLogin() {
  }
 }
 
+function submitForgotPassword() {
+ clearErrors('forgot-user-err', 'forgot-phone-err');
+ const username = document.getElementById('forgot-username').value.trim();
+ const phoneDigits = document.getElementById('forgot-phone').value.trim();
+ let ok = true;
+ if (!username) { setErr('forgot-user-err', true, 'Please enter your username'); ok = false; }
+ if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('forgot-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
+ if (!ok) return;
+ const phone = settingsData.waNumber;
+ if (!phone) return;
+ const message = `Hi, I forgot my password. Username: ${username}, Phone: ${phoneDigits}. Please help me reset it.`;
+ window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+}
+
 async function doRegister() {
  clearErrors('reg-user-err', 'reg-email-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
  const username = document.getElementById('reg-username').value.trim();
@@ -2350,12 +2420,14 @@ async function doRegister() {
  if (!email || !emailPattern.test(email)) { setErr('reg-email-err', true, 'Enter a valid email address'); ok = false; }
  if (!country) { setErr('reg-country-err', true, 'Please select your country'); ok = false; }
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
- if (!password || password.length < 6) { setErr('reg-pw-err', true, 'Password must be at least 6 characters'); ok = false; }
+ if (!password || password.length < 4) { setErr('reg-pw-err', true, 'Password must be at least 4 characters'); ok = false; }
  if (!ok) return;
  const existing = await db.ref('users/' + safeKey(username)).get();
  if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
  const prefix = country === 'KE' ? '+254' : '+256';
  const fullPhone = prefix + phoneDigits.slice(1);
+ const phoneQuery = await db.ref('users').orderByChild('phone').equalTo(fullPhone).limitToFirst(1).get();
+ if (phoneQuery.exists()) { setErr('reg-phone-err', true, 'This phone number is already registered'); return; }
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
