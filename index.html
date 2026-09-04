@@ -67,12 +67,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .auth-page{display:none;flex-direction:column;min-height:100vh;padding:40px 24px;position:relative;}
 .auth-corner-logo{position:absolute;top:16px;left:16px;width:42px;height:42px;border-radius:12px;overflow:hidden;box-shadow:0 6px 16px rgba(22,35,74,.25);}
 .auth-corner-logo img{width:100%;height:100%;object-fit:cover;}
-.auth-plan-btn{position:absolute;top:16px;right:16px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(22,35,74,.25);z-index:5;}
-.plan-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10001;align-items:center;justify-content:center;padding:20px;}
-.plan-modal-overlay.show{display:flex;}
-.plan-modal-card{background:#1F3B2C;border-radius:16px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.5);}
-.plan-modal-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
-.plan-modal-header{background:linear-gradient(135deg,#E8C97A,#8F6A2E);color:#1F3B2C;text-align:center;font-weight:800;font-size:13px;padding:16px 40px 14px 16px;line-height:1.4;}
 /* Welcome guidance popup */
 .welcome-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10001;align-items:center;justify-content:center;padding:20px;}
 .welcome-overlay.show{display:flex;}
@@ -500,7 +494,6 @@ input[type="password"]{padding-right:46px;}
 <!-- REGISTER -->
 <div class="auth-page" id="register-page">
  <div class="auth-corner-logo"><img src="logo.png" alt="Equinox Wallet"></div>
- <button class="auth-plan-btn" onclick="openAuthPlanModal()">Plan</button>
  <div class="auth-hero">
  <div class="auth-brand">Equinox Wallet</div>
  <div class="auth-tagline">Start Earning Today</div>
@@ -513,6 +506,11 @@ input[type="password"]{padding-right:46px;}
  <label class="field-label">Username</label>
  <div class="field-wrap"><span class="field-icon"></span><input type="text" id="reg-username" placeholder="Choose a username"></div>
  <div class="field-error" id="reg-user-err">Username is required</div>
+ </div>
+ <div class="field-group">
+ <label class="field-label">Email Address</label>
+ <div class="field-wrap"><span class="field-icon"></span><input type="email" id="reg-email" placeholder="you@example.com"></div>
+ <div class="field-error" id="reg-email-err">Enter a valid email address</div>
  </div>
  <div class="field-group">
  <label class="field-label">Country</label>
@@ -964,25 +962,6 @@ input[type="password"]{padding-right:46px;}
  </div>
 </div>
 
-<!-- Growth Plan popup (shown from Login/Register pages) -->
-<div class="plan-modal-overlay" id="plan-modal-overlay">
- <div class="plan-modal-card">
- <button class="plan-modal-close" onclick="closeAuthPlanModal()">✕</button>
- <div class="plan-modal-header">Equinox Wallet Growth Plan — Consistent Daily Growth for 80 Days</div>
- <div style="overflow-x:auto;">
- <table style="width:100%;border-collapse:collapse;background:#1F3B2C;font-family:'Inter',sans-serif;">
- <thead>
- <tr style="background:#183024;">
- <th style="color:#E8C97A;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
- <th style="color:#E8C97A;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Daily (10%)</th>
- <th style="color:#E8C97A;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">80-Day Total</th>
- </tr>
- </thead>
- <tbody id="auth-plan-table-body"></tbody>
- </table>
- </div>
- </div>
-</div>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1462,12 +1441,6 @@ function renderGrowthPlanTable() {
  body.innerHTML = buildGrowthPlanRows();
 }
 
-function renderAuthPlanTable() {
- const body = document.getElementById('auth-plan-table-body');
- if (!body) return;
- body.innerHTML = buildGrowthPlanRows();
-}
-
 function buildGrowthPlanRows() {
  const tiers = [
  10000, 20000, 50000, 100000, 200000, 500000,
@@ -1484,15 +1457,6 @@ function buildGrowthPlanRows() {
  <td style="padding:12px 9px;color:#E8C97A;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(total).replace('UGX ', '')}</td>
  </tr>`;
  }).join('');
-}
-
-function openAuthPlanModal() {
- renderAuthPlanTable();
- document.getElementById('plan-modal-overlay').classList.add('show');
-}
-
-function closeAuthPlanModal() {
- document.getElementById('plan-modal-overlay').classList.remove('show');
 }
 
 function switchTab(tab) {
@@ -1664,7 +1628,7 @@ function updateProfileUI() {
  if (!currentUser) return;
  document.getElementById('dash-username').textContent = currentUser.username;
  const initial = (currentUser.username || '?').charAt(0).toUpperCase();
- renderAvatarInto(document.getElementById('dash-avatar'), currentUser.avatar, initial);
+ renderAvatarInto(document.getElementById('dash-avatar'), null, initial);
  renderAvatarInto(document.getElementById('dash-welcome-avatar'), currentUser.avatar, initial);
  document.getElementById('profile-user-simple').textContent = currentUser.username || '—';
  const editPhoneEl = document.getElementById('edit-info-phone-display');
@@ -2372,8 +2336,9 @@ async function doLogin() {
 }
 
 async function doRegister() {
- clearErrors('reg-user-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
+ clearErrors('reg-user-err', 'reg-email-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
  const username = document.getElementById('reg-username').value.trim();
+ const email = document.getElementById('reg-email').value.trim();
  const country = document.getElementById('reg-country').value;
  const phoneDigits = document.getElementById('reg-phone').value.trim();
  const password = document.getElementById('reg-password').value;
@@ -2381,6 +2346,8 @@ async function doRegister() {
  const refCode = urlParams.get('ref') || null;
  let ok = true;
  if (!username) { setErr('reg-user-err', true, 'Username is required'); ok = false; }
+ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ if (!email || !emailPattern.test(email)) { setErr('reg-email-err', true, 'Enter a valid email address'); ok = false; }
  if (!country) { setErr('reg-country-err', true, 'Please select your country'); ok = false; }
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
  if (!password || password.length < 6) { setErr('reg-pw-err', true, 'Password must be at least 6 characters'); ok = false; }
@@ -2392,7 +2359,7 @@ async function doRegister() {
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
- username, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
+ username, email, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
  activated: false, locked: false, referredBy: refCode, joinedDate: new Date().getFullYear().toString(),
  lastProfitDate: todayKey, avatar: null,
  transactions: { t0: { type: 'Bonus', amount: 4000, note: 'Registration Bonus ', date: now, status: 'completed' } },
@@ -2424,6 +2391,7 @@ async function doRegister() {
  currentUsername = username;
  localStorage.setItem('pp_current_user', username);
  document.getElementById('reg-username').value = '';
+ document.getElementById('reg-email').value = '';
  document.getElementById('reg-phone').value = '';
  document.getElementById('reg-password').value = '';
  document.getElementById('reg-country').value = '';
