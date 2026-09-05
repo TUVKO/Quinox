@@ -454,21 +454,6 @@ input[type="password"]{padding-right:46px;}
 .community-wa:hover, .community-wa:active{border-color:rgba(37,211,102,.5);}
 .community-tg:hover, .community-tg:active{border-color:rgba(33,150,243,.5);}
 
-.active-inv-heading{font-size:12px;font-weight:800;color:#EFEAD8;letter-spacing:.3px;margin-bottom:10px;}
-.active-inv-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
-.active-inv-scroll::-webkit-scrollbar{display:none;}
-.active-inv-card{flex-shrink:0;width:128px;background:#154A2E;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;}
-.active-inv-ring-wrap{position:relative;width:84px;height:84px;margin-bottom:10px;}
-.active-inv-ring-wrap svg{transform:rotate(-90deg);}
-.active-inv-ring-track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:7;}
-.active-inv-ring-fill{fill:none;stroke:#D9A441;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .4s ease;}
-.active-inv-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.active-inv-ring-earned{font-size:11px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;line-height:1.2;}
-.active-inv-ring-slash{font-size:8px;color:#9FD9B6;margin:1px 0;}
-.active-inv-ring-total{font-size:9.5px;color:#9FD9B6;font-variant-numeric:tabular-nums;}
-.active-inv-start{font-size:9.5px;color:#9FD9B6;margin-bottom:2px;}
-.active-inv-remaining{font-size:11px;font-weight:700;color:#EFEAD8;}
-
 /* WA Button */
 .wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:fit-content;margin-left:auto;background:#25D366;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
 .wa-btn:active{transform:scale(.98);}
@@ -642,10 +627,6 @@ input[type="password"]{padding-right:46px;}
  <div class="community-icon" style="background:rgba(37,211,102,.15);">💬</div>
  <div><div class="community-title">WhatsApp Channel</div><div class="community-desc">Join our official WhatsApp channel</div></div>
  </div>
- </div>
- <div class="section" id="active-inv-section" style="display:none;">
- <div class="active-inv-heading">Active Investments</div>
- <div class="active-inv-scroll" id="active-inv-scroll"></div>
  </div>
  </div>
 
@@ -1667,7 +1648,6 @@ function startUserListener(username) {
  renderTeam();
  updateReferralLink();
  updateProfileUI();
- renderActiveInvestments();
  }
  });
 }
@@ -1679,56 +1659,6 @@ function updateReferralLink() {
  const refUrlEl = document.getElementById('ref-url');
  if (refUrlEl) refUrlEl.textContent = refLink;
  document.getElementById('ref-url-new').value = refLink;
-}
-
-function renderActiveInvestments() {
- const section = document.getElementById('active-inv-section');
- const scroll = document.getElementById('active-inv-scroll');
- if (!section || !scroll || !currentUser) return;
- const deposits = currentUser.deposits || {};
- const keys = Object.keys(deposits).sort((a, b) => (deposits[a].startDate || 0) - (deposits[b].startDate || 0));
- if (keys.length === 0) {
- section.style.display = 'none';
- scroll.innerHTML = '';
- return;
- }
- const CYCLE_DAYS = 45;
- const RADIUS = 35;
- const CIRC = 2 * Math.PI * RADIUS;
- const now = Date.now();
- let html = '';
- keys.forEach(key => {
- const dep = deposits[key];
- const amount = dep.amount || 0;
- const dailyProfit = Math.floor(amount * 0.10);
- const totalAtEnd = dailyProfit * CYCLE_DAYS;
- const startMs = dep.startDate || now;
- let daysElapsed = Math.floor((now - startMs) / 86400000);
- if (daysElapsed < 0) daysElapsed = 0;
- if (daysElapsed > CYCLE_DAYS) daysElapsed = CYCLE_DAYS;
- const earnedSoFar = dailyProfit * daysElapsed;
- const remainingDays = CYCLE_DAYS - daysElapsed;
- const progress = daysElapsed / CYCLE_DAYS;
- const dashOffset = CIRC * (1 - progress);
- const startDateLabel = new Date(startMs).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
- html += `<div class="active-inv-card">
- <div class="active-inv-ring-wrap">
- <svg width="84" height="84" viewBox="0 0 84 84">
- <circle class="active-inv-ring-track" cx="42" cy="42" r="${RADIUS}"></circle>
- <circle class="active-inv-ring-fill" cx="42" cy="42" r="${RADIUS}" stroke-dasharray="${CIRC}" stroke-dashoffset="${dashOffset}"></circle>
- </svg>
- <div class="active-inv-ring-label">
- <div class="active-inv-ring-earned">${earnedSoFar.toLocaleString()}</div>
- <div class="active-inv-ring-slash">of</div>
- <div class="active-inv-ring-total">${totalAtEnd.toLocaleString()}</div>
- </div>
- </div>
- <div class="active-inv-start">Started ${startDateLabel}</div>
- <div class="active-inv-remaining">${remainingDays} day${remainingDays === 1 ? '' : 's'} left</div>
- </div>`;
- });
- scroll.innerHTML = html;
- section.style.display = 'block';
 }
 
 function renderAvatarInto(el, avatarValue, fallbackInitial) {
