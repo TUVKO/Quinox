@@ -354,16 +354,13 @@ input[type="password"]{padding-right:46px;}
 .tx-pill:active{transform:scale(0.98);}
 .tx-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
-.tx-search-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:12px;}
-.tx-search-input:focus{border-color:var(--accent);}
 
 .tx-cards-grid{display:flex;flex-direction:column;gap:8px;}
-.tx-card{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:transform .15s;box-shadow:0 3px 10px rgba(0,0,0,.08);}
+.tx-card{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:transform .15s;box-shadow:0 3px 10px rgba(0,0,0,.08);}
 .tx-card:active{transform:scale(.98);}
 .tx-card-header{display:flex;align-items:center;gap:10px;flex:1;min-width:0;margin-bottom:0;}
-.tx-card-icon{font-size:15px;width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:9px;}
-.tx-card-type{font-size:12.5px;color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tx-card-date{font-size:9.5px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
+.tx-card-id{font-size:12.5px;color:var(--text);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;}
+.tx-card-date{font-size:9.5px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.3px;}
 .tx-card-amount{font-size:12.5px;font-weight:800;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;color:var(--text);margin-bottom:0;text-align:right;white-space:nowrap;}
 .tx-card-status{display:block;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;text-align:right;margin-top:2px;}
 @media (min-width:480px){.tx-cards-grid{grid-template-columns:1fr;}}
@@ -410,18 +407,17 @@ input[type="password"]{padding-right:46px;}
 .ref-empty-hint{font-size:12px;color:var(--muted);}
 .ref-members-list{display:flex;flex-direction:column;gap:10px;background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;padding:16px;margin-top:16px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
 
-/* Network Rings hero */
-.rings-hero{position:relative;width:220px;height:220px;margin:6px auto 20px;}
-.ring{position:absolute;border-radius:50%;border:1.5px dashed rgba(27,42,82,.16);top:50%;left:50%;transform:translate(-50%,-50%);}
-.ring1{width:220px;height:220px;}
-.ring2{width:154px;height:154px;}
-.ring3{width:88px;height:88px;}
-.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent3),#0d9488);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;box-shadow:0 0 28px rgba(16,185,129,.35);}
-.ring-tag{position:absolute;background:var(--navy);color:#fff;border-radius:8px;padding:5px 9px;font-size:10px;font-weight:700;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:0 4px 12px rgba(22,35,74,.25);}
-.ring-tag .pct{color:#22d3a5;}
-.tag-l1{top:-2px;left:50%;transform:translateX(-50%);}
-.tag-l2{top:50%;right:-10px;transform:translateY(-50%);}
-.tag-l3{bottom:-2px;left:50%;transform:translateX(-50%);}
+/* Network Tree Branch hero */
+.tree-hero{margin:6px 0 20px;position:relative;padding-left:4px;}
+.tree-you{background:var(--navy);color:#fff;border-radius:12px;padding:14px 18px;font-weight:700;font-size:15px;margin-bottom:4px;display:inline-block;font-family:'Fraunces',serif;}
+.tree-branch{position:relative;padding-left:24px;margin-top:6px;}
+.tree-branch::before{content:'';position:absolute;left:8px;top:-10px;bottom:18px;width:1.5px;background:var(--card-border);}
+.tree-branch::after{content:'';position:absolute;left:8px;top:18px;width:16px;height:1.5px;background:var(--card-border);}
+.tree-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.tree-item:last-child{margin-bottom:0;}
+.tree-lvl{font-size:10px;font-weight:800;background:var(--surface2);color:var(--text);padding:3px 7px;border-radius:6px;flex-shrink:0;}
+.tree-desc{font-size:12.5px;color:var(--muted);flex:1;}
+.tree-pct{margin-left:auto;font-weight:800;color:var(--gold);font-family:'Fraunces',serif;font-size:16px;}
 
 /* Richer member rows */
 .ref-member-item2{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;}
@@ -460,6 +456,34 @@ input[type="password"]{padding-right:46px;}
 
 
 
+
+/* ============ Navy Finance theme: Ledger & Network pages ============ */
+#sec-history, #sec-team{background:#0B1B33;padding-bottom:20px;}
+#sec-history .inner-title, #sec-team .inner-title{color:#E8C97A;}
+#sec-history .inner-sub, #sec-team .inner-sub{color:#6B7FA0;}
+#sec-history .tx-card, #sec-team .tree-item, #sec-team .ref-stat-box, #sec-team .ref-link-section, #sec-team .ref-commission-info{background:#122A4D;border-color:rgba(255,255,255,.08);box-shadow:none;}
+#sec-history .tx-card-id, #sec-team .tree-desc{color:#E8ECF5;}
+#sec-history .tx-card-date{color:#6B7FA0;}
+#sec-history .tx-card-amount{color:#E8ECF5;}
+#sec-history .tx-card-amount.positive{color:#5DD39E;}
+#sec-history .tx-card-amount.negative{color:#F08A5D;}
+#sec-history .tx-status-completed{color:#5DD39E;}
+#sec-history .tx-status-pending{color:#E8C97A;}
+#sec-history .tx-status-failed{color:#F08A5D;}
+#sec-history .tx-empty-title, #sec-team .ref-empty-msg{color:#E8ECF5;}
+#sec-history .tx-empty-text, #sec-team .ref-empty-hint{color:#6B7FA0;}
+#sec-team .tree-you{background:#E8C97A;color:#0B1B33;}
+#sec-team .tree-branch::before, #sec-team .tree-branch::after{background:rgba(255,255,255,.15);}
+#sec-team .tree-lvl{background:#1A3A63;color:#E8ECF5;}
+#sec-team .tree-pct{color:#E8C97A;}
+#sec-team .ref-stat-top, #sec-team .ref-link-label, #sec-team .ref-commission-title, #sec-team .ref-desc{color:#6B7FA0;}
+#sec-team .ref-stat-amount{color:#E8C97A;}
+#sec-team .ref-link-input{background:#1A3A63;color:#E8C97A;border-color:rgba(255,255,255,.08);}
+#sec-team .ref-copy-btn{background:#E8C97A;color:#0B1B33;}
+#sec-team .ref-link-hint{color:#6B7FA0;}
+#sec-team .ref-commission-item{background:#1A3A63;}
+#sec-team .ref-level{background:#E8C97A;color:#0B1B33;}
+#sec-team .ref-pct{color:#E8C97A;}
 </style>
 </head>
 <body>
@@ -634,11 +658,6 @@ input[type="password"]{padding-right:46px;}
  <div class="dash-section" id="sec-history">
  <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Ledger</div><div class="inner-sub" id="history-filter-label">All your transactions</div></div></div>
  
- <!-- Search -->
- <div style="margin-bottom:16px;">
- <input type="text" id="tx-search-box" placeholder=" Search transactions..." class="tx-search-input" oninput="renderHistory()">
- </div>
-
  <!-- Transaction Cards -->
  <div class="section">
  <div id="history-list" class="tx-cards-grid"><div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Yet</div><div class="tx-empty-text">Your transaction history will appear here.</div></div></div>
@@ -650,14 +669,13 @@ input[type="password"]{padding-right:46px;}
  <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Network</div><div class="inner-sub">Grow your circle & earn</div></div></div>
  <div class="section">
  <div class="ref-new-container">
- <div class="rings-hero">
- <div class="ring ring1"></div>
- <div class="ring ring2"></div>
- <div class="ring ring3"></div>
- <div class="ring-center">YOU</div>
- <div class="ring-tag tag-l1">L1 <span class="pct" id="ref-ring-l1">10%</span></div>
- <div class="ring-tag tag-l2">L2 <span class="pct" id="ref-ring-l2">4%</span></div>
- <div class="ring-tag tag-l3">L3 <span class="pct" id="ref-ring-l3">2%</span></div>
+ <div class="tree-hero">
+ <div class="tree-you" id="tree-you-name">You</div>
+ <div class="tree-branch">
+ <div class="tree-item"><span class="tree-lvl">L1</span><span class="tree-desc">Direct referrals</span><span class="tree-pct" id="ref-ring-l1">10%</span></div>
+ <div class="tree-item"><span class="tree-lvl">L2</span><span class="tree-desc">Their referrals</span><span class="tree-pct" id="ref-ring-l2">4%</span></div>
+ <div class="tree-item"><span class="tree-lvl">L3</span><span class="tree-desc">3rd level</span><span class="tree-pct" id="ref-ring-l3">2%</span></div>
+ </div>
  </div>
  <div class="ref-stat-box ref-bonus-box">
  <div class="ref-stat-top">Bonuses Earned</div>
@@ -1782,53 +1800,39 @@ function setTxFilter(type, btnEl) {
 function renderHistory() {
  const wrap = document.getElementById('history-list');
  if (!currentUser) { if (wrap) wrap.innerHTML = ''; return; }
- const allTxs = currentUser.transactions ? Object.values(currentUser.transactions).reverse() : [];
- 
- // Get search query
- const searchBox = document.getElementById('tx-search-box');
- const searchQuery = (searchBox?.value || '').toLowerCase().trim();
+ const allEntries = currentUser.transactions ? Object.entries(currentUser.transactions).reverse() : [];
  
  // Filter by type
- let txs = allTxs;
+ let entries = allEntries;
  if (currentHistoryFilter !== 'all') {
- txs = allTxs.filter(tx => tx.type === currentHistoryFilter);
+ entries = allEntries.filter(([id, tx]) => tx.type === currentHistoryFilter);
  }
  
- // Filter by search
- if (searchQuery) {
- txs = txs.filter(tx => 
- (tx.type || '').toLowerCase().includes(searchQuery) ||
- (tx.note || '').toLowerCase().includes(searchQuery) ||
- fmt(tx.amount).toLowerCase().includes(searchQuery)
- );
- }
- 
- if (!txs.length) {
- if (wrap) wrap.innerHTML = '<div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Found</div><div class="tx-empty-text">Try adjusting your filters or search.</div></div>';
+ if (!entries.length) {
+ if (wrap) wrap.innerHTML = '<div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Found</div><div class="tx-empty-text">Try adjusting your filters.</div></div>';
  return;
  }
  
- const typeIcons = { Deposit: '', Withdrawal: '', Profit: '', Bonus: '', 'Re-Invest': '', Referral: '' };
+ const typeShort = { Deposit: 'DEP', Withdrawal: 'WD', Profit: 'PRO', Bonus: 'BON', 'Re-Invest': 'RE-INV', Referral: 'REF' };
  const typeClasses = { Deposit: 'tx-deposit', Withdrawal: 'tx-withdrawal', Profit: 'tx-profit', Bonus: 'tx-bonus', Referral: 'tx-referral' };
  
  if (wrap) {
  wrap.innerHTML = '<div class="tx-cards-grid">' + 
- txs.map(tx => {
+ entries.map(([id, tx]) => {
  const isPending = tx.status === 'pending';
  const isFailed = tx.status === 'failed';
  const statusClass = isPending ? 'tx-status-pending' : isFailed ? 'tx-status-failed' : 'tx-status-completed';
  const statusText = isPending ? 'Pending' : isFailed ? 'Failed' : 'Completed';
  const amountClass = tx.amount >= 0 ? 'positive' : 'negative';
  const typeClass = typeClasses[tx.type] || 'tx-profit';
- const icon = typeIcons[tx.type] || '';
+ const shortType = typeShort[tx.type] || (tx.type || 'TX').slice(0, 3).toUpperCase();
  const amountStr = tx.amount >= 0 ? '+' + fmt(tx.amount) : fmt(tx.amount);
  
  return `<div class="tx-card ${typeClass}">
  <div class="tx-card-header">
- <div class="tx-card-icon">${icon}</div>
  <div style="min-width:0;">
- <div class="tx-card-type">${tx.type || 'Transaction'}</div>
- <div class="tx-card-date">${tx.date || '—'}</div>
+ <div class="tx-card-id">#${id}</div>
+ <div class="tx-card-date">${shortType} · ${tx.date || '—'}</div>
  </div>
  </div>
  <div>
@@ -1842,6 +1846,8 @@ function renderHistory() {
 
 function renderTeam() {
  if (!currentUser) return;
+ const treeYouEl = document.getElementById('tree-you-name');
+ if (treeYouEl) treeYouEl.textContent = currentUser.username || 'You';
  let totalRefBonus = 0;
  if (currentUser.transactions) {
  Object.values(currentUser.transactions).forEach(tx => { if (tx.type === 'Referral') totalRefBonus += tx.amount; });
