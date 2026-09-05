@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <meta property="og:title" content="Equinox Wallet — Smart Investment Platform">
-<meta property="og:description" content="Grow your money with 10% daily profit over 80 days. Trusted by thousands. Register free today.">
+<meta property="og:description" content="Grow your money with 10% daily profit over 45 days. Trusted by thousands. Register free today.">
 <meta property="og:image" content="https://nexohub19.site/logo.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
@@ -85,6 +85,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .wa-text-sub{font-size:11px;color:#9FD9B6;}
 .wa-arrow{margin-left:auto;color:#D9A441;font-size:20px;}
 .welcome-quick-tabs{display:flex;gap:7px;}
+.welcome-refer-hint{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:12px;background:rgba(217,164,65,.10);border-radius:8px;padding:9px 11px;}
 .welcome-qtab{flex:1;background:#F4F1EA;border:1px solid #E2DDCC;border-radius:9px;padding:9px 4px;text-align:center;cursor:pointer;transition:transform .15s;}
 .welcome-qtab:active{transform:scale(.96);}
 .welcome-qtab-icon{font-size:15px;margin-bottom:3px;}
@@ -453,6 +454,21 @@ input[type="password"]{padding-right:46px;}
 .community-wa:hover, .community-wa:active{border-color:rgba(37,211,102,.5);}
 .community-tg:hover, .community-tg:active{border-color:rgba(33,150,243,.5);}
 
+.active-inv-heading{font-size:12px;font-weight:800;color:#EFEAD8;letter-spacing:.3px;margin-bottom:10px;}
+.active-inv-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
+.active-inv-scroll::-webkit-scrollbar{display:none;}
+.active-inv-card{flex-shrink:0;width:128px;background:#154A2E;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 10px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.active-inv-ring-wrap{position:relative;width:84px;height:84px;margin-bottom:10px;}
+.active-inv-ring-wrap svg{transform:rotate(-90deg);}
+.active-inv-ring-track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:7;}
+.active-inv-ring-fill{fill:none;stroke:#D9A441;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .4s ease;}
+.active-inv-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.active-inv-ring-earned{font-size:11px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;line-height:1.2;}
+.active-inv-ring-slash{font-size:8px;color:#9FD9B6;margin:1px 0;}
+.active-inv-ring-total{font-size:9.5px;color:#9FD9B6;font-variant-numeric:tabular-nums;}
+.active-inv-start{font-size:9.5px;color:#9FD9B6;margin-bottom:2px;}
+.active-inv-remaining{font-size:11px;font-weight:700;color:#EFEAD8;}
+
 /* WA Button */
 .wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:fit-content;margin-left:auto;background:#25D366;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
 .wa-btn:active{transform:scale(.98);}
@@ -627,6 +643,10 @@ input[type="password"]{padding-right:46px;}
  <div><div class="community-title">WhatsApp Channel</div><div class="community-desc">Join our official WhatsApp channel</div></div>
  </div>
  </div>
+ <div class="section" id="active-inv-section" style="display:none;">
+ <div class="active-inv-heading">Active Investments</div>
+ <div class="active-inv-scroll" id="active-inv-scroll"></div>
+ </div>
  </div>
 
  <!-- History - New Card Design -->
@@ -687,22 +707,22 @@ input[type="password"]{padding-right:46px;}
 
  <!-- Returns Plan -->
  <div class="dash-section" id="sec-plan">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Growth Plan</div><div class="inner-sub">Consistent daily returns over an 80-day cycle</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Growth Plan</div><div class="inner-sub">Consistent daily returns over a 45-day cycle</div></div></div>
  <div class="section">
  <div class="plan-wrap">
- <div class="plan-header"><div class="plan-header-title">Equinox Wallet Growth Plan — Consistent Daily Growth for 80 Days</div></div>
+ <div class="plan-header"><div class="plan-header-title">Equinox Wallet Growth Plan — Consistent Daily Growth for 45 Days</div></div>
  <div class="plan-labels"><span>Deposit</span><span>Daily</span><span>Total</span></div>
- <div class="plan-row"><span class="plan-amt">10,000</span><span class="plan-daily">1,000</span><span class="plan-total">80,000</span></div>
- <div class="plan-row"><span class="plan-amt">20,000</span><span class="plan-daily">2,000</span><span class="plan-total">160,000</span></div>
- <div class="plan-row"><span class="plan-amt">50,000</span><span class="plan-daily">5,000</span><span class="plan-total">400,000</span></div>
- <div class="plan-row"><span class="plan-amt">100,000</span><span class="plan-daily">10,000</span><span class="plan-total">800,000</span></div>
- <div class="plan-row"><span class="plan-amt">200,000</span><span class="plan-daily">20,000</span><span class="plan-total">1,600,000</span></div>
- <div class="plan-row"><span class="plan-amt">500,000</span><span class="plan-daily">50,000</span><span class="plan-total">4,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">1,000,000</span><span class="plan-daily">100,000</span><span class="plan-total">8,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">2,000,000</span><span class="plan-daily">200,000</span><span class="plan-total">16,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">5,000,000</span><span class="plan-daily">500,000</span><span class="plan-total">40,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">10,000,000</span><span class="plan-daily">1,000,000</span><span class="plan-total">80,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">20,000,000</span><span class="plan-daily">2,000,000</span><span class="plan-total">160,000,000</span></div>
+ <div class="plan-row"><span class="plan-amt">10,000</span><span class="plan-daily">1,000</span><span class="plan-total">45,000</span></div>
+ <div class="plan-row"><span class="plan-amt">20,000</span><span class="plan-daily">2,000</span><span class="plan-total">90,000</span></div>
+ <div class="plan-row"><span class="plan-amt">50,000</span><span class="plan-daily">5,000</span><span class="plan-total">225,000</span></div>
+ <div class="plan-row"><span class="plan-amt">100,000</span><span class="plan-daily">10,000</span><span class="plan-total">450,000</span></div>
+ <div class="plan-row"><span class="plan-amt">200,000</span><span class="plan-daily">20,000</span><span class="plan-total">900,000</span></div>
+ <div class="plan-row"><span class="plan-amt">500,000</span><span class="plan-daily">50,000</span><span class="plan-total">2,250,000</span></div>
+ <div class="plan-row"><span class="plan-amt">1,000,000</span><span class="plan-daily">100,000</span><span class="plan-total">4,500,000</span></div>
+ <div class="plan-row"><span class="plan-amt">2,000,000</span><span class="plan-daily">200,000</span><span class="plan-total">9,000,000</span></div>
+ <div class="plan-row"><span class="plan-amt">5,000,000</span><span class="plan-daily">500,000</span><span class="plan-total">22,500,000</span></div>
+ <div class="plan-row"><span class="plan-amt">10,000,000</span><span class="plan-daily">1,000,000</span><span class="plan-total">45,000,000</span></div>
+ <div class="plan-row"><span class="plan-amt">20,000,000</span><span class="plan-daily">2,000,000</span><span class="plan-total">90,000,000</span></div>
  </div>
  </div>
  </div>
@@ -829,7 +849,7 @@ input[type="password"]{padding-right:46px;}
  <div class="action-card" style="line-height:1.7;font-size:14px;color:var(--text);">
  <p style="font-weight:800;font-size:17px;margin-bottom:12px;">How Equinox Wallet Works</p>
  <p style="margin-bottom:14px;">Equinox Wallet pools client deposits into a professionally managed trading portfolio. Our team allocates capital across currency markets, commodities, and digital assets, using a combination of algorithmic strategies and experienced market analysis to generate consistent daily returns.</p>
- <p style="margin-bottom:14px;">When you deposit into a Growth Plan, your funds join this managed pool. A portion of the profit generated from our trading activity is distributed back to you as a fixed 10% daily return, credited automatically to your account for 80 days — a total return of 800% on your original investment.</p>
+ <p style="margin-bottom:14px;">When you deposit into a Growth Plan, your funds join this managed pool. A portion of the profit generated from our trading activity is distributed back to you as a fixed 10% daily return, credited automatically to your account for 45 days — a total return of 450% on your original investment.</p>
  <p style="margin-bottom:14px;">We manage risk through diversification, disciplined position sizing, and continuous monitoring of market conditions, so returns to our clients remain steady regardless of daily market volatility.</p>
  <p style="margin-bottom:14px;">Beyond trading, Equinox Wallet rewards you for growing our community. Share your referral link and earn 10% on deposits from anyone you refer directly, 4% from their referrals, and 2% from the level after that — three tiers of ongoing income for building your network.</p>
  <p style="margin-bottom:18px;">Whether you invest UGX 10,000 or UGX 100 million, our commitment is the same: disciplined trading, transparent daily payouts, and reliable access to your funds.</p>
@@ -967,15 +987,16 @@ input[type="password"]{padding-right:46px;}
  <div class="welcome-stat"><div class="welcome-stat-val">5k</div><div class="welcome-stat-lbl">Min. Withdraw</div></div>
  </div>
  <div class="welcome-msg">
- Your investment starts growing from day one, with 10% credited automatically to your balance every day for 80 days. There's no manual claiming — profits appear on their own, and you can withdraw anytime once your balance reaches UGX 5,000. You can also reinvest your earnings to grow your returns faster. Need help along the way? Our support team is one tap away.
+ Your investment starts growing from day one, with 10% credited automatically to your balance every day for 45 days. There's no manual claiming — profits appear on their own, and you can withdraw anytime once your balance reaches UGX 5,000. You can also reinvest your earnings to grow your returns faster. Need help along the way? Our support team is one tap away.
  </div>
- <div class="wa-tab" onclick="openWaGroup()">
+ <div class="wa-tab" onclick="shareRefLink()">
  <div>
- <div class="wa-text-title">Join WhatsApp Community</div>
- <div class="wa-text-sub">Get updates, tips & support</div>
+ <div class="wa-text-title">Share Referral Link</div>
+ <div class="wa-text-sub">Invite friends & start earning together</div>
  </div>
  <div class="wa-arrow">›</div>
  </div>
+ <div class="welcome-refer-hint">💡 Share your link with friends — when they join and invest, you earn a % bonus on their activity.</div>
  <div class="welcome-quick-tabs">
  <div class="welcome-qtab" onclick="openWaGroup()"><div class="welcome-qtab-icon">💬</div><div class="welcome-qtab-label">Group</div></div>
  <div class="welcome-qtab" onclick="openSupportChat()"><div class="welcome-qtab-icon">🎧</div><div class="welcome-qtab-label">Support</div></div>
@@ -1168,7 +1189,7 @@ async function calculateAndPayDailyProfits() {
  
  // STEP 7: Update daysRun in activeInvestment
  let newDaysRun = (userData.activeInvestment?.daysRun || 0) + daysDiff;
- if (newDaysRun > 80) newDaysRun = 80;
+ if (newDaysRun > 45) newDaysRun = 45;
  
  // STEP 8: Prepare activeInvestment object (handle if null/missing)
  let updatedActiveInvestment = userData.activeInvestment || { daysRun: 0 };
@@ -1334,7 +1355,23 @@ function shareRefLink() {
  const url = document.getElementById('ref-url-new');
  const link = url && url.value ? url.value : '';
  const waGroupLink = settingsData.waGroup || '';
- const message = "*New just launched*\n*Equinox Wallet is live*\nRegister using my link below to get your welcome bonus of UGX 4000\n\nHow it works?\nEarn 10% daily profits on your investment.\n\nMinimum investment is UGX 10000\n\nMinimum withdrawal UGX 5000\n\n10% daily for 80 days\n\n" + link + "\n\nWhatsApp channel:\n" + waGroupLink + "\n\nRegister i will guide you.";
+ const pctL1 = settingsData.refL1 || 10;
+ const pctL2 = settingsData.refL2 || 4;
+ const pctL3 = settingsData.refL3 || 2;
+ const message = "🚀 *New Investment Opportunity in Uganda!* 🇺🇬\n\n" + link + "\n\n"
+ + "✨ *Equinox Wallet* is officially live in Uganda! ✨\n"
+ + "💰 Earn *10% daily* on your investment\n\n"
+ + "🎁 Welcome bonus: *UGX 4,000 FREE*\n"
+ + "💵 Minimum deposit: *UGX 10,000* (10%/day)\n"
+ + "💸 Minimum withdrawal: *UGX 5,000*\n"
+ + "⚡ Withdrawals processed *daily & automatically*\n\n"
+ + "🔗 *Referral Program:*\n"
+ + "🥇 Level 1 — " + pctL1 + "%\n"
+ + "🥈 Level 2 — " + pctL2 + "%\n"
+ + "🥉 Level 3 — " + pctL3 + "%\n\n"
+ + "👉 Register here: " + link + "\n\n"
+ + "💬 Join our WhatsApp group: " + waGroupLink + "\n\n"
+ + "⏳ Don't miss out — start earning today!";
  const waUrl = 'https://wa.me/?text=' + encodeURIComponent(message);
  window.open(waUrl, '_blank');
 }
@@ -1477,7 +1514,7 @@ function buildGrowthPlanRows() {
  ];
  return tiers.map((deposit, i) => {
  const daily = Math.round(deposit * 0.10);
- const total = daily * 80;
+ const total = daily * 45;
  const rowBg = i % 2 === 0 ? '#1F3B2C' : '#183024';
  return `<tr style="background:${rowBg};border-top:1px solid #262626;">
  <td style="padding:12px 9px;color:#fff;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(deposit).replace('UGX ', '')}</td>
@@ -1630,6 +1667,7 @@ function startUserListener(username) {
  renderTeam();
  updateReferralLink();
  updateProfileUI();
+ renderActiveInvestments();
  }
  });
 }
@@ -1641,6 +1679,56 @@ function updateReferralLink() {
  const refUrlEl = document.getElementById('ref-url');
  if (refUrlEl) refUrlEl.textContent = refLink;
  document.getElementById('ref-url-new').value = refLink;
+}
+
+function renderActiveInvestments() {
+ const section = document.getElementById('active-inv-section');
+ const scroll = document.getElementById('active-inv-scroll');
+ if (!section || !scroll || !currentUser) return;
+ const deposits = currentUser.deposits || {};
+ const keys = Object.keys(deposits).sort((a, b) => (deposits[a].startDate || 0) - (deposits[b].startDate || 0));
+ if (keys.length === 0) {
+ section.style.display = 'none';
+ scroll.innerHTML = '';
+ return;
+ }
+ const CYCLE_DAYS = 45;
+ const RADIUS = 35;
+ const CIRC = 2 * Math.PI * RADIUS;
+ const now = Date.now();
+ let html = '';
+ keys.forEach(key => {
+ const dep = deposits[key];
+ const amount = dep.amount || 0;
+ const dailyProfit = Math.floor(amount * 0.10);
+ const totalAtEnd = dailyProfit * CYCLE_DAYS;
+ const startMs = dep.startDate || now;
+ let daysElapsed = Math.floor((now - startMs) / 86400000);
+ if (daysElapsed < 0) daysElapsed = 0;
+ if (daysElapsed > CYCLE_DAYS) daysElapsed = CYCLE_DAYS;
+ const earnedSoFar = dailyProfit * daysElapsed;
+ const remainingDays = CYCLE_DAYS - daysElapsed;
+ const progress = daysElapsed / CYCLE_DAYS;
+ const dashOffset = CIRC * (1 - progress);
+ const startDateLabel = new Date(startMs).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+ html += `<div class="active-inv-card">
+ <div class="active-inv-ring-wrap">
+ <svg width="84" height="84" viewBox="0 0 84 84">
+ <circle class="active-inv-ring-track" cx="42" cy="42" r="${RADIUS}"></circle>
+ <circle class="active-inv-ring-fill" cx="42" cy="42" r="${RADIUS}" stroke-dasharray="${CIRC}" stroke-dashoffset="${dashOffset}"></circle>
+ </svg>
+ <div class="active-inv-ring-label">
+ <div class="active-inv-ring-earned">${earnedSoFar.toLocaleString()}</div>
+ <div class="active-inv-ring-slash">of</div>
+ <div class="active-inv-ring-total">${totalAtEnd.toLocaleString()}</div>
+ </div>
+ </div>
+ <div class="active-inv-start">Started ${startDateLabel}</div>
+ <div class="active-inv-remaining">${remainingDays} day${remainingDays === 1 ? '' : 's'} left</div>
+ </div>`;
+ });
+ scroll.innerHTML = html;
+ section.style.display = 'block';
 }
 
 function renderAvatarInto(el, avatarValue, fallbackInitial) {
