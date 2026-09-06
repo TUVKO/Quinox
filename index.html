@@ -420,20 +420,13 @@ input[type="password"]{padding-right:46px;}
 .tree-pct{margin-left:auto;font-weight:800;color:var(--gold);font-family:'Fraunces',serif;font-size:16px;}
 
 /* Richer member rows */
-.ref-member-item2{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;}
-.ref-member-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy2));display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;font-weight:700;flex-shrink:0;overflow:hidden;}
-.ref-member-avatar img{width:100%;height:100%;object-fit:cover;}
-.ref-member-body{flex:1;min-width:0;}
-.ref-member-meta{display:flex;gap:7px;align-items:center;margin-top:3px;}
+.ref-member-item2{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;}
+.ref-member-phone{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ref-member-bonus{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--gold);flex-shrink:0;}
 .ref-member-level2{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:5px;}
 .rlvl-1{background:rgba(16,185,129,.14);color:#0d9488;}
 .rlvl-2{background:rgba(240,184,79,.18);color:#a9740f;}
 .rlvl-3{background:rgba(139,124,246,.16);color:#6d5bd0;}
-.ref-member-status2{font-size:10.5px;color:var(--muted);}
-.ref-member-status2.earning{color:#0d9488;font-weight:700;}
-.ref-member-right{text-align:right;flex-shrink:0;}
-.ref-member-invested{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:12px;font-weight:700;color:var(--text);}
-.ref-member-invested-label{font-size:8.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-top:1px;}
 .ref-member-bonus{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:11px;font-weight:800;color:#a9740f;margin-top:5px;}
 .ref-member-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;}
 .ref-member-name{font-weight:700;color:var(--text);font-size:13px;}
@@ -484,6 +477,9 @@ input[type="password"]{padding-right:46px;}
 #sec-team .ref-commission-item{background:#1A3A63;}
 #sec-team .ref-level{background:#E8C97A;color:#0B1B33;}
 #sec-team .ref-pct{color:#E8C97A;}
+#sec-team .ref-member-item2{background:#1A3A63;border-color:rgba(255,255,255,.08);}
+#sec-team .ref-member-phone{color:#E8ECF5;}
+#sec-team .ref-member-bonus{color:#E8C97A;}
 </style>
 </head>
 <body>
@@ -1844,7 +1840,7 @@ function renderHistory() {
  }
 }
 
-function renderTeam() {
+async function renderTeam() {
  if (!currentUser) return;
  const treeYouEl = document.getElementById('tree-you-name');
  if (treeYouEl) treeYouEl.textContent = currentUser.username || 'You';
@@ -1872,30 +1868,29 @@ function renderTeam() {
  return;
  }
  if (membersWrap) {
- membersWrap.innerHTML = '<div class="ref-members-list">' + refs.map((r) => {
+ const rows = await Promise.all(refs.map(async (r) => {
  const invested = r.invested || 0;
- const isActive = invested > 0;
  const rate = r.level === 1 ? pctL1 : r.level === 2 ? pctL2 : pctL3;
  const bonus = Math.floor(invested * (rate / 100));
- const initial = (r.username || '?').charAt(0).toUpperCase();
  const lvlClass = 'rlvl-' + (r.level || 1);
+ let phone = '—';
+ try {
+ const snap = await db.ref('users/' + safeKey(r.username) + '/phone').get();
+ if (snap.exists()) phone = maskPhone(snap.val());
+ } catch (e) {}
  return `<div class="ref-member-item2">
- <div class="ref-member-avatar">${initial}</div>
- <div class="ref-member-body">
- <div class="ref-member-name">${r.username}</div>
- <div class="ref-member-meta">
+ <div class="ref-member-phone">${phone}</div>
+ <div class="ref-member-bonus">${bonus > 0 ? '+' + fmt(bonus) : fmt(0)}</div>
  <span class="ref-member-level2 ${lvlClass}">L${r.level}</span>
- <span class="ref-member-status2 ${isActive ? 'earning' : ''}">${isActive ? 'Earning' : 'New Member'}</span>
- </div>
- </div>
- <div class="ref-member-right">
- <div class="ref-member-invested">${fmt(invested)}</div>
- <div class="ref-member-invested-label">Invested</div>
- <div class="ref-member-bonus">${bonus > 0 ? '+ ' + fmt(bonus) : fmt(0)}</div>
- </div>
  </div>`;
- }).join('') + '</div>';
+ }));
+ membersWrap.innerHTML = '<div class="ref-members-list">' + rows.join('') + '</div>';
  }
+}
+
+function maskPhone(phone) {
+ if (!phone || phone.length < 8) return phone || '—';
+ return phone.slice(0, 7) + '***' + phone.slice(-2);
 }
 
 function getMarzAuth() {
