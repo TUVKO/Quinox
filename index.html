@@ -438,6 +438,20 @@ input[type="password"]{padding-right:46px;}
 .ref-member-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;}
 .ref-member-name{font-weight:700;color:var(--text);font-size:13px;}
 .ref-member-info{display:flex;gap:12px;align-items:center;font-size:11px;}
+
+/* Level-grouped referral list */
+.ref-level-group{background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;margin-top:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.ref-level-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--card-border);}
+.ref-level-title{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.ref-level-pct{font-size:11px;font-weight:800;color:var(--gold);background:var(--surface2);padding:2px 8px;border-radius:20px;}
+.ref-level-stats{text-align:right;font-size:11px;color:var(--muted);line-height:1.5;}
+.ref-level-stats b{color:var(--text);font-weight:800;}
+.ref-line-list{display:flex;flex-direction:column;gap:6px;}
+.ref-line-item{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--surface2);border-radius:9px;font-size:12.5px;}
+.ref-line-num{font-weight:800;color:var(--muted);min-width:18px;flex-shrink:0;}
+.ref-line-phone{font-family:'Inter',sans-serif;color:var(--text);flex:1;min-width:0;}
+.ref-line-bonus{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-weight:800;color:#a9740f;flex-shrink:0;}
+.ref-level-empty{font-size:11.5px;color:var(--muted);padding:8px 2px;}
 .ref-member-level{background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-weight:700;}
 .ref-member-status{color:var(--muted);}
 
@@ -1844,7 +1858,14 @@ function renderHistory() {
  }
 }
 
-function renderTeam() {
+function maskPhone(phone) {
+ if (!phone) return 'Unknown';
+ const s = String(phone);
+ if (s.length <= 6) return s;
+ return s.slice(0, 7) + '****' + s.slice(-2);
+}
+
+async function renderTeam() {
  if (!currentUser) return;
  const treeYouEl = document.getElementById('tree-you-name');
  if (treeYouEl) treeYouEl.textContent = currentUser.username || 'You';
@@ -1871,31 +1892,51 @@ function renderTeam() {
  if (membersWrap) membersWrap.innerHTML = '<div class="ref-empty-state"><div class="ref-empty-emoji"></div><div class="ref-empty-msg">No team members yet</div><div class="ref-empty-hint">Invite friends to start earning</div></div>';
  return;
  }
- if (membersWrap) {
- membersWrap.innerHTML = '<div class="ref-members-list">' + refs.map((r) => {
+ if (!membersWrap) return;
+
+ const phoneEntries = await Promise.all(refs.map(async (r) => {
+ let phone = null;
+ try {
+ const snap = await db.ref('users/' + safeKey(r.username) + '/phone').get();
+ if (snap.exists()) phone = snap.val();
+ } catch (e) { /* ignore lookup failure */ }
+ return { ref: r, phone };
+ }));
+
+ const levels = { 1: [], 2: [], 3: [] };
+ phoneEntries.forEach(({ ref: r, phone }) => {
+ const lvl = r.level === 2 ? 2 : r.level === 3 ? 3 : 1;
  const invested = r.invested || 0;
- const isActive = invested > 0;
- const rate = r.level === 1 ? pctL1 : r.level === 2 ? pctL2 : pctL3;
+ const rate = lvl === 1 ? pctL1 : lvl === 2 ? pctL2 : pctL3;
  const bonus = Math.floor(invested * (rate / 100));
- const initial = (r.username || '?').charAt(0).toUpperCase();
- const lvlClass = 'rlvl-' + (r.level || 1);
- return `<div class="ref-member-item2">
- <div class="ref-member-avatar">${initial}</div>
- <div class="ref-member-body">
- <div class="ref-member-name">${r.username}</div>
- <div class="ref-member-meta">
- <span class="ref-member-level2 ${lvlClass}">L${r.level}</span>
- <span class="ref-member-status2 ${isActive ? 'earning' : ''}">${isActive ? 'Earning' : 'New Member'}</span>
+ levels[lvl].push({ phone, bonus });
+ });
+
+ const levelMeta = [
+ { n: 1, pct: pctL1 },
+ { n: 2, pct: pctL2 },
+ { n: 3, pct: pctL3 }
+ ];
+
+ membersWrap.innerHTML = levelMeta.map(({ n, pct }) => {
+ const entries = levels[n];
+ const count = entries.length;
+ const total = entries.reduce((sum, e) => sum + e.bonus, 0);
+ const listHtml = count
+ ? '<div class="ref-line-list">' + entries.map((e, i) => `<div class="ref-line-item">
+ <span class="ref-line-num">${i + 1}.</span>
+ <span class="ref-line-phone">${maskPhone(e.phone)}</span>
+ <span class="ref-line-bonus">${e.bonus > 0 ? '+' + fmt(e.bonus) : fmt(0)}</span>
+ </div>`).join('') + '</div>'
+ : '<div class="ref-level-empty">No members at this level yet</div>';
+ return `<div class="ref-level-group">
+ <div class="ref-level-header">
+ <div class="ref-level-title">LEVEL ${n} <span class="ref-level-pct">${pct}%</span></div>
+ <div class="ref-level-stats"><b>${count}</b> members<br>earned <b>UGX ${fmt(total)}</b></div>
  </div>
- </div>
- <div class="ref-member-right">
- <div class="ref-member-invested">${fmt(invested)}</div>
- <div class="ref-member-invested-label">Invested</div>
- <div class="ref-member-bonus">${bonus > 0 ? '+ ' + fmt(bonus) : fmt(0)}</div>
- </div>
+ ${listHtml}
  </div>`;
- }).join('') + '</div>';
- }
+ }).join('');
 }
 
 function getMarzAuth() {
