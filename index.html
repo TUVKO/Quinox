@@ -1029,6 +1029,7 @@ input[type="password"]{padding-right:46px;}
 // PROFIT PULSE - FIREBASE REALTIME DATABASE WITH MARZPAY
 // FIXED: Daily profit pays on new day login + Silent mode + No user popups
 // FIXED: Registration works (removed un-indexed orderByChild queries)
+// FIXED: Login accepts username OR phone OR email
 // ============================================================
 
 const firebaseConfig = {
@@ -2288,11 +2289,59 @@ async function doReinvest() {
 }
 
 // ============================================================
-// FIXED: Direct username-key lookup only (no un-indexed queries)
+// FIXED: Login accepts username OR phone OR email
 // ============================================================
 async function findUserByIdentifier(identifier) {
- const directSnap = await db.ref('users/' + safeKey(identifier)).get();
- if (directSnap.exists()) return { username: identifier, data: directSnap.val() };
+ const raw = (identifier || '').trim();
+ if (!raw) return null;
+
+ // 1) Try as username (direct key lookup)
+ const directSnap = await db.ref('users/' + safeKey(raw)).get();
+ if (directSnap.exists()) return { username: raw, data: directSnap.val() };
+
+ // 2) Try as email (case-insensitive via lowercased input)
+ if (raw.includes('@')) {
+ const emailLower = raw.toLowerCase();
+ const q = await db.ref('users').orderByChild('email').equalTo(emailLower).limitToFirst(1).get();
+ if (q.exists()) {
+ const val = q.val();
+ const key = Object.keys(val)[0];
+ return { username: val[key].username, data: val[key] };
+ }
+ // Fallback: some existing users may have stored email with original case
+ const q2 = await db.ref('users').orderByChild('email').equalTo(raw).limitToFirst(1).get();
+ if (q2.exists()) {
+ const val = q2.val();
+ const key = Object.keys(val)[0];
+ return { username: val[key].username, data: val[key] };
+ }
+ return null;
+ }
+
+ // 3) Try as phone number — normalize to every likely stored format
+ const digits = raw.replace(/\D/g, '');
+ const variants = new Set();
+ if (raw.startsWith('+')) variants.add(raw);
+ if (digits.length === 10 && digits.startsWith('0')) {
+ variants.add('+256' + digits.slice(1));
+ variants.add('+254' + digits.slice(1));
+ }
+ if (digits.length === 9) {
+ variants.add('+256' + digits);
+ variants.add('+254' + digits);
+ }
+ if (digits.startsWith('256') || digits.startsWith('254')) {
+ variants.add('+' + digits);
+ }
+
+ for (const v of variants) {
+ const q = await db.ref('users').orderByChild('phone').equalTo(v).limitToFirst(1).get();
+ if (q.exists()) {
+ const val = q.val();
+ const key = Object.keys(val)[0];
+ return { username: val[key].username, data: val[key] };
+ }
+ }
  return null;
 }
 
@@ -2351,12 +2400,13 @@ function submitForgotPassword() {
 }
 
 // ============================================================
-// FIXED: Registration works (removed un-indexed phone query)
+// Registration — with duplicate email + phone checks
 // ============================================================
 async function doRegister() {
  clearErrors('reg-user-err', 'reg-email-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
  const username = document.getElementById('reg-username').value.trim();
- const email = document.getElementById('reg-email').value.trim();
+ const emailRaw = document.getElementById('reg-email').value.trim();
+ const email = emailRaw.toLowerCase();
  const country = document.getElementById('reg-country').value;
  const phoneDigits = document.getElementById('reg-phone').value.trim();
  const password = document.getElementById('reg-password').value;
@@ -2370,10 +2420,22 @@ async function doRegister() {
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
  if (!password || password.length < 4) { setErr('reg-pw-err', true, 'Password must be at least 4 characters'); ok = false; }
  if (!ok) return;
+
+ try {
  const existing = await db.ref('users/' + safeKey(username)).get();
  if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
+
  const prefix = country === 'KE' ? '+254' : '+256';
  const fullPhone = prefix + phoneDigits.slice(1);
+
+ // Duplicate email check
+ const emailQuery = await db.ref('users').orderByChild('email').equalTo(email).limitToFirst(1).get();
+ if (emailQuery.exists()) { setErr('reg-email-err', true, 'This email is already registered'); return; }
+
+ // Duplicate phone check
+ const phoneQuery = await db.ref('users').orderByChild('phone').equalTo(fullPhone).limitToFirst(1).get();
+ if (phoneQuery.exists()) { setErr('reg-phone-err', true, 'This phone number is already registered'); return; }
+
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
@@ -2384,6 +2446,7 @@ async function doRegister() {
  referrals: {}, deposits: {}, activeInvestment: null
  };
  await db.ref('users/' + safeKey(username)).set(newUser);
+
  if (refCode) {
  const referrerSnap = await db.ref('users/' + safeKey(refCode)).get();
  if (referrerSnap.exists()) {
@@ -2401,10 +2464,12 @@ async function doRegister() {
  }
  }
  }
+
  const avatarPool = AVATAR_IMAGES.concat(AVATAR_EMOJIS);
  const randomAvatar = avatarPool[Math.floor(Math.random() * avatarPool.length)];
  newUser.avatar = randomAvatar;
  await db.ref('users/' + safeKey(username) + '/avatar').set(randomAvatar);
+
  currentUser = newUser;
  currentUsername = username;
  localStorage.setItem('pp_current_user', username);
@@ -2414,6 +2479,10 @@ async function doRegister() {
  document.getElementById('reg-password').value = '';
  document.getElementById('reg-country').value = '';
  finishRegistrationFlow();
+ } catch (error) {
+ console.error('Registration error:', error);
+ setErr('reg-general-err', true, 'Registration failed. Please try again.');
+ }
 }
 
 function finishRegistrationFlow() {
