@@ -3,44 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<meta property="og:title" content="Equinox Wallet — Smart Investment Platform">
-<meta property="og:description" content="Grow your money with 10% daily profit over 45 days. Trusted by thousands. Register free today.">
-<meta property="og:image" content="https://equinox-traders.space/logo.png">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
-<meta property="og:url" content="https://equinox-traders.space/">
+<meta property="og:title" content="Nexo Hub19 investment — Smart Investment Platform">
+<meta property="og:description" content="Grow your money with 10% daily profit over 80 days. Trusted by thousands. Register free today.">
+<meta property="og:image" content="https://tuvko.github.io/Nexo/logo.png">
+<meta property="og:url" content="https://tuvko.github.io/Nexo/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://equinox-traders.space/logo.png">
-<title>Equinox Wallet — Grow Your Wealth</title>
+<meta name="twitter:image" content="https://tuvko.github.io/Nexo/logo.png">
+<title>Nexo Hub19 investment — Grow Your Wealth</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1F3B2C">
+<meta name="theme-color" content="#16234a">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
- --bg:#FBF9F3;
+ --bg:#eef1f6;
  --surface:#ffffff;
- --surface2:#F5F2E9;
- --surface3:#F1EDE0;
- --border:rgba(31,59,44,0.10);
- --accent:#1F3B2C;
- --accent2:#2F5540;
- --accent3:#3E7A3F;
- --warn:#A3452F;
- --gold:#B8863E;
- --text:#1F3327;
- --muted:#7A8D7C;
- --success:#3E7A3F;
- --danger:#A3452F;
- --teal:#B8863E;
- --orange:#A3452F;
+ --surface2:#f4f6fa;
+ --surface3:#eef1f6;
+ --border:rgba(10,22,61,0.08);
+ --accent:#1b2a52;
+ --accent2:#2b3f78;
+ --accent3:#10B981;
+ --warn:#EF4444;
+ --gold:#2b3f78;
+ --text:#0f1b3c;
+ --muted:#6b7690;
+ --success:#10B981;
+ --danger:#EF4444;
+ --teal:#2196F3;
+ --orange:#e91e63;
  --card:#ffffff;
- --card-border:rgba(31,59,44,0.08);
- --card-border-hover:rgba(31,59,44,0.28);
- --navy:#1F3B2C;
- --navy2:#2F5540;
- --serif:'Fraunces',serif;
+ --card-border:rgba(10,22,61,0.06);
+ --card-border-hover:rgba(27,42,82,0.25);
+ --navy:#16234a;
+ --navy2:#1f3168;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:500px;margin:0 auto;position:relative;overflow-x:hidden;}
@@ -67,44 +64,27 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .auth-page{display:none;flex-direction:column;min-height:100vh;padding:40px 24px;position:relative;}
 .auth-corner-logo{position:absolute;top:16px;left:16px;width:42px;height:42px;border-radius:12px;overflow:hidden;box-shadow:0 6px 16px rgba(22,35,74,.25);}
 .auth-corner-logo img{width:100%;height:100%;object-fit:cover;}
-/* Welcome guidance popup */
-.welcome-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10001;align-items:center;justify-content:center;padding:20px;}
-.welcome-overlay.show{display:flex;}
-.wgm-card{background:#fff;border-radius:18px;max-width:400px;width:100%;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.35);overflow:hidden;border-top:5px solid var(--accent);padding:26px 24px 22px;}
-.welcome-close{position:absolute;top:14px;right:14px;width:26px;height:26px;border-radius:50%;background:#F4F1EA;color:var(--text);border:none;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
-.welcome-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;}
-.welcome-sub{font-size:12.5px;color:var(--muted);margin-bottom:18px;}
-.welcome-stats{display:flex;gap:10px;margin-bottom:18px;}
-.welcome-stat{flex:1;background:#F4F1EA;border-radius:12px;padding:12px 10px;text-align:center;}
-.welcome-stat-val{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--accent);}
-.welcome-stat-lbl{font-size:10px;color:var(--muted);margin-top:2px;}
-.welcome-msg{font-size:13px;line-height:1.6;color:var(--text);margin-bottom:18px;}
-.wa-tab{display:flex;align-items:center;gap:12px;background:var(--accent);border-radius:12px;padding:13px 16px;cursor:pointer;transition:transform .15s;margin-bottom:12px;}
-.wa-tab:active{transform:scale(.98);}
-.wa-text-title{font-size:13.5px;font-weight:800;color:#fff;}
-.wa-text-sub{font-size:11px;color:#9FD9B6;}
-.wa-arrow{margin-left:auto;color:#D9A441;font-size:20px;}
-.welcome-quick-tabs{display:flex;gap:7px;}
-.welcome-refer-hint{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:12px;background:rgba(217,164,65,.10);border-radius:8px;padding:9px 11px;}
-.welcome-qtab{flex:1;background:#F4F1EA;border:1px solid #E2DDCC;border-radius:9px;padding:9px 4px;text-align:center;cursor:pointer;transition:transform .15s;}
-.welcome-qtab:active{transform:scale(.96);}
-.welcome-qtab-icon{font-size:15px;margin-bottom:3px;}
-.welcome-qtab-label{font-size:10px;font-weight:700;color:var(--text);}
+.auth-plan-btn{position:absolute;top:16px;right:16px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(22,35,74,.25);z-index:5;}
+.plan-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10001;align-items:center;justify-content:center;padding:20px;}
+.plan-modal-overlay.show{display:flex;}
+.plan-modal-card{background:#0f0f0f;border-radius:16px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.plan-modal-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.plan-modal-header{background:linear-gradient(135deg,#f5a623,#e08e0b);color:#1a1a1a;text-align:center;font-weight:800;font-size:13px;padding:16px 40px 14px 16px;line-height:1.4;}
 .auth-page.active{display:flex;}
 .auth-hero{text-align:center;margin-bottom:28px;}
 .auth-logo{width:72px;height:72px;background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);border-radius:22px;display:grid;place-items:center;font-size:34px;margin:0 auto 14px;color:#fff;box-shadow:0 8px 24px rgba(22,35,74,.25);overflow:hidden;}
 .auth-logo img{width:100%;height:100%;object-fit:cover;}
-.auth-brand{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:0.2px;}
+.auth-brand{font-family:'Inter',sans-serif;font-size:30px;font-weight:900;color:var(--accent);margin-bottom:4px;letter-spacing:0.5px;}
 .auth-tagline{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
 .auth-card{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;}
-.auth-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:4px;color:var(--accent);}
+.auth-title{font-family:'Inter',sans-serif;font-size:21px;font-weight:800;margin-bottom:4px;color:var(--accent);}
 .auth-subtitle{font-size:12px;color:var(--muted);margin-bottom:20px;}
 .field-group{margin-bottom:11px;}
 .field-label{font-size:9.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
 .field-wrap{position:relative;display:flex;align-items:center;}
 .field-icon{position:absolute;left:14px;font-size:16px;pointer-events:none;z-index:2;}
-input,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s, box-shadow .2s;}
-input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,59,44,.14);}
+input,select{width:100%;background:rgba(20,32,58,0.8);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:13px;color:#fff;outline:none;transition:border-color .2s, box-shadow .2s;}
+input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,215,0,.12);}
 select{cursor:pointer;}select option{background:var(--surface2);}
 .eye-btn{position:absolute;right:14px;background:none;border:none;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;padding:4px;color:var(--muted);}
 .eye-btn:hover{color:var(--accent);}
@@ -113,10 +93,12 @@ input[type="password"]{padding-right:46px;}
 .field-hint{font-size:10px;color:var(--muted);margin-top:5px;padding-left:4px;}
 .field-error{font-size:10px;color:var(--warn);margin-top:5px;padding-left:4px;display:none;}
 .field-error.show{display:block;}
+.pw-strength{display:flex;gap:4px;margin-top:8px;}
+.pw-bar{flex:1;height:3px;border-radius:3px;background:var(--surface2);}
+.pw-bar.weak{background:var(--warn)}.pw-bar.medium{background:var(--gold)}.pw-bar.strong{background:var(--accent3)}
 .submit-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:14px;padding:16px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;cursor:pointer;margin-top:6px;transition:transform .2s;}
 .submit-btn:active{transform:scale(.98);}
 .auth-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--muted);}
-.auth-forgot-link{text-align:center;margin-top:12px;font-size:12.5px;color:var(--accent);font-weight:600;cursor:pointer;}
 .auth-switch a{color:var(--accent);font-weight:700;cursor:pointer;text-decoration:none;}
 
 /* Phone Prefix */
@@ -137,7 +119,7 @@ input[type="password"]{padding-right:46px;}
 .brand{display:flex;align-items:center;gap:8px;}
 .brand-icon{width:32px;height:32px;background:var(--navy);border-radius:9px;display:grid;place-items:center;font-size:15px;color:#fff;overflow:hidden;}
 .brand-icon img{width:100%;height:100%;object-fit:cover;}
-.brand-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--navy);letter-spacing:0.2px;}
+.brand-name{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--navy);letter-spacing:0.2px;}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .theme-toggle{background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:14px;cursor:pointer;padding:8px;color:var(--navy);transition:.3s;}
 .theme-toggle:active{transform:scale(.95);}
@@ -147,7 +129,7 @@ input[type="password"]{padding-right:46px;}
 .side-menu{position:fixed;top:0;left:-280px;width:270px;height:100vh;background:rgba(15,29,58,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid var(--card-border);z-index:600;transition:left .35s;display:flex;flex-direction:column;overflow-y:auto;}
 .side-menu.open{left:0;}
 .side-menu-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border);}
-.side-menu-brand{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--accent);}
+.side-menu-brand{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--accent);}
 .close-menu{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;display:grid;place-items:center;}
 .side-menu-items{flex:1;padding:16px;}
 .menu-item{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;cursor:pointer;margin-bottom:4px;font-size:14px;font-weight:600;color:#fff;}
@@ -158,7 +140,7 @@ input[type="password"]{padding-right:46px;}
 .menu-subitem{padding:10px 14px;border-radius:10px;cursor:pointer;margin-bottom:2px;font-size:13px;font-weight:500;color:rgba(255,255,255,.75);}
 .menu-subitem:hover{background:rgba(255,255,255,.08);color:#fff;}
 .menu-item:hover{background:rgba(255,255,255,.08);}
-.menu-item.active-menu{background:rgba(255,255,255,.12);color:var(--gold, #E8C97A);}
+.menu-item.active-menu{background:rgba(255,255,255,.12);color:var(--gold, #FFD700);}
 .menu-item-icon{font-size:20px;width:28px;}
 .menu-divider{height:1px;background:rgba(255,255,255,.12);margin:10px 0;}
 .menu-logout{margin:12px;display:flex;align-items:center;justify-content:center;gap:12px;padding:14px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;background:var(--warn);color:#fff;border:none;width:calc(100% - 24px);font-family:'Inter',sans-serif;}
@@ -168,44 +150,56 @@ input[type="password"]{padding-right:46px;}
 .section{padding:0 16px;margin-bottom:14px;}
 .dash-section{display:none;}
 .dash-section.active{display:block;}
-.welcome-card{background:#0F3D24;border-radius:0 0 22px 22px;padding:16px 18px 4px;display:flex;flex-direction:column;box-shadow:none;}
-.welcome-avatar{width:36px;height:36px;border-radius:50%;background:#1B5E3A;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0;position:absolute;top:16px;right:18px;}
-.welcome-text{flex:1;position:relative;}
-.welcome-greeting{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#9FD9B6;margin-bottom:2px;}
-.welcome-greeting span{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#fff;text-transform:none;letter-spacing:0;display:block;margin-top:2px;}
-.welcome-copy-link{background:#D9A441;border:none;border-radius:10px;color:#0F3D24;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 14px;width:100%;margin-top:14px;}
-.welcome-copy-link:active{transform:scale(.98);}
-.welcome-share-btn{display:none;}
-.stats-card{background:#0F3D24;border:none;padding:16px 18px 20px;}
-.balance-big{display:none;}
-.stats-ring-wrap{display:flex;justify-content:center;margin-bottom:16px;}
-.stats-ring{width:150px;height:150px;border-radius:50%;background:conic-gradient(#D9A441 0% 60%, #154A2E 60% 100%);display:flex;align-items:center;justify-content:center;}
-.stats-ring-inner{width:118px;height:118px;border-radius:50%;background:#0F3D24;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.stats-grid{display:flex;justify-content:space-around;gap:4px;}
-.stat-box{background:transparent;border-radius:0;padding:0;text-align:center;box-shadow:none;}
-.stat-icon{display:none;}
-.stat-label{font-size:10px;text-transform:none;letter-spacing:0;color:#9FD9B6;margin-top:0;font-weight:600;}
-.stat-label::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;background:#D9A441;}
-.stat-box:nth-child(3) .stat-label::before{background:#154A2E;border:1px solid #fff;}
-.stat-box:nth-child(4) .stat-label::before{background:#5E8B6E;}
-.stat-value{font-size:14px;font-weight:600;font-family:'Fraunces',serif;font-variant-numeric:tabular-nums;color:#fff;display:block;margin-top:3px;}
+.welcome-card{background:var(--navy);border-radius:18px;padding:18px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 24px rgba(22,35,74,.25);}
+.welcome-avatar{width:52px;height:52px;border-radius:50%;background:var(--navy2);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;}
+.welcome-text{flex:1;}
+.welcome-greeting{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;}
+.welcome-greeting span{font-weight:800;}
+.welcome-copy-link{background:var(--teal);border:none;border-radius:9px;color:#fff;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:9px 14px;}
+.welcome-copy-link:active{transform:scale(.96);}
+.stats-card{background:transparent;border:none;padding:0;}
+.balance-big{text-align:center;padding:8px 0 16px;}
+.balance-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+.balance-amount{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:32px;font-weight:700;color:var(--accent);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:0;}
+.stat-box{background:var(--navy);border-radius:14px;padding:14px 6px;text-align:center;box-shadow:0 6px 16px rgba(22,35,74,.18);}
+.stat-icon{font-size:15px;margin-bottom:6px;}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.65);margin-top:6px;font-weight:600;}
+.stat-value{font-size:13px;font-weight:800;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;color:#fff;}
 .stat-value.dep{color:#fff}.stat-value.earn{color:#fff}.stat-value.with{color:#fff}.stat-value.total{color:#fff}
 .ref-box{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px rgba(10,22,61,.06);}
 .ref-url{flex:1;font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .copy-btn{background:var(--navy);border:none;border-radius:8px;color:#fff;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;padding:7px 14px;cursor:pointer;}
 .copy-btn:active{transform:scale(.95);}
-.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0;}
-.action-btn{border:1px solid rgba(31,59,44,.1);border-radius:16px;padding:16px 8px;font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;background:#154A2E;color:#EFEAD8;transition:transform .2s, filter .2s;box-shadow:none;}
-#sec-home .action-btn:nth-child(1){background:#D9A441;color:#0F3D24;transform:translateY(-4px);}
-#sec-home .action-btn:nth-child(4){transform:translateY(-4px);}
+.action-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:0;}
+.action-btn{border:none;border-radius:12px;padding:10px 2px;font-family:'Inter',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.1px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:100%;background:var(--navy);color:#fff;transition:transform .2s, filter .2s;box-shadow:0 6px 16px rgba(22,35,74,.18);}
 .action-btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none;}
 .action-btn:active{transform:scale(.95);filter:brightness(1.15);}
-.btn-icon{display:flex;align-items:center;justify-content:center;line-height:1;}
-.btn-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-
+.btn-icon{font-size:17px;}
 
 
 /* Floating WhatsApp Icon */
+.whatsapp-float{
+ position:fixed;
+ bottom:90px;
+ right:20px;
+ width:52px;
+ height:52px;
+ background:var(--navy);
+ border-radius:50%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
+ cursor:pointer;
+ box-shadow:0 6px 20px rgba(22,35,74,.4);
+ z-index:300;
+ transition:transform .2s;
+ color:#fff;
+ text-decoration:none;
+}
+.whatsapp-float:hover{transform:scale(1.08);}
+
 /* Investment Active Card */
 .investment-card{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:16px;box-shadow:none;}
 .investment-title{font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
@@ -216,21 +210,29 @@ input[type="password"]{padding-right:46px;}
 .investment-status{font-size:10px;color:var(--accent3);margin-top:8px;}
 
 /* Table (Scrollable) */
-.plan-wrap{background:#fff;border:1px solid #EAE3D0;border-radius:14px;overflow:hidden;}
-.plan-header{padding:16px 18px 12px;border-bottom:1px solid #F1EDE0;text-align:left;}
-.plan-header-title{font-family:'Fraunces',serif;font-size:15px;font-weight:700;color:#1F3B2C;letter-spacing:0;line-height:1.4;}
-.plan-labels{display:flex;justify-content:space-between;padding:10px 18px;font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#9a8f6f;}
-.plan-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-top:1px solid #F1EDE0;}
-.plan-amt{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:#1F3B2C;}
-.plan-daily{font-size:12.5px;color:#3E7A3F;font-weight:700;}
-.plan-total{font-size:12.5px;color:#B8863E;font-weight:800;}
+.plan-wrap{background:#000000;border:1px solid rgba(255,255,255,.1);border-radius:0;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.4);max-width:340px;margin:0 auto;}
+.plan-header{background:linear-gradient(135deg, #F59E0B 0%, #FF8C00 100%);padding:9px 12px;text-align:center;}
+.plan-header-title{font-family:'Inter',sans-serif;font-size:12px;font-weight:800;color:#0a1628;letter-spacing:0.4px;}
+.table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0;background:#000000;}
+.plan-table{width:100%;border-collapse:collapse;min-width:0;background:#000000;}
+.plan-table thead tr{background:#111111;}
+.plan-table thead th{padding:8px 6px;font-size:8.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#FFD700;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);border-right:1px solid rgba(255,255,255,.08);}
+.plan-table thead th:last-child{border-right:none;}
+.plan-table tbody tr{border-bottom:1px solid rgba(255,255,255,.08);}
+.plan-table tbody tr:nth-child(odd){background:#0a0a0a;}
+.plan-table tbody tr:nth-child(even){background:#000000;}
+.plan-table tbody td{padding:7px 5px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:10px;font-weight:600;text-align:center;border-right:1px solid rgba(255,255,255,.08);color:#fff;}
+.plan-table tbody td:last-child{border-right:none;}
+.plan-table tbody td:first-child{color:#fff;font-weight:800;font-size:10.5px;}
+.plan-table tbody td:nth-child(2){color:#34D399;font-weight:700;font-size:10px;}
+.plan-table tbody td:nth-child(3){color:#FFD700;font-weight:800;font-size:10.5px;}
 .plan-footer{padding:12px;background:var(--surface2);}
 .start-invest-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:12px;padding:13px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#fff;cursor:pointer;}
 .start-invest-btn:active{transform:scale(.98);}
 
 /* Inner Pages */
 .inner-header{display:flex;align-items:center;gap:12px;padding:16px 16px 8px;}
-.inner-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--accent);}
+.inner-title{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--accent);}
 .inner-sub{font-size:12px;color:var(--muted);margin-top:2px;}
 .empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
 .empty-icon{font-size:48px;margin-bottom:14px;}
@@ -246,15 +248,16 @@ input[type="password"]{padding-right:46px;}
 
 /* Profile Styles */
 .profile-header-section{background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);border-radius:20px;padding:28px 20px;text-align:center;margin-bottom:16px;color:#fff;}
-.profile-name-header{font-family:'Fraunces',serif;font-size:26px;font-weight:700;margin-bottom:4px;}
+.profile-avatar-lg{width:90px;height:90px;background:rgba(255,255,255,.15);border:3px solid rgba(255,255,255,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 16px;font-weight:700;}
+.profile-name-header{font-family:'Inter',sans-serif;font-size:26px;font-weight:900;margin-bottom:4px;}
 .profile-country-header{font-size:12px;opacity:.85;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;}
 .profile-status-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;}
-.profile-info-section{background:transparent;border:none;border-radius:0;margin-bottom:0;overflow:visible;text-align:left;}
-.profile-section-title{display:none;}
-.profile-info-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #EDE9DD;}
+.profile-info-section{background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;margin-bottom:14px;overflow:hidden;}
+.profile-section-title{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:14px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);margin:0;}
+.profile-info-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
 .profile-info-item:last-child{border-bottom:none;}
-.profile-info-label{font-size:12.5px;color:#8a9a8b;}
-.profile-info-value{font-size:12.5px;font-weight:700;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;color:#1F3B2C;}
+.profile-info-label{font-size:12px;color:var(--muted);font-weight:600;}
+.profile-info-value{font-size:13px;font-weight:700;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
 .profile-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px;}
 .profile-stat-card{background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:16px;text-align:center;}
 .profile-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:700;}
@@ -265,42 +268,46 @@ input[type="password"]{padding-right:46px;}
 .profile-simple-item{background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;}
 .profile-simple-label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0.5px;}
 .profile-simple-value{font-size:14px;font-weight:700;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;color:var(--accent);}
-.profile-namecard{background:#fff;border:1px solid #DDD5C0;border-top:4px solid #D9A441;border-radius:14px;padding:20px;margin-bottom:16px;text-align:left;}
-.profile-compact-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#1F3B2C;margin-bottom:4px;}
-.profile-compact-status{display:inline-block;font-size:11px;color:#8a9a8b;letter-spacing:.3px;}
-.settings-list{background:#fff;border:1px solid #DDD5C0;border-radius:14px;overflow:hidden;margin-bottom:0;text-align:left;}
-.settings-row{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid #EDE9DD;cursor:pointer;}
-.settings-row-label{font-size:13.5px;font-weight:600;color:#1F3B2C;}
+.profile-compact-row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 14px rgba(10,22,61,.06);}
+.profile-compact-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;}
+.profile-compact-name{font-size:16px;font-weight:800;color:var(--text);margin-bottom:5px;}
+.profile-compact-status{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:3px 10px;border-radius:10px;background:rgba(16,185,129,.15);color:#0a8a5f;}
+.settings-list{background:var(--card);border:1px solid var(--card-border);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;border-bottom:1px solid var(--border);cursor:pointer;}
+.avatar-picker-overlay{display:none;position:fixed;inset:0;background:rgba(15,27,60,.55);z-index:10000;align-items:flex-end;justify-content:center;}
+.avatar-picker-overlay.show{display:flex;}
+.avatar-picker-card{background:var(--surface);width:100%;max-width:500px;border-radius:24px 24px 0 0;padding:22px 20px 28px;box-shadow:0 -10px 40px rgba(0,0,0,.3);}
+.avatar-picker-title{font-family:'Inter',sans-serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.avatar-picker-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.emoji-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px;}
+.emoji-option{background:var(--surface2);border:2px solid transparent;border-radius:14px;font-size:26px;padding:10px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s, border-color .15s;}
+.avatar-img-option{padding:0;overflow:hidden;aspect-ratio:1/1;}
+.avatar-img-option img{width:100%;height:100%;object-fit:cover;border-radius:12px;}
+.emoji-option:active{transform:scale(.9);}
+.emoji-option.selected{border-color:var(--accent3);background:rgba(16,185,129,.12);}
+.avatar-picker-skip{width:100%;background:transparent;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;padding:8px;cursor:pointer;text-align:center;}
 .settings-list .settings-row:last-child{border-bottom:none;}
-.settings-chevron{color:#c9bc96;font-size:14px;transition:transform .2s;}
+.settings-row-label{font-size:13px;font-weight:600;color:var(--text);}
+.settings-chevron{color:var(--muted);font-size:14px;transition:transform .2s;}
 .settings-row.open .settings-chevron{transform:rotate(90deg);}
-.settings-form{max-height:0;overflow:hidden;transition:max-height .3s ease;background:#F7F5EE;}
-.settings-form.open{max-height:500px;}
-.settings-form-inner{padding:16px 18px 20px;}
+.settings-form{max-height:0;overflow:hidden;transition:max-height .3s ease;background:rgba(0,0,0,.015);}
+.settings-form.open{max-height:400px;}
+.settings-form-inner{padding:14px 16px 18px;}
 .settings-form-actions{display:flex;gap:8px;margin-top:4px;}
-.settings-btn-save{flex:1;background:#1F3B2C;color:#fff;border:none;border-radius:6px;padding:11px;font-weight:700;font-size:12px;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;}
+.settings-btn-save{flex:1;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:12px;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;}
 .settings-btn-save:active{transform:scale(.98);}
-.settings-btn-cancel{flex:1;background:transparent;border:1px solid #DDD5C0;color:#8a9a8b;border-radius:6px;padding:11px;font-weight:700;font-size:12px;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;}
-.logout-btn-new{width:100%;min-width:0;margin:20px 0 0;background:transparent;border:1.5px solid #1F3B2C;border-radius:6px;color:#1F3B2C;padding:13px 22px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.settings-btn-cancel{flex:1;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:11px;font-weight:700;font-size:12px;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;}
+.logout-btn-new{width:auto;min-width:140px;margin:4px auto 0;background:var(--warn);border:none;border-radius:10px;color:#fff;padding:10px 22px;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
 .logout-btn-new:active{transform:scale(.98);}
 
 /* Bottom Nav */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1F3B2C;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
-
-.activity-ticker-wrap{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:100%;max-width:500px;padding:0 14px;height:48px;overflow:hidden;z-index:190;pointer-events:none;}
-.activity-ticker-card{position:absolute;inset:0 14px;background:#0047FF;border-radius:14px;display:flex;align-items:center;gap:10px;padding:0 14px;opacity:0;transform:translateY(6px);transition:opacity .4s ease, transform .4s ease;box-shadow:0 6px 18px rgba(0,71,255,.35);}
-.activity-ticker-card.show{opacity:1;transform:translateY(0);}
-.activity-ticker-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;flex-shrink:0;box-shadow:0 0 0 3px rgba(74,222,128,.25);}
-.activity-ticker-text{font-size:11.5px;color:#fff;line-height:1.3;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.activity-ticker-phone{font-weight:800;color:#FFD976;}
-.activity-ticker-amt{font-weight:800;}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#0a0e17;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 2px;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
 .nav-item:active{transform:scale(.92);}
-.nav-icon{display:flex;align-items:center;justify-content:center;line-height:1;color:#8a93a6;transition:color .2s;}
-.nav-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.nav-item.active .nav-icon{color:#E8C97A;}
+.nav-icon{font-size:20px;line-height:1;filter:grayscale(1) opacity(.55);transition:filter .2s;}
 .nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.1px;color:#8a93a6;white-space:nowrap;transition:color .2s;}
-.nav-item.active .nav-label{color:#E8C97A;font-weight:800;}
+.nav-item.active .nav-icon{filter:none;}
+.nav-item.active .nav-label{color:#FFD700;font-weight:800;}
 
 
 /* Toast - kept but never shown to users */
@@ -322,21 +329,11 @@ input[type="password"]{padding-right:46px;}
 /* Section-specific backgrounds */
 #sec-deposit .action-card{background:linear-gradient(135deg, rgba(16,185,129,.1) 0%, rgba(16,185,129,.05) 100%);border:1px solid rgba(16,185,129,.3);}
 #sec-withdraw .action-card{background:linear-gradient(135deg, rgba(255,107,91,.1) 0%, rgba(255,107,91,.05) 100%);border:1px solid rgba(255,107,91,.3);}
-#sec-reinvest .action-card{background:linear-gradient(135deg, rgba(184,134,62,.12) 0%, rgba(184,134,62,.05) 100%);border:1px solid rgba(184,134,62,.35);}
+#sec-reinvest .action-card{background:linear-gradient(135deg, rgba(6,182,212,.1) 0%, rgba(6,182,212,.05) 100%);border:1px solid rgba(6,182,212,.3);}
 
 .popup-banner{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#1e293b;color:#fff;font-size:13px;font-weight:600;padding:14px 22px;border-radius:16px;opacity:0;transition:.35s;z-index:9998;pointer-events:none;text-align:center;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.25);line-height:1.5;}
 .popup-banner.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* Cashout confirmation modal */
-.cashout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10002;align-items:center;justify-content:center;padding:24px;}
-.cashout-overlay.show{display:flex;}
-.cashout-card{background:#fff;border-radius:18px;max-width:360px;width:100%;padding:30px 24px 24px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35);border-top:5px solid var(--accent);}
-.cashout-icon{width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
-.cashout-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--accent);margin-bottom:10px;}
-.cashout-msg{font-size:13px;line-height:1.65;color:var(--text);margin-bottom:22px;}
-.cashout-ok-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:14px;padding:14px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;cursor:pointer;transition:transform .2s;}
-.cashout-ok-btn:active{transform:scale(.97);}
-.readonly-field{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:13px 14px 13px 42px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--text);}
+.readonly-field{width:100%;background:rgba(20,32,58,0.6);border:1px solid var(--border);border-radius:12px;padding:13px 14px 13px 42px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:#fff;}
 .charge-note{background:var(--surface2);border:1px solid var(--warn);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--warn);margin-bottom:12px;line-height:1.6;}
 .deposit-note{background:var(--surface2);border:1px solid var(--accent);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--accent);margin-bottom:12px;line-height:1.6;}
 .locked-banner{background:var(--surface2);border:1px solid var(--warn);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--warn);text-align:center;margin-bottom:12px;font-weight:700;}
@@ -346,9 +343,9 @@ input[type="password"]{padding-right:46px;}
 .modal-overlay.open{display:flex;}
 .modal-box{background:rgba(15,29,58,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--card-border);border-radius:24px;padding:30px 24px;text-align:center;max-width:340px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.5);}
 .modal-icon{font-size:48px;margin-bottom:14px;flex-shrink:0;}
-.modal-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:10px;color:#E8C97A;flex-shrink:0;}
+.modal-title{font-family:'Inter',sans-serif;font-size:17px;font-weight:800;margin-bottom:10px;color:#FFD700;flex-shrink:0;}
 .modal-msg{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:22px;overflow-y:auto;max-height:50vh;text-align:left;flex:1;}
-.modal-close{background:linear-gradient(135deg, #B8863E 0%, #8F6A2E 100%);border:none;border-radius:12px;padding:13px 32px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:#fff;cursor:pointer;flex-shrink:0;}
+.modal-close{background:linear-gradient(135deg, #FFD700 0%, #F59E0B 100%);border:none;border-radius:12px;padding:13px 32px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:#0a1628;cursor:pointer;flex-shrink:0;}
 .modal-close:active{transform:scale(.97);}
 
 /* Transaction List */
@@ -372,13 +369,16 @@ input[type="password"]{padding-right:46px;}
 .tx-pill:active{transform:scale(0.98);}
 .tx-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
+.tx-search-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:12px;}
+.tx-search-input:focus{border-color:var(--accent);}
 
 .tx-cards-grid{display:flex;flex-direction:column;gap:8px;}
-.tx-card{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:transform .15s;box-shadow:0 3px 10px rgba(0,0,0,.08);}
+.tx-card{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:11px 13px;cursor:pointer;transition:transform .15s;box-shadow:0 3px 10px rgba(0,0,0,.08);}
 .tx-card:active{transform:scale(.98);}
 .tx-card-header{display:flex;align-items:center;gap:10px;flex:1;min-width:0;margin-bottom:0;}
-.tx-card-id{font-size:12.5px;color:var(--text);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;}
-.tx-card-date{font-size:9.5px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.3px;}
+.tx-card-icon{font-size:15px;width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:9px;}
+.tx-card-type{font-size:12.5px;color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-card-date{font-size:9.5px;color:var(--muted);font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;}
 .tx-card-amount{font-size:12.5px;font-weight:800;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;color:var(--text);margin-bottom:0;text-align:right;white-space:nowrap;}
 .tx-card-status{display:block;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;text-align:right;margin-top:2px;}
 @media (min-width:480px){.tx-cards-grid{grid-template-columns:1fr;}}
@@ -425,17 +425,18 @@ input[type="password"]{padding-right:46px;}
 .ref-empty-hint{font-size:12px;color:var(--muted);}
 .ref-members-list{display:flex;flex-direction:column;gap:10px;background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;padding:16px;margin-top:16px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
 
-/* Network Tree Branch hero */
-.tree-hero{margin:6px 0 20px;position:relative;padding-left:4px;}
-.tree-you{background:var(--navy);color:#fff;border-radius:12px;padding:14px 18px;font-weight:700;font-size:15px;margin-bottom:4px;display:inline-block;font-family:'Fraunces',serif;}
-.tree-branch{position:relative;padding-left:24px;margin-top:6px;}
-.tree-branch::before{content:'';position:absolute;left:8px;top:-10px;bottom:18px;width:1.5px;background:var(--card-border);}
-.tree-branch::after{content:'';position:absolute;left:8px;top:18px;width:16px;height:1.5px;background:var(--card-border);}
-.tree-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
-.tree-item:last-child{margin-bottom:0;}
-.tree-lvl{font-size:10px;font-weight:800;background:var(--surface2);color:var(--text);padding:3px 7px;border-radius:6px;flex-shrink:0;}
-.tree-desc{font-size:12.5px;color:var(--muted);flex:1;}
-.tree-pct{margin-left:auto;font-weight:800;color:var(--gold);font-family:'Fraunces',serif;font-size:16px;}
+/* Network Rings hero */
+.rings-hero{position:relative;width:220px;height:220px;margin:6px auto 20px;}
+.ring{position:absolute;border-radius:50%;border:1.5px dashed rgba(27,42,82,.16);top:50%;left:50%;transform:translate(-50%,-50%);}
+.ring1{width:220px;height:220px;}
+.ring2{width:154px;height:154px;}
+.ring3{width:88px;height:88px;}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent3),#0d9488);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;box-shadow:0 0 28px rgba(16,185,129,.35);}
+.ring-tag{position:absolute;background:var(--navy);color:#fff;border-radius:8px;padding:5px 9px;font-size:10px;font-weight:700;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:0 4px 12px rgba(22,35,74,.25);}
+.ring-tag .pct{color:#22d3a5;}
+.tag-l1{top:-2px;left:50%;transform:translateX(-50%);}
+.tag-l2{top:50%;right:-10px;transform:translateY(-50%);}
+.tag-l3{bottom:-2px;left:50%;transform:translateX(-50%);}
 
 /* Richer member rows */
 .ref-member-item2{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;}
@@ -456,31 +457,17 @@ input[type="password"]{padding-right:46px;}
 .ref-member-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;}
 .ref-member-name{font-weight:700;color:var(--text);font-size:13px;}
 .ref-member-info{display:flex;gap:12px;align-items:center;font-size:11px;}
-
-/* Level-grouped referral list */
-.ref-level-group{background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;margin-top:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
-.ref-level-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--card-border);}
-.ref-level-title{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
-.ref-level-pct{font-size:11px;font-weight:800;color:var(--gold);background:var(--surface2);padding:2px 8px;border-radius:20px;}
-.ref-level-stats{text-align:right;font-size:11px;color:var(--muted);line-height:1.5;}
-.ref-level-stats b{color:var(--text);font-weight:800;}
-.ref-line-list{display:flex;flex-direction:column;gap:6px;}
-.ref-line-item{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--surface2);border-radius:9px;font-size:12.5px;}
-.ref-line-num{font-weight:800;color:var(--muted);min-width:18px;flex-shrink:0;}
-.ref-line-phone{font-family:'Inter',sans-serif;color:var(--text);flex:1;min-width:0;}
-.ref-line-bonus{font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-weight:800;color:#a9740f;flex-shrink:0;}
-.ref-level-empty{font-size:11.5px;color:var(--muted);padding:8px 2px;}
 .ref-member-level{background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-weight:700;}
 .ref-member-status{color:var(--muted);}
 
 /* Community Cards */
-.community-card{background:#154A2E;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;cursor:pointer;transition:transform .2s, box-shadow .2s;box-shadow:none;}
+.community-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;cursor:pointer;transition:transform .2s, box-shadow .2s;box-shadow:0 4px 14px rgba(10,22,61,.06);}
 .community-card:active{transform:scale(.97);}
-.community-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.community-title{font-size:12px;font-weight:800;color:#EFEAD8;margin-bottom:2px;}
-.community-desc{font-size:10px;color:#9FD9B6;line-height:1.3;}
 .community-wa:hover, .community-wa:active{border-color:rgba(37,211,102,.5);}
 .community-tg:hover, .community-tg:active{border-color:rgba(33,150,243,.5);}
+.community-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.community-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.community-desc{font-size:10px;color:var(--muted);line-height:1.3;}
 
 /* WA Button */
 .wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:fit-content;margin-left:auto;background:#25D366;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
@@ -488,52 +475,24 @@ input[type="password"]{padding-right:46px;}
 
 
 
-
-/* ============ Navy Finance theme: Ledger & Network pages ============ */
-#sec-history, #sec-team{background:#0B1B33;padding-bottom:20px;}
-#sec-history .inner-title, #sec-team .inner-title{color:#E8C97A;}
-#sec-history .inner-sub, #sec-team .inner-sub{color:#6B7FA0;}
-#sec-history .tx-card, #sec-team .tree-item, #sec-team .ref-stat-box, #sec-team .ref-link-section, #sec-team .ref-commission-info{background:#122A4D;border-color:rgba(255,255,255,.08);box-shadow:none;}
-#sec-history .tx-card-id, #sec-team .tree-desc{color:#E8ECF5;}
-#sec-history .tx-card-date{color:#6B7FA0;}
-#sec-history .tx-card-amount{color:#E8ECF5;}
-#sec-history .tx-card-amount.positive{color:#5DD39E;}
-#sec-history .tx-card-amount.negative{color:#F08A5D;}
-#sec-history .tx-status-completed{color:#5DD39E;}
-#sec-history .tx-status-pending{color:#E8C97A;}
-#sec-history .tx-status-failed{color:#F08A5D;}
-#sec-history .tx-empty-title, #sec-team .ref-empty-msg{color:#E8ECF5;}
-#sec-history .tx-empty-text, #sec-team .ref-empty-hint{color:#6B7FA0;}
-#sec-team .tree-you{background:#E8C97A;color:#0B1B33;}
-#sec-team .tree-branch::before, #sec-team .tree-branch::after{background:rgba(255,255,255,.15);}
-#sec-team .tree-lvl{background:#1A3A63;color:#E8ECF5;}
-#sec-team .tree-pct{color:#E8C97A;}
-#sec-team .ref-stat-top, #sec-team .ref-link-label, #sec-team .ref-commission-title, #sec-team .ref-desc{color:#6B7FA0;}
-#sec-team .ref-stat-amount{color:#E8C97A;}
-#sec-team .ref-link-input{background:#1A3A63;color:#E8C97A;border-color:rgba(255,255,255,.08);}
-#sec-team .ref-copy-btn{background:#E8C97A;color:#0B1B33;}
-#sec-team .ref-link-hint{color:#6B7FA0;}
-#sec-team .ref-commission-item{background:#1A3A63;}
-#sec-team .ref-level{background:#E8C97A;color:#0B1B33;}
-#sec-team .ref-pct{color:#E8C97A;}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div class="auth-page" id="login-page">
- <div class="auth-corner-logo"><img src="logo.png" alt="Equinox Wallet"></div>
+ <div class="auth-corner-logo"><img src="logo.png" alt="Nexo Hub19 investment"></div>
  <div class="auth-hero">
- <div class="auth-brand">Equinox Wallet</div>
+ <div class="auth-brand">Nexo Hub19 investment</div>
  <div class="auth-tagline">Grow Your Wealth Daily</div>
  </div>
  <div class="auth-card">
  <div class="auth-title">Welcome Back</div>
  <div class="auth-subtitle">Sign in to your investment account</div>
  <div class="field-group">
- <label class="field-label">Username, Phone, or Email</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="text" id="login-username" placeholder="Enter username, phone, or email"></div>
- <div class="field-error" id="login-user-err">Please enter your username, phone, or email</div>
+ <label class="field-label">Username</label>
+ <div class="field-wrap"><span class="field-icon"></span><input type="text" id="login-username" placeholder="Enter your username"></div>
+ <div class="field-error" id="login-user-err">Please enter your username</div>
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
@@ -542,56 +501,26 @@ input[type="password"]{padding-right:46px;}
  </div>
  <div class="field-error" id="login-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
  <button class="submit-btn" onclick="doLogin()">Login</button>
- <div class="auth-forgot-link" onclick="showAuth('forgot-page')">Forgot Password?</div>
  <div class="auth-switch">Don't have an account? <a onclick="showAuth('register-page')">Register Now</a></div>
- </div>
-</div>
-
-<!-- FORGOT PASSWORD -->
-<div class="auth-page" id="forgot-page">
- <div class="auth-corner-logo"><img src="logo.png" alt="Equinox Wallet"></div>
- <div class="auth-hero">
- <div class="auth-brand">Equinox Wallet</div>
- <div class="auth-tagline">Account Recovery</div>
- </div>
- <div class="auth-card">
- <div class="auth-title">Forgot Password</div>
- <div class="auth-subtitle">Enter your details and our support team will help you reset it</div>
- <div class="field-group">
- <label class="field-label">Username</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="text" id="forgot-username" placeholder="Enter your username"></div>
- <div class="field-error" id="forgot-user-err">Please enter your username</div>
- </div>
- <div class="field-group">
- <label class="field-label">Registered Phone Number</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="tel" id="forgot-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
- <div class="field-error" id="forgot-phone-err">Enter 10 digits starting with 0</div>
- </div>
- <button class="submit-btn" onclick="submitForgotPassword()">Continue</button>
- <div class="auth-switch">Remembered it? <a onclick="showAuth('login-page')">Back to Sign In</a></div>
  </div>
 </div>
 
 <!-- REGISTER -->
 <div class="auth-page" id="register-page">
- <div class="auth-corner-logo"><img src="logo.png" alt="Equinox Wallet"></div>
+ <div class="auth-corner-logo"><img src="logo.png" alt="Nexo Hub19 investment"></div>
+ <button class="auth-plan-btn" onclick="openAuthPlanModal()">Plan</button>
  <div class="auth-hero">
- <div class="auth-brand">Equinox Wallet</div>
+ <div class="auth-brand">Nexo Hub19 investment</div>
  <div class="auth-tagline">Start Earning Today</div>
- <div id="reg-referrer-display" style="display:none;font-size:11px;color:var(--accent);font-weight:700;margin-top:10px;text-align:center;"></div>
  </div>
  <div class="auth-card">
  <div class="auth-title">Create Account</div>
  <div class="auth-subtitle">Get UGX 4,000 registration bonus</div>
+ <div id="reg-referrer-display" style="display:none;font-size:11px;color:var(--accent);font-weight:700;margin-bottom:14px;"></div>
  <div class="field-group">
  <label class="field-label">Username</label>
  <div class="field-wrap"><span class="field-icon"></span><input type="text" id="reg-username" placeholder="Choose a username"></div>
  <div class="field-error" id="reg-user-err">Username is required</div>
- </div>
- <div class="field-group">
- <label class="field-label">Email Address</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="email" id="reg-email" placeholder="you@example.com"></div>
- <div class="field-error" id="reg-email-err">Enter a valid email address</div>
  </div>
  <div class="field-group">
  <label class="field-label">Country</label>
@@ -612,8 +541,9 @@ input[type="password"]{padding-right:46px;}
  </div>
  <div class="field-group">
  <label class="field-label">Password</label>
- <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 4 characters"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
- <div class="field-error" id="reg-pw-err">Password must be at least 4 characters</div>
+ <div class="field-wrap"><span class="field-icon"></span><input type="password" id="reg-password" placeholder="Min. 6 characters" oninput="checkStrength(this.value)"><button class="eye-btn" onclick="toggleEye('reg-password',this)">Show</button></div>
+ <div class="pw-strength"><div class="pw-bar" id="pw-b1"></div><div class="pw-bar" id="pw-b2"></div><div class="pw-bar" id="pw-b3"></div></div>
+ <div class="field-error" id="reg-pw-err">Password must be at least 6 characters</div>
  </div>
  <div class="field-error" id="reg-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
  <button class="submit-btn" onclick="doRegister()">Register</button>
@@ -626,7 +556,7 @@ input[type="password"]{padding-right:46px;}
  <div class="topbar">
  <div class="topbar-left">
  <div class="menu-btn" onclick="openMenu()"><span></span><span></span><span></span></div>
- <div class="brand"><div class="brand-icon"><img src="logo.png" alt="Equinox Wallet"></div><div class="brand-name">Equinox Wallet</div></div>
+ <div class="brand"><div class="brand-icon"><img src="logo.png" alt="Nexo Hub19 investment"></div><div class="brand-name">Nexo Hub19 investment</div></div>
  </div>
  <div class="topbar-right">
  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()"></button>
@@ -636,60 +566,83 @@ input[type="password"]{padding-right:46px;}
 
  <!-- HOME / DASHBOARD -->
  <div class="dash-section active" id="sec-home">
+ <div class="section" style="padding-top:14px;">
  <div class="welcome-card">
  <div class="welcome-avatar" id="dash-welcome-avatar">—</div>
  <div class="welcome-text">
- <div class="welcome-greeting">Welcome back<span id="dash-username">—</span></div>
- </div>
+ <div class="welcome-greeting">Welcome back, <span id="dash-username">—</span></div>
  <button class="welcome-copy-link" onclick="copyRef()"><span></span>Copy Referral Link</button>
  </div>
+ </div>
+ </div>
+ <div class="section">
  <div class="stats-card">
- <div class="stats-ring-wrap">
- <div class="stats-ring"><div class="stats-ring-inner">
- <div class="stat-box">
- <div class="stat-label">Wallet</div>
- <div class="stat-value dep" id="stat-balance">UGX 0</div>
- </div>
- </div></div>
- </div>
  <div class="stats-grid">
  <div class="stat-box">
- <div class="stat-label">Profit</div>
+ <div class="stat-icon"></div>
+ <div class="stat-value dep" id="stat-balance">UGX 0</div>
+ <div class="stat-label">Balance</div>
+ </div>
+ <div class="stat-box">
+ <div class="stat-icon"></div>
  <div class="stat-value earn" id="stat-earnings">UGX 0</div>
+ <div class="stat-label">Earnings</div>
  </div>
  <div class="stat-box">
- <div class="stat-label">Staked</div>
+ <div class="stat-icon"></div>
  <div class="stat-value total" id="stat-stake">UGX 0</div>
+ <div class="stat-label">Invested</div>
  </div>
  <div class="stat-box">
- <div class="stat-label">Payouts</div>
+ <div class="stat-icon"></div>
  <div class="stat-value with" id="stat-withdrawn">UGX 0</div>
+ <div class="stat-label">Withdraws</div>
+ </div>
  </div>
  </div>
  </div>
 
  <div class="section">
  <div class="action-grid">
- <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Invest</button>
- <button class="action-btn btn-withdraw" onclick="switchTab('withdraw')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 19h16"/></svg></span>Withdraw</button>
- <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M4 4v6h6M20 20v-6h-6M4.5 15a8 8 0 0 0 14.3 3.5M19.5 9A8 8 0 0 0 5.2 5.5"/></svg></span>Re-invest</button>
- <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Ledger</button>
- <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16" cy="9.5" r="2.5"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 20c0-2.2-.7-4-2-5.3.8-.4 1.7-.7 2.7-.7 2.8 0 5 2.2 5 5"/></svg></span>Network</button>
- <button class="action-btn" onclick="openSupportChat()"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13v-2a8 8 0 0116 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 13a2 2 0 012-2h1a1 1 0 011 1v4a1 1 0 01-1 1H6a2 2 0 01-2-2v-2z" fill="currentColor"/><path d="M20 13a2 2 0 00-2-2h-1a1 1 0 00-1 1v4a1 1 0 001 1h1a2 2 0 002-2v-2z" fill="currentColor"/><path d="M18 17v1a2 2 0 01-2 2h-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>Support</button>
+ <button class="action-btn" onclick="switchTab('deposit')"><span class="btn-icon"></span>Invest</button>
+ <button class="action-btn btn-withdraw" onclick="switchTab('withdraw')"><span class="btn-icon"></span>Withdraw</button>
+ <button class="action-btn" onclick="switchTab('reinvest')"><span class="btn-icon"></span>Re-invest</button>
+ <button class="action-btn" onclick="switchTab('history')"><span class="btn-icon"></span>Records</button>
+ <button class="action-btn" onclick="switchTab('team')"><span class="btn-icon"></span>Referrals</button>
+ <button class="action-btn" id="app-install-btn" onclick="installApp()" disabled><span class="btn-icon"></span>App</button>
  </div>
  </div>
- <div class="section">
+ <div class="section" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
  <div class="community-card community-wa" onclick="openWaGroup()">
  <div class="community-icon" style="background:rgba(37,211,102,.15);">💬</div>
  <div><div class="community-title">WhatsApp Channel</div><div class="community-desc">Join our official WhatsApp channel</div></div>
  </div>
+ <div class="community-card community-tg" onclick="openTelegramGroup()">
+ <div class="community-icon" style="background:rgba(33,150,243,.15);">✈️</div>
+ <div><div class="community-title">Telegram Group</div><div class="community-desc">Join our official Telegram community</div></div>
+ </div>
  </div>
  </div>
 
+ <!-- Floating WhatsApp Icon -->
+ <a href="#" id="whatsapp-float-btn" class="whatsapp-float" target="_blank">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+ <path d="M4 13v-2a8 8 0 0116 0v2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <path d="M4 13a2 2 0 012-2h1a1 1 0 011 1v4a1 1 0 01-1 1H6a2 2 0 01-2-2v-2z" fill="#fff"/>
+ <path d="M20 13a2 2 0 00-2-2h-1a1 1 0 00-1 1v4a1 1 0 001 1h1a2 2 0 002-2v-2z" fill="#fff"/>
+ <path d="M18 17v1a2 2 0 01-2 2h-3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ </svg>
+ </a>
+
  <!-- History - New Card Design -->
  <div class="dash-section" id="sec-history">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Ledger</div><div class="inner-sub" id="history-filter-label">All your transactions</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">History</div><div class="inner-sub" id="history-filter-label">All your transactions</div></div></div>
  
+ <!-- Search -->
+ <div style="margin-bottom:16px;">
+ <input type="text" id="tx-search-box" placeholder=" Search transactions..." class="tx-search-input" oninput="renderHistory()">
+ </div>
+
  <!-- Transaction Cards -->
  <div class="section">
  <div id="history-list" class="tx-cards-grid"><div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Yet</div><div class="tx-empty-text">Your transaction history will appear here.</div></div></div>
@@ -698,16 +651,17 @@ input[type="password"]{padding-right:46px;}
 
  <!-- Referral Team -->
  <div class="dash-section" id="sec-team">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Network</div><div class="inner-sub">Grow your circle & earn</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">REFER</div><div class="inner-sub">Grow your network & earn</div></div></div>
  <div class="section">
  <div class="ref-new-container">
- <div class="tree-hero">
- <div class="tree-you" id="tree-you-name">You</div>
- <div class="tree-branch">
- <div class="tree-item"><span class="tree-lvl">L1</span><span class="tree-desc">Direct referrals</span><span class="tree-pct" id="ref-ring-l1">10%</span></div>
- <div class="tree-item"><span class="tree-lvl">L2</span><span class="tree-desc">Their referrals</span><span class="tree-pct" id="ref-ring-l2">4%</span></div>
- <div class="tree-item"><span class="tree-lvl">L3</span><span class="tree-desc">3rd level</span><span class="tree-pct" id="ref-ring-l3">2%</span></div>
- </div>
+ <div class="rings-hero">
+ <div class="ring ring1"></div>
+ <div class="ring ring2"></div>
+ <div class="ring ring3"></div>
+ <div class="ring-center">YOU</div>
+ <div class="ring-tag tag-l1">L1 <span class="pct" id="ref-ring-l1">10%</span></div>
+ <div class="ring-tag tag-l2">L2 <span class="pct" id="ref-ring-l2">4%</span></div>
+ <div class="ring-tag tag-l3">L3 <span class="pct" id="ref-ring-l3">2%</span></div>
  </div>
  <div class="ref-stat-box ref-bonus-box">
  <div class="ref-stat-top">Bonuses Earned</div>
@@ -738,22 +692,49 @@ input[type="password"]{padding-right:46px;}
 
  <!-- Returns Plan -->
  <div class="dash-section" id="sec-plan">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Growth Plan</div><div class="inner-sub">Consistent daily returns over a 45-day cycle</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">RETURNS</div><div class="inner-sub">10% daily for 80 days (800% total)</div></div></div>
  <div class="section">
  <div class="plan-wrap">
- <div class="plan-header"><div class="plan-header-title">Equinox Wallet Growth Plan — Consistent Daily Growth for 45 Days</div></div>
- <div class="plan-labels"><span>Deposit</span><span>Daily</span><span>Total</span></div>
- <div class="plan-row"><span class="plan-amt">10,000</span><span class="plan-daily">1,000</span><span class="plan-total">45,000</span></div>
- <div class="plan-row"><span class="plan-amt">20,000</span><span class="plan-daily">2,000</span><span class="plan-total">90,000</span></div>
- <div class="plan-row"><span class="plan-amt">50,000</span><span class="plan-daily">5,000</span><span class="plan-total">225,000</span></div>
- <div class="plan-row"><span class="plan-amt">100,000</span><span class="plan-daily">10,000</span><span class="plan-total">450,000</span></div>
- <div class="plan-row"><span class="plan-amt">200,000</span><span class="plan-daily">20,000</span><span class="plan-total">900,000</span></div>
- <div class="plan-row"><span class="plan-amt">500,000</span><span class="plan-daily">50,000</span><span class="plan-total">2,250,000</span></div>
- <div class="plan-row"><span class="plan-amt">1,000,000</span><span class="plan-daily">100,000</span><span class="plan-total">4,500,000</span></div>
- <div class="plan-row"><span class="plan-amt">2,000,000</span><span class="plan-daily">200,000</span><span class="plan-total">9,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">5,000,000</span><span class="plan-daily">500,000</span><span class="plan-total">22,500,000</span></div>
- <div class="plan-row"><span class="plan-amt">10,000,000</span><span class="plan-daily">1,000,000</span><span class="plan-total">45,000,000</span></div>
- <div class="plan-row"><span class="plan-amt">20,000,000</span><span class="plan-daily">2,000,000</span><span class="plan-total">90,000,000</span></div>
+ <div class="plan-header"><div class="plan-header-title">Nexo Hub19 investment Growth Plan — 10% Daily × 80 Days = 800% Total Return</div></div>
+ <div class="table-wrapper">
+ <table class="plan-table">
+ <thead><tr><th>DEPOSIT (UGX)</th><th>DAILY PROFIT (10%)</th><th>80-DAY TOTAL (UGX)</th></tr></thead>
+ <tbody>
+ <tr><td>10,000</td><td>1,000</td><td>80,000</td></tr>
+ <tr><td>20,000</td><td>2,000</td><td>160,000</td></tr>
+ <tr><td>50,000</td><td>5,000</td><td>400,000</td></tr>
+ <tr><td>100,000</td><td>10,000</td><td>800,000</td></tr>
+ <tr><td>200,000</td><td>20,000</td><td>1,600,000</td></tr>
+ <tr><td>500,000</td><td>50,000</td><td>4,000,000</td></tr>
+ <tr><td>1,000,000</td><td>100,000</td><td>8,000,000</td></tr>
+ <tr><td>2,000,000</td><td>200,000</td><td>16,000,000</td></tr>
+ <tr><td>5,000,000</td><td>500,000</td><td>40,000,000</td></tr>
+ <tr><td>10,000,000</td><td>1,000,000</td><td>80,000,000</td></tr>
+ <tr><td>20,000,000</td><td>2,000,000</td><td>160,000,000</td></tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ <div class="section">
+ <div class="ref-commission-info">
+ <div style="font-family:'Inter',sans-serif;font-size:14px;font-weight:800;color:var(--text);margin-bottom:10px;">Referral Program</div>
+ <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;">Earn a bonus every time someone you referred — or someone in their downline — makes a deposit. Bonuses pay out instantly across 3 levels:</div>
+ <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+ <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface2);border-radius:10px;">
+ <span style="font-size:12px;color:var(--muted);">Level 1 — Direct referral</span>
+ <span id="ref-pct-l1-plan" style="font-size:14px;font-weight:800;color:var(--accent);">10%</span>
+ </div>
+ <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface2);border-radius:10px;">
+ <span style="font-size:12px;color:var(--muted);">Level 2 — Their referrals</span>
+ <span id="ref-pct-l2-plan" style="font-size:14px;font-weight:800;color:var(--accent);">4%</span>
+ </div>
+ <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface2);border-radius:10px;">
+ <span style="font-size:12px;color:var(--muted);">Level 3 — Third tier</span>
+ <span id="ref-pct-l3-plan" style="font-size:14px;font-weight:800;color:var(--accent);">2%</span>
+ </div>
+ </div>
+ <div style="font-size:10px;color:var(--muted);line-height:1.5;">These percentages are set by the platform admin and may be adjusted at any time. Current rates shown above always reflect the latest settings.</div>
  </div>
  </div>
  </div>
@@ -762,9 +743,18 @@ input[type="password"]{padding-right:46px;}
  <div class="dash-section" id="sec-profile">
  <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Account</div><div class="inner-sub">Manage your profile</div></div></div>
  <div class="section">
- <div class="profile-namecard">
+ <div class="profile-compact-row">
+ <div class="profile-compact-avatar" id="profile-avatar-lg">—</div>
+ <div>
  <div class="profile-compact-name" id="profile-user-simple">—</div>
  <span class="profile-compact-status" id="profile-status-simple">—</span>
+ </div>
+ </div>
+
+ <div class="profile-info-section">
+ <div class="profile-section-title">Account Details</div>
+ <div class="profile-info-item"><span class="profile-info-label">Phone Number</span><span class="profile-info-value" id="profile-phone-simple">—</span></div>
+ <div class="profile-info-item"><span class="profile-info-label">Registered Date</span><span class="profile-info-value" id="profile-date-simple">—</span></div>
  </div>
 
  <div class="settings-list">
@@ -772,7 +762,7 @@ input[type="password"]{padding-right:46px;}
  <div class="settings-form" id="pwd-form">
  <div class="settings-form-inner">
  <div class="field-group"><label class="field-label">Current Password</label><input type="password" id="cp-old-pw" placeholder="Enter current password"></div>
- <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 4 characters"></div>
+ <div class="field-group"><label class="field-label">New Password</label><input type="password" id="cp-new-pw" placeholder="Min. 6 characters"></div>
  <div class="field-group"><label class="field-label">Confirm New Password</label><input type="password" id="cp-confirm-pw" placeholder="Repeat new password"></div>
  <div class="field-error" id="cp-pw-err">Error</div>
  <div class="settings-form-actions">
@@ -782,14 +772,23 @@ input[type="password"]{padding-right:46px;}
  </div>
  </div>
 
+ <div class="settings-row" onclick="toggleSettingsForm('phone')"><span class="settings-row-label">Change Phone Number</span><span class="settings-chevron" id="phone-chevron">›</span></div>
+ <div class="settings-form" id="phone-form">
+ <div class="settings-form-inner">
+ <div class="field-group"><label class="field-label">New Phone Number</label><input type="tel" id="cp-new-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
+ <div class="field-hint">10 digits starting with 0</div>
+ <div class="field-error" id="cp-phone-err">Error</div>
+ <div class="settings-form-actions">
+ <button class="settings-btn-cancel" onclick="toggleSettingsForm('phone')">Cancel</button>
+ <button class="settings-btn-save" onclick="submitChangePhone()">Save</button>
+ </div>
+ </div>
+ </div>
+
+ <div class="settings-row" onclick="openChangeAvatar()"><span class="settings-row-label">Change Avatar</span><span class="settings-chevron">›</span></div>
  <div class="settings-row" onclick="toggleSettingsForm('info')"><span class="settings-row-label">Edit Info</span><span class="settings-chevron" id="info-chevron">›</span></div>
  <div class="settings-form" id="info-form">
  <div class="settings-form-inner">
- <div class="profile-info-item"><span class="profile-info-label">Phone Number</span><span class="profile-info-value" id="edit-info-phone-display">—</span></div>
- <div class="profile-info-item"><span class="profile-info-label">Registered Date</span><span class="profile-info-value" id="edit-info-date-display">—</span></div>
- <div class="field-group" style="margin-top:12px;"><label class="field-label">New Phone Number</label><input type="tel" id="cp-new-phone" placeholder="0700012345" maxlength="10" oninput="regPhoneInput(this)"></div>
- <div class="field-hint">Leave blank to keep your current number</div>
- <div class="field-error" id="cp-phone-err">Error</div>
  <div class="field-group"><label class="field-label">Country</label>
  <select id="cp-country">
  <option value="UG">+256</option>
@@ -807,7 +806,6 @@ input[type="password"]{padding-right:46px;}
  <button class="logout-btn-new" onclick="doLogout()">Sign Out</button>
  </div>
  </div>
-
 
  <!-- Deposit -->
  <div class="dash-section" id="sec-deposit">
@@ -875,15 +873,34 @@ input[type="password"]{padding-right:46px;}
  </div>
 
  <div class="dash-section" id="sec-brief">
- <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">About</div><div class="inner-sub">How Equinox Wallet works</div></div></div>
+ <div class="inner-header"><span style="font-size:22px"></span><div><div class="inner-title">Brief</div><div class="inner-sub">How Nexo Hub19 investment works</div></div></div>
  <div class="section">
  <div class="action-card" style="line-height:1.7;font-size:14px;color:var(--text);">
- <p style="font-weight:800;font-size:17px;margin-bottom:12px;">How Equinox Wallet Works</p>
- <p style="margin-bottom:14px;">Equinox Wallet pools client deposits into a professionally managed trading portfolio. Our team allocates capital across currency markets, commodities, and digital assets, using a combination of algorithmic strategies and experienced market analysis to generate consistent daily returns.</p>
- <p style="margin-bottom:14px;">When you deposit into a Growth Plan, your funds join this managed pool. A portion of the profit generated from our trading activity is distributed back to you as a fixed 10% daily return, credited automatically to your account for 45 days — a total return of 450% on your original investment.</p>
- <p style="margin-bottom:14px;">We manage risk through diversification, disciplined position sizing, and continuous monitoring of market conditions, so returns to our clients remain steady regardless of daily market volatility.</p>
- <p style="margin-bottom:14px;">Beyond trading, Equinox Wallet rewards you for growing our community. Share your referral link and earn 10% on deposits from anyone you refer directly, 4% from their referrals, and 2% from the level after that — three tiers of ongoing income for building your network.</p>
- <p style="margin-bottom:18px;">Whether you invest UGX 10,000 or UGX 100 million, our commitment is the same: disciplined trading, transparent daily payouts, and reliable access to your funds.</p>
+ <p style="font-weight:800;font-size:17px;margin-bottom:12px;">Nexo Hub19 — Grow Your Wealth, One Day at a Time 💙</p>
+ <p style="margin-bottom:14px;">Nexo Hub19 was built on a simple idea: your money should work as hard as you do — every single day, without you having to lift a finger.</p>
+ <p style="margin-bottom:14px;">Here's the journey. The moment you join, we welcome you with a free UGX 4,000 bonus — no deposit required, just our way of saying thank you for trusting us. When you're ready to grow further, you can invest anywhere from UGX 10,000 up to UGX 2,350,000, and the instant you do, you receive 10% of that amount back immediately as a welcome profit — before the real magic even begins.</p>
+ <p style="margin-bottom:14px;">From there, your investment goes to work quietly in the background. Every day, for 80 days, 10% of your active stake is added straight to your balance — automatically, reliably, day after day. By the end of the full cycle, an investment can return up to 800% of what you put in. No charts to watch, no manual claiming, no stress — just steady, compounding growth happening for you around the clock.</p>
+ <p style="margin-bottom:14px;">And it doesn't stop there. Nexo Hub19 also believes in the power of community. Share your referral link with friends and family, and you'll earn 10% from anyone you personally bring in, 4% from their referrals, and 2% from the level after that — three layers deep, rewarding you for building a network, not just for going it alone.</p>
+ <p style="margin-bottom:14px;">When you're ready to enjoy your earnings, withdrawing is simple and fast, sent directly to your mobile money — a small 10% service charge keeps the platform running smoothly for everyone.</p>
+ <p style="margin-bottom:18px;">Whether you're investing UGX 10,000 or UGX 100 million, the promise is the same: consistency, transparency, and a little bit of extra love in your pocket every single day. Welcome to Nexo Hub19 — where patience truly pays.</p>
+
+ <div style="border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.15);">
+ <div style="background:linear-gradient(135deg,#f5a623,#e08e0b);color:#1a1a1a;text-align:center;font-weight:800;font-size:14px;padding:14px 12px;line-height:1.4;">
+ Nexo Hub19 investment Growth Plan — 10% Daily × 80 Days = 800% Total Return
+ </div>
+ <div style="overflow-x:auto;">
+ <table style="width:100%;border-collapse:collapse;background:#0f0f0f;font-family:'Inter',sans-serif;">
+ <thead>
+ <tr style="background:#161616;">
+ <th style="color:#f5a623;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
+ <th style="color:#f5a623;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">Daily Profit (10%)</th>
+ <th style="color:#f5a623;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;padding:12px 10px;text-align:left;white-space:nowrap;">80-Day Total (UGX)</th>
+ </tr>
+ </thead>
+ <tbody id="growth-plan-table-body"></tbody>
+ </table>
+ </div>
+ </div>
 
  <div style="border-top:1px solid var(--border);padding-top:14px;font-size:13px;color:var(--muted);">
  Headquartered in Kenya 🇰🇪, with our Uganda 🇺🇬 office opening in November 2026.
@@ -893,33 +910,27 @@ input[type="password"]{padding-right:46px;}
  </div>
 
  <nav class="bottom-nav">
- <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span><span class="nav-label">Home</span></div>
- <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16" cy="9.5" r="2.5"/><path d="M2.5 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 20c0-2.2-.7-4-2-5.3.8-.4 1.7-.7 2.7-.7 2.8 0 5 2.2 5 5"/></svg></span><span class="nav-label">Network</span></div>
- <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="nav-label">Grow</span></div>
- <div class="nav-item" onclick="switchTab('history')"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span class="nav-label">Ledger</span></div>
- <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span><span class="nav-label">Account</span></div>
+ <div class="nav-item active" onclick="switchTab('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></div>
+ <div class="nav-item" onclick="switchTab('team')"><span class="nav-icon">👥</span><span class="nav-label">Team</span></div>
+ <div class="nav-item" onclick="switchTab('plan')"><span class="nav-icon">📊</span><span class="nav-label">Plan</span></div>
+ <div class="nav-item" onclick="switchTab('history')"><span class="nav-icon">📋</span><span class="nav-label">History</span></div>
+ <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon">👤</span><span class="nav-label">Details</span></div>
  </nav>
 
- <div class="activity-ticker-wrap" id="activity-ticker-wrap">
- <div class="activity-ticker-card" id="activity-ticker-card">
- <div class="activity-ticker-dot"></div>
- <div class="activity-ticker-text" id="activity-ticker-text"></div>
- </div>
- </div>
 
 </div>
 
 <!-- MENU -->
 <div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
 <div class="side-menu" id="side-menu">
- <div class="side-menu-header"><span class="side-menu-brand">Equinox Wallet</span><button class="close-menu" onclick="closeMenu()"></button></div>
+ <div class="side-menu-header"><span class="side-menu-brand">Nexo Hub19 investment</span><button class="close-menu" onclick="closeMenu()"></button></div>
  <div class="side-menu-items">
  <div class="menu-item active-menu" onclick="menuNav('home')"><span class="menu-item-icon"></span>Dashboard</div>
  <div class="menu-item" onclick="menuNav('deposit')"><span class="menu-item-icon"></span>Deposit</div>
  <div class="menu-item" onclick="menuNav('withdraw')"><span class="menu-item-icon"></span>Cash Out</div>
  <div class="menu-item" onclick="menuNav('reinvest')"><span class="menu-item-icon"></span>Boost</div>
- <div class="menu-item" onclick="menuNav('team')"><span class="menu-item-icon"></span>Network</div>
- <div class="menu-item" onclick="menuNav('brief')"><span class="menu-item-icon"></span>About</div>
+ <div class="menu-item" onclick="menuNav('team')"><span class="menu-item-icon"></span>Team</div>
+ <div class="menu-item" onclick="menuNav('brief')"><span class="menu-item-icon"></span>Brief</div>
  <div class="menu-divider"></div>
  <div class="menu-item" onclick="toggleHistoryMenu()"><span class="menu-item-icon"></span>History<span class="menu-chevron" id="history-menu-chevron">›</span></div>
  <div class="menu-submenu" id="history-submenu">
@@ -953,19 +964,19 @@ input[type="password"]{padding-right:46px;}
  <div class="modal-title">Terms of Service</div>
  <div class="modal-msg" style="text-align:left;">
  <strong>1. Introduction</strong><br>
- Welcome to Equinox Wallet. These Terms of Service govern your use of our investment platform.<br><br>
+ Welcome to Nexo Hub19 investment. These Terms of Service govern your use of our investment platform.<br><br>
  
  <strong>2. User Responsibilities</strong><br>
  You are responsible for maintaining the confidentiality of your account and password. You agree to accept responsibility for all activities that occur under your account.<br><br>
  
  <strong>3. Investment Risks</strong><br>
- All investments carry risk. Equinox Wallet does not guarantee returns. Past performance is not indicative of future results.<br><br>
+ All investments carry risk. Nexo Hub19 investment does not guarantee returns. Past performance is not indicative of future results.<br><br>
  
  <strong>4. Prohibited Activities</strong><br>
- You may not use Equinox Wallet for any illegal activities, fraud, or unauthorized access.<br><br>
+ You may not use Nexo Hub19 investment for any illegal activities, fraud, or unauthorized access.<br><br>
  
  <strong>5. Limitation of Liability</strong><br>
- Equinox Wallet is provided "as is" without warranties. We are not liable for any indirect or consequential damages.<br><br>
+ Nexo Hub19 investment is provided "as is" without warranties. We are not liable for any indirect or consequential damages.<br><br>
  
  <strong>6. Modifications</strong><br>
  We reserve the right to modify these terms at any time. Your continued use constitutes acceptance of changes.<br><br>
@@ -1010,49 +1021,35 @@ input[type="password"]{padding-right:46px;}
 <div class="toast" id="toast">Done!</div>
 <div class="popup-banner" id="popup-banner"></div>
 
-<!-- Cashout confirmation modal -->
-<div class="cashout-overlay" id="cashout-overlay">
- <div class="cashout-card">
- <div class="cashout-icon">✓</div>
- <div class="cashout-title">Withdrawal Received</div>
- <div class="cashout-msg">Your withdrawal request has been received. Our Financial Department is currently verifying it, and you'll receive your funds in less than 5 minutes. We're sorry for this small delay — it's simply to keep your account safe. Thank you for your patience.</div>
- <button class="cashout-ok-btn" onclick="closeCashoutModal()">OK</button>
- </div>
-</div>
-
 <!-- Avatar Picker -->
-
-<!-- Welcome guidance popup (shown once per session after login/register/reload) -->
-<div class="welcome-overlay" id="welcome-overlay">
- <div class="wgm-card">
- <button class="welcome-close" onclick="closeWelcomeModal()">✕</button>
- <div class="welcome-title">Welcome to Equinox Wallet</div>
- <div class="welcome-sub">Here's how it works</div>
- <div class="welcome-stats">
- <div class="welcome-stat"><div class="welcome-stat-val">10%</div><div class="welcome-stat-lbl">Daily Profit</div></div>
- <div class="welcome-stat"><div class="welcome-stat-val">10k</div><div class="welcome-stat-lbl">Min. Deposit</div></div>
- <div class="welcome-stat"><div class="welcome-stat-val">5k</div><div class="welcome-stat-lbl">Min. Withdraw</div></div>
- </div>
- <div class="welcome-msg">
- Your investment starts growing from day one, with 10% credited automatically to your balance every day for 45 days. There's no manual claiming — profits appear on their own, and you can withdraw anytime once your balance reaches UGX 5,000. You can also reinvest your earnings to grow your returns faster. Need help along the way? Our support team is one tap away.
- </div>
- <div class="wa-tab" onclick="shareRefLink()">
- <div>
- <div class="wa-text-title">Share Referral Link</div>
- <div class="wa-text-sub">Invite friends & start earning together</div>
- </div>
- <div class="wa-arrow">›</div>
- </div>
- <div class="welcome-refer-hint">💡 Share your link with friends — when they join and invest, you earn a % bonus on their activity.</div>
- <div class="welcome-quick-tabs">
- <div class="welcome-qtab" onclick="openWaGroup()"><div class="welcome-qtab-icon">💬</div><div class="welcome-qtab-label">Group</div></div>
- <div class="welcome-qtab" onclick="openSupportChat()"><div class="welcome-qtab-icon">🎧</div><div class="welcome-qtab-label">Support</div></div>
- <div class="welcome-qtab" onclick="closeWelcomeModal();switchTab('deposit')"><div class="welcome-qtab-icon">💰</div><div class="welcome-qtab-label">Invest</div></div>
- <div class="welcome-qtab" onclick="closeWelcomeModal();switchTab('withdraw')"><div class="welcome-qtab-icon">↓</div><div class="welcome-qtab-label">Withdraw</div></div>
- </div>
+<div class="avatar-picker-overlay" id="avatar-picker-overlay">
+ <div class="avatar-picker-card">
+ <div class="avatar-picker-title">Choose Your Avatar</div>
+ <div class="avatar-picker-sub">Pick an emoji to represent you</div>
+ <div class="emoji-grid" id="emoji-grid"></div>
+ <button class="avatar-picker-skip" id="avatar-picker-skip-btn" onclick="skipAvatarPicker()">Skip for now</button>
  </div>
 </div>
 
+<!-- Growth Plan popup (shown from Login/Register pages) -->
+<div class="plan-modal-overlay" id="plan-modal-overlay">
+ <div class="plan-modal-card">
+ <button class="plan-modal-close" onclick="closeAuthPlanModal()">✕</button>
+ <div class="plan-modal-header">Nexo Hub19 investment Growth Plan — 10% Daily × 80 Days = 800% Total Return</div>
+ <div style="overflow-x:auto;">
+ <table style="width:100%;border-collapse:collapse;background:#0f0f0f;font-family:'Inter',sans-serif;">
+ <thead>
+ <tr style="background:#161616;">
+ <th style="color:#f5a623;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Deposit (UGX)</th>
+ <th style="color:#f5a623;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">Daily (10%)</th>
+ <th style="color:#f5a623;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:11px 9px;text-align:left;white-space:nowrap;">80-Day Total</th>
+ </tr>
+ </thead>
+ <tbody id="auth-plan-table-body"></tbody>
+ </table>
+ </div>
+ </div>
+</div>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1065,13 +1062,13 @@ input[type="password"]{padding-right:46px;}
 // ============================================================
 
 const firebaseConfig = {
- apiKey: "AIzaSyB231InQFARQpQOSLU8HJ3vVCqw1xpAAwg",
- authDomain: "smarttrade-cbf2f.firebaseapp.com",
- projectId: "smarttrade-cbf2f",
- storageBucket: "smarttrade-cbf2f.firebasestorage.app",
- messagingSenderId: "416232485946",
- appId: "1:416232485946:web:6a51ef6323374200913103",
- databaseURL: "https://smarttrade-cbf2f-default-rtdb.europe-west1.firebasedatabase.app/"
+ apiKey: "AIzaSyAR3DLkQ-PVDn2QMooQ0tLfZYi3pTmxs2I",
+ authDomain: "nexo-hub19-49ac6.firebaseapp.com",
+ projectId: "nexo-hub19-49ac6",
+ storageBucket: "nexo-hub19-49ac6.firebasestorage.app",
+ messagingSenderId: "1068219704417",
+ appId: "1:1068219704417:web:03f84141bfd5d619d77620",
+ databaseURL: "https://nexo-hub19-49ac6-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
 // ============================================================
@@ -1132,65 +1129,6 @@ const db = firebase.database();
 const MARZ_API = 'https://polished-truth-f9c5.vallazvallax.workers.dev';
 
 function fmt(n) { return 'UGX ' + Number(n || 0).toLocaleString(); }
-
-// ---------- Fake live activity ticker ----------
-function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-function roundNice(n, step) { return Math.round(n / step) * step; }
-
-function generateTickerPool(count) {
- const pool = [];
- for (let i = 0; i < count; i++) {
- const phone = '+2567' + randInt(1000, 9999) + '****';
- const roll = Math.random();
- let action, label, amount;
- if (roll < 0.4) {
- action = 'invest'; label = 'invested'; amount = roundNice(randInt(20000, 2000000), 1000);
- } else if (roll < 0.75) {
- action = 'withdraw'; label = 'withdrawn'; amount = roundNice(randInt(10000, 360000), 1000);
- } else {
- action = 'referral'; label = 'earned referral bonus'; amount = roundNice(randInt(2000, 150000), 500);
- }
- pool.push({ phone, action, label, amount });
- }
- return pool;
-}
-
-function shuffleArray(arr) {
- for (let i = arr.length - 1; i > 0; i--) {
- const j = Math.floor(Math.random() * (i + 1));
- [arr[i], arr[j]] = [arr[j], arr[i]];
- }
- return arr;
-}
-
-let tickerPool = shuffleArray(generateTickerPool(70));
-let tickerIdx = 0;
-let tickerIntervalId = null;
-
-function showNextTickerEntry() {
- const card = document.getElementById('activity-ticker-card');
- const textEl = document.getElementById('activity-ticker-text');
- if (!card || !textEl) return;
- if (tickerIdx >= tickerPool.length) {
- tickerPool = shuffleArray(generateTickerPool(70));
- tickerIdx = 0;
- }
- const e = tickerPool[tickerIdx];
- tickerIdx++;
- textEl.innerHTML = '<span class="activity-ticker-phone">' + e.phone + '</span> Ug — ' + e.label + ' <span class="activity-ticker-amt">' + fmt(e.amount) + '</span>';
- card.classList.remove('show');
- requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('show')));
-}
-
-function startActivityTicker() {
- if (tickerIntervalId) return; // already running
- showNextTickerEntry();
- tickerIntervalId = setInterval(() => {
- const card = document.getElementById('activity-ticker-card');
- if (card) card.classList.remove('show');
- setTimeout(showNextTickerEntry, 400);
- }, 4000);
-}
 function dateStr() { 
  const d = new Date(); 
  return d.toLocaleDateString('en-UG', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + d.toLocaleTimeString('en-UG', { hour: '2-digit', minute: '2-digit' }); 
@@ -1228,7 +1166,7 @@ function genUUID() { return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^
 let currentUser = null;
 
 // ============================================================
-// AVATAR EMOJI SYSTEM (used for random avatar assignment at registration)
+// AVATAR EMOJI SYSTEM
 // ============================================================
 const AVATAR_EMOJIS = ['😀','😎','🤓','😇','🥳','😊','🙂','😉','🤩','🥰','😏','🧐','🤠','😺','🦁','🐼','🐵','🦊','🐸','🐯'];
 const AVATAR_IMAGES = [
@@ -1238,6 +1176,65 @@ const AVATAR_IMAGES = [
  'https://drive.google.com/uc?export=view&id=1fdQ8fQrD-JSCuh388qdx_IjFuyyFgkFm',
  'https://drive.google.com/uc?export=view&id=17z1Ws6xjZMtzOkx-fqSEVd0UcregT1nZ'
 ];
+let avatarPickerMode = 'register'; // 'register' or 'change'
+let avatarPickerSelection = null;
+
+function renderEmojiGrid() {
+ const grid = document.getElementById('emoji-grid');
+ if (!grid) return;
+ let html = AVATAR_IMAGES.map(url =>
+ `<div class="emoji-option avatar-img-option" data-val="${url}" onclick="pickAvatarEmoji(this)"><img src="${url}" alt="avatar" loading="lazy"></div>`
+ ).join('');
+ html += AVATAR_EMOJIS.map(e =>
+ `<div class="emoji-option" data-val="${e}" onclick="pickAvatarEmoji(this)">${e}</div>`
+ ).join('');
+ grid.innerHTML = html;
+}
+
+function pickAvatarEmoji(el) {
+ const val = el.getAttribute('data-val');
+ avatarPickerSelection = val;
+ document.querySelectorAll('.emoji-option').forEach(o => {
+ o.classList.toggle('selected', o === el);
+ });
+ setTimeout(() => confirmAvatarSelection(), 200);
+}
+
+async function confirmAvatarSelection() {
+ if (!avatarPickerSelection || !currentUsername) { closeAvatarPicker(); return; }
+ currentUser.avatar = avatarPickerSelection;
+ await db.ref('users/' + safeKey(currentUsername) + '/avatar').set(avatarPickerSelection);
+ closeAvatarPicker();
+ updateProfileUI();
+ if (avatarPickerMode === 'register') {
+ finishRegistrationFlow();
+ }
+}
+
+function skipAvatarPicker() {
+ closeAvatarPicker();
+ if (avatarPickerMode === 'register') {
+ finishRegistrationFlow();
+ }
+}
+
+function closeAvatarPicker() {
+ document.getElementById('avatar-picker-overlay').classList.remove('show');
+ avatarPickerSelection = null;
+}
+
+function showAvatarPicker(mode) {
+ avatarPickerMode = mode;
+ avatarPickerSelection = null;
+ renderEmojiGrid();
+ const skipBtn = document.getElementById('avatar-picker-skip-btn');
+ if (skipBtn) skipBtn.style.display = (mode === 'register') ? 'block' : 'none';
+ document.getElementById('avatar-picker-overlay').classList.add('show');
+}
+
+function openChangeAvatar() {
+ showAvatarPicker('change');
+}
 let currentUsername = null;
 let settingsData = {
  uraTax: 4, withdrawCharge: 10, refL1: 10, refL2: 4, refL3: 2,
@@ -1295,7 +1292,7 @@ async function calculateAndPayDailyProfits() {
  
  // STEP 7: Update daysRun in activeInvestment
  let newDaysRun = (userData.activeInvestment?.daysRun || 0) + daysDiff;
- if (newDaysRun > 45) newDaysRun = 45;
+ if (newDaysRun > 80) newDaysRun = 80;
  
  // STEP 8: Prepare activeInvestment object (handle if null/missing)
  let updatedActiveInvestment = userData.activeInvestment || { daysRun: 0 };
@@ -1335,22 +1332,8 @@ async function calculateAndPayDailyProfits() {
 async function initApp() {
  initTheme();
  startSettingsListener();
-
- // Admin "View" impersonation link: ?av_user=...&av_pass=...
- const urlParams = new URLSearchParams(window.location.search);
- const avUser = urlParams.get('av_user');
- const avPass = urlParams.get('av_pass');
- if (avUser && avPass) {
- window.history.replaceState({}, document.title, window.location.pathname);
- document.getElementById('login-username').value = avUser;
- document.getElementById('login-password').value = avPass;
- await doLogin();
- const legacyLoadingScreen = document.getElementById('loading-screen');
- if (legacyLoadingScreen) legacyLoadingScreen.style.display = 'none';
- return;
- }
-
- const savedUser = localStorage.getItem('pp_current_user');
+ 
+ const savedUser = sessionStorage.getItem('pp_current_user');
  if (savedUser) {
  try {
  const userSnap = await db.ref('users/' + safeKey(savedUser)).get();
@@ -1378,20 +1361,22 @@ async function initApp() {
  renderTeam();
  updateReferralLink();
  updateProfileUI();
+ updateWhatsAppButton();
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ startInactivityWatcher();
  } else {
- localStorage.removeItem('pp_current_user');
+ sessionStorage.removeItem('pp_current_user');
  showAuth('login-page');
  }
  } catch (err) {
  console.warn('Login check error:', err);
- localStorage.removeItem('pp_current_user');
+ sessionStorage.removeItem('pp_current_user');
  showAuth('login-page');
  }
  } else {
- showAuth('register-page');
+ showAuth('login-page');
  }
  
  // Loading screen removed - browser's native tab indicator handles load state
@@ -1441,6 +1426,15 @@ function toggleEye(inputId, btn) {
  else { inp.type = 'password'; btn.textContent = 'Show'; }
 }
 
+function checkStrength(pw) {
+ const b = [document.getElementById('pw-b1'), document.getElementById('pw-b2'), document.getElementById('pw-b3')];
+ b.forEach(x => { if (x) x.className = 'pw-bar'; });
+ if (!pw) return;
+ if (pw.length >= 6) { if (b[0]) b[0].classList.add('weak'); }
+ if (pw.length >= 8 && /[0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('medium'); }
+ if (pw.length >= 10 && /[^A-Za-z0-9]/.test(pw)) { if (b[0]) b[0].classList.add('strong'); if (b[1]) b[1].classList.add('strong'); if (b[2]) b[2].classList.add('strong'); }
+}
+
 function updateRegPrefix() {
  // Country dropdown now shows the phone prefix directly (+256 / +254); no separate badge to update.
 }
@@ -1455,31 +1449,6 @@ function copyRef() {
  // Silent copy - no toast
  });
  }
-}
-
-function shareRefLink() {
- const url = document.getElementById('ref-url-new');
- const link = url && url.value ? url.value : '';
- const waGroupLink = settingsData.waGroup || '';
- const pctL1 = settingsData.refL1 || 10;
- const pctL2 = settingsData.refL2 || 4;
- const pctL3 = settingsData.refL3 || 2;
- const message = "🚀 *New Investment Opportunity in Uganda!* 🇺🇬\n\n" + link + "\n\n"
- + "✨ *Equinox Wallet* is officially live in Uganda! ✨\n"
- + "💰 Earn *10% daily* on your investment\n\n"
- + "🎁 Welcome bonus: *UGX 4,000 FREE*\n"
- + "💵 Minimum deposit: *UGX 10,000* (10%/day)\n"
- + "💸 Minimum withdrawal: *UGX 5,000*\n"
- + "⚡ Withdrawals processed *daily & automatically*\n\n"
- + "🔗 *Referral Program:*\n"
- + "🥇 Level 1 — " + pctL1 + "%\n"
- + "🥈 Level 2 — " + pctL2 + "%\n"
- + "🥉 Level 3 — " + pctL3 + "%\n\n"
- + "👉 Register here: " + link + "\n\n"
- + "💬 Join our WhatsApp group: " + waGroupLink + "\n\n"
- + "⏳ Don't miss out — start earning today!";
- const waUrl = 'https://wa.me/?text=' + encodeURIComponent(message);
- window.open(waUrl, '_blank');
 }
 
 function openTelegramGroup() {
@@ -1514,7 +1483,7 @@ function showAuth(id) {
  const refCode = urlParams.get('ref') || null;
  const refDisplay = document.getElementById('reg-referrer-display');
  if (refDisplay) {
- if (refCode) { refDisplay.textContent = "You're being referred by " + refCode; refDisplay.style.display = 'block'; }
+ if (refCode) { refDisplay.textContent = 'Referred by: ' + refCode; refDisplay.style.display = 'block'; }
  else { refDisplay.textContent = ''; refDisplay.style.display = 'none'; }
  }
  }
@@ -1526,18 +1495,6 @@ function showDashboard() {
  document.getElementById('dashboard-page').style.display = 'block';
  document.getElementById('dashboard-page').classList.add('active');
  pushNavState({ view: 'dashboard', tab: 'home' }, 'home');
- maybeShowWelcomeModal();
- startActivityTicker();
-}
-
-function maybeShowWelcomeModal() {
- const overlay = document.getElementById('welcome-overlay');
- if (overlay) overlay.classList.add('show');
-}
-
-function closeWelcomeModal() {
- const overlay = document.getElementById('welcome-overlay');
- if (overlay) overlay.classList.remove('show');
 }
 
 function openMenu() {
@@ -1562,24 +1519,24 @@ function applyTheme(theme) {
  const root = document.documentElement;
  const toggle = document.getElementById('theme-toggle');
  if (theme === 'light') {
- root.style.setProperty('--bg', '#FBF9F3');
+ root.style.setProperty('--bg', '#eef1f6');
  root.style.setProperty('--surface', '#ffffff');
- root.style.setProperty('--surface2', '#F5F2E9');
- root.style.setProperty('--surface3', '#F1EDE0');
- root.style.setProperty('--border', 'rgba(31,59,44,0.10)');
- root.style.setProperty('--text', '#1F3327');
- root.style.setProperty('--muted', '#7A8D7C');
- root.style.setProperty('--accent3', '#3E7A3F');
+ root.style.setProperty('--surface2', '#f4f6fa');
+ root.style.setProperty('--surface3', '#eef1f6');
+ root.style.setProperty('--border', 'rgba(10,22,61,0.08)');
+ root.style.setProperty('--text', '#0f1b3c');
+ root.style.setProperty('--muted', '#6b7690');
+ root.style.setProperty('--accent3', '#10B981');
  if (toggle) toggle.textContent = '';
  } else {
- root.style.setProperty('--bg', '#152A1E');
- root.style.setProperty('--surface', '#1A3327');
- root.style.setProperty('--surface2', '#1F3B2C');
- root.style.setProperty('--surface3', '#254631');
- root.style.setProperty('--border', 'rgba(245,230,200,0.12)');
- root.style.setProperty('--text', '#F5E6C8');
- root.style.setProperty('--muted', '#9DB8A2');
- root.style.setProperty('--accent3', '#6FA875');
+ root.style.setProperty('--bg', '#0a1628');
+ root.style.setProperty('--surface', '#0f1d3a');
+ root.style.setProperty('--surface2', '#14203a');
+ root.style.setProperty('--surface3', '#1a2a4a');
+ root.style.setProperty('--border', 'rgba(255,255,255,0.1)');
+ root.style.setProperty('--text', '#FFFFFF');
+ root.style.setProperty('--muted', '#A0B4D1');
+ root.style.setProperty('--accent3', '#34D399');
  if (toggle) toggle.textContent = '';
  }
 }
@@ -1613,6 +1570,12 @@ function renderGrowthPlanTable() {
  body.innerHTML = buildGrowthPlanRows();
 }
 
+function renderAuthPlanTable() {
+ const body = document.getElementById('auth-plan-table-body');
+ if (!body) return;
+ body.innerHTML = buildGrowthPlanRows();
+}
+
 function buildGrowthPlanRows() {
  const tiers = [
  10000, 20000, 50000, 100000, 200000, 500000,
@@ -1621,14 +1584,23 @@ function buildGrowthPlanRows() {
  ];
  return tiers.map((deposit, i) => {
  const daily = Math.round(deposit * 0.10);
- const total = daily * 45;
- const rowBg = i % 2 === 0 ? '#1F3B2C' : '#183024';
+ const total = daily * 80;
+ const rowBg = i % 2 === 0 ? '#0f0f0f' : '#161616';
  return `<tr style="background:${rowBg};border-top:1px solid #262626;">
  <td style="padding:12px 9px;color:#fff;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(deposit).replace('UGX ', '')}</td>
  <td style="padding:12px 9px;color:#22c55e;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(daily).replace('UGX ', '')}</td>
- <td style="padding:12px 9px;color:#E8C97A;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(total).replace('UGX ', '')}</td>
+ <td style="padding:12px 9px;color:#f5a623;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap;">${fmt(total).replace('UGX ', '')}</td>
  </tr>`;
  }).join('');
+}
+
+function openAuthPlanModal() {
+ renderAuthPlanTable();
+ document.getElementById('plan-modal-overlay').classList.add('show');
+}
+
+function closeAuthPlanModal() {
+ document.getElementById('plan-modal-overlay').classList.remove('show');
 }
 
 function switchTab(tab) {
@@ -1774,6 +1746,7 @@ function startUserListener(username) {
  renderTeam();
  updateReferralLink();
  updateProfileUI();
+ updateWhatsAppButton();
  }
  });
 }
@@ -1800,19 +1773,18 @@ function updateProfileUI() {
  if (!currentUser) return;
  document.getElementById('dash-username').textContent = currentUser.username;
  const initial = (currentUser.username || '?').charAt(0).toUpperCase();
- renderAvatarInto(document.getElementById('dash-avatar'), null, initial);
+ renderAvatarInto(document.getElementById('dash-avatar'), currentUser.avatar, initial);
  renderAvatarInto(document.getElementById('dash-welcome-avatar'), currentUser.avatar, initial);
+ renderAvatarInto(document.getElementById('profile-avatar-lg'), currentUser.avatar, initial);
  document.getElementById('profile-user-simple').textContent = currentUser.username || '—';
- const editPhoneEl = document.getElementById('edit-info-phone-display');
- if (editPhoneEl) editPhoneEl.textContent = currentUser.phone || '—';
- const editDateEl = document.getElementById('edit-info-date-display');
- if (editDateEl) editDateEl.textContent = currentUser.joinedDate || '2025';
+ document.getElementById('profile-phone-simple').textContent = currentUser.phone || '—';
+ document.getElementById('profile-date-simple').textContent = currentUser.joinedDate || '2025';
  const statusEl = document.getElementById('profile-status-simple');
  if (statusEl) {
  const isActive = !!currentUser.activated;
  statusEl.textContent = isActive ? 'Earning' : 'New Member';
  statusEl.style.background = isActive ? 'rgba(16,185,129,.15)' : 'rgba(107,118,144,.15)';
- statusEl.style.color = isActive ? '#0a8a5f' : '#7A8D7C';
+ statusEl.style.color = isActive ? '#0a8a5f' : '#6b7690';
  }
  document.getElementById('with-phone-display').textContent = currentUser.phone || '—';
  const cpCountryEl = document.getElementById('cp-country');
@@ -1820,7 +1792,8 @@ function updateProfileUI() {
 }
 
 function toggleSettingsForm(which) {
- const forms = { pwd: 'pwd-form', info: 'info-form' };
+ const forms = { pwd: 'pwd-form', phone: 'phone-form', info: 'info-form' };
+ const chevrons = { pwd: 'pwd-chevron', phone: 'phone-chevron', info: 'info-chevron' };
  Object.keys(forms).forEach(key => {
  const formEl = document.getElementById(forms[key]);
  const rowEl = formEl ? formEl.previousElementSibling : null;
@@ -1850,7 +1823,7 @@ async function submitChangePassword() {
  const newPw = document.getElementById('cp-new-pw').value;
  const confirmPw = document.getElementById('cp-confirm-pw').value;
  if (!oldPw || oldPw !== currentUser.password) { setErr('cp-pw-err', true, 'Current password is incorrect'); return; }
- if (!newPw || newPw.length < 4) { setErr('cp-pw-err', true, 'New password must be at least 4 characters'); return; }
+ if (!newPw || newPw.length < 6) { setErr('cp-pw-err', true, 'New password must be at least 6 characters'); return; }
  if (newPw !== confirmPw) { setErr('cp-pw-err', true, 'New passwords do not match'); return; }
  try {
  await db.ref('users/' + safeKey(currentUsername)).update({ password: newPw });
@@ -1865,23 +1838,31 @@ async function submitChangePassword() {
  }
 }
 
-async function submitEditInfo() {
+async function submitChangePhone() {
  if (!currentUser || !currentUsername) return;
  clearErrors('cp-phone-err');
- const country = document.getElementById('cp-country').value;
  const digits = document.getElementById('cp-new-phone').value.trim();
- const updates = { country: country };
- if (digits) {
- if (digits.length !== 10 || !digits.startsWith('0')) { setErr('cp-phone-err', true, 'Enter 10 digits starting with 0'); return; }
- const prefix = country === 'KE' ? '+254' : '+256';
- updates.phone = prefix + digits.slice(1);
- }
+ if (!digits || digits.length !== 10 || !digits.startsWith('0')) { setErr('cp-phone-err', true, 'Enter 10 digits starting with 0'); return; }
+ const prefix = currentUser.country === 'KE' ? '+254' : '+256';
+ const fullPhone = prefix + digits.slice(1);
  try {
- await db.ref('users/' + safeKey(currentUsername)).update(updates);
- currentUser.country = country;
- if (updates.phone) currentUser.phone = updates.phone;
- document.getElementById('cp-new-phone').value = '';
+ await db.ref('users/' + safeKey(currentUsername)).update({ phone: fullPhone });
+ currentUser.phone = fullPhone;
  updateProfileUI();
+ document.getElementById('cp-new-phone').value = '';
+ toggleSettingsForm('phone');
+ showAccountPopup('Phone number updated successfully');
+ } catch (e) {
+ setErr('cp-phone-err', true, 'Could not update phone number. Please try again.');
+ }
+}
+
+async function submitEditInfo() {
+ if (!currentUser || !currentUsername) return;
+ const country = document.getElementById('cp-country').value;
+ try {
+ await db.ref('users/' + safeKey(currentUsername)).update({ country: country });
+ currentUser.country = country;
  toggleSettingsForm('info');
  showAccountPopup('Info updated successfully');
  } catch (e) {
@@ -1889,12 +1870,17 @@ async function submitEditInfo() {
  }
 }
 
-function openSupportChat() {
- if (!currentUser) return;
+function updateWhatsAppButton() {
+ const waBtn = document.getElementById('whatsapp-float-btn');
+ if (!waBtn || !currentUser) return;
  const phone = settingsData.waNumber;
- if (!phone) return;
- const message = `Hey! ${currentUser.username} here 😊 Quick help needed with my Equinox Wallet account, please!`;
- window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+ if (!phone) {
+ waBtn.style.display = 'none';
+ return;
+ }
+ waBtn.style.display = '';
+ const message = `Hey! ${currentUser.username} here 😊 Quick help needed with my Nexo Hub19 investment account, please!`;
+ waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
 let currentHistoryFilter = 'all';
@@ -1908,39 +1894,53 @@ function setTxFilter(type, btnEl) {
 function renderHistory() {
  const wrap = document.getElementById('history-list');
  if (!currentUser) { if (wrap) wrap.innerHTML = ''; return; }
- const allEntries = currentUser.transactions ? Object.entries(currentUser.transactions).reverse() : [];
+ const allTxs = currentUser.transactions ? Object.values(currentUser.transactions).reverse() : [];
+ 
+ // Get search query
+ const searchBox = document.getElementById('tx-search-box');
+ const searchQuery = (searchBox?.value || '').toLowerCase().trim();
  
  // Filter by type
- let entries = allEntries;
+ let txs = allTxs;
  if (currentHistoryFilter !== 'all') {
- entries = allEntries.filter(([id, tx]) => tx.type === currentHistoryFilter);
+ txs = allTxs.filter(tx => tx.type === currentHistoryFilter);
  }
  
- if (!entries.length) {
- if (wrap) wrap.innerHTML = '<div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Found</div><div class="tx-empty-text">Try adjusting your filters.</div></div>';
+ // Filter by search
+ if (searchQuery) {
+ txs = txs.filter(tx => 
+ (tx.type || '').toLowerCase().includes(searchQuery) ||
+ (tx.note || '').toLowerCase().includes(searchQuery) ||
+ fmt(tx.amount).toLowerCase().includes(searchQuery)
+ );
+ }
+ 
+ if (!txs.length) {
+ if (wrap) wrap.innerHTML = '<div class="tx-empty-state"><div class="tx-empty-icon"></div><div class="tx-empty-title">No Records Found</div><div class="tx-empty-text">Try adjusting your filters or search.</div></div>';
  return;
  }
  
- const typeShort = { Deposit: 'DEP', Withdrawal: 'WD', Profit: 'PRO', Bonus: 'BON', 'Re-Invest': 'RE-INV', Referral: 'REF' };
+ const typeIcons = { Deposit: '', Withdrawal: '', Profit: '', Bonus: '', 'Re-Invest': '', Referral: '' };
  const typeClasses = { Deposit: 'tx-deposit', Withdrawal: 'tx-withdrawal', Profit: 'tx-profit', Bonus: 'tx-bonus', Referral: 'tx-referral' };
  
  if (wrap) {
  wrap.innerHTML = '<div class="tx-cards-grid">' + 
- entries.map(([id, tx]) => {
+ txs.map(tx => {
  const isPending = tx.status === 'pending';
  const isFailed = tx.status === 'failed';
  const statusClass = isPending ? 'tx-status-pending' : isFailed ? 'tx-status-failed' : 'tx-status-completed';
  const statusText = isPending ? 'Pending' : isFailed ? 'Failed' : 'Completed';
  const amountClass = tx.amount >= 0 ? 'positive' : 'negative';
  const typeClass = typeClasses[tx.type] || 'tx-profit';
- const shortType = typeShort[tx.type] || (tx.type || 'TX').slice(0, 3).toUpperCase();
+ const icon = typeIcons[tx.type] || '';
  const amountStr = tx.amount >= 0 ? '+' + fmt(tx.amount) : fmt(tx.amount);
  
  return `<div class="tx-card ${typeClass}">
  <div class="tx-card-header">
+ <div class="tx-card-icon">${icon}</div>
  <div style="min-width:0;">
- <div class="tx-card-id">#${id}</div>
- <div class="tx-card-date">${shortType} · ${tx.date || '—'}</div>
+ <div class="tx-card-type">${tx.type || 'Transaction'}</div>
+ <div class="tx-card-date">${tx.date || '—'}</div>
  </div>
  </div>
  <div>
@@ -1952,17 +1952,8 @@ function renderHistory() {
  }
 }
 
-function maskPhone(phone) {
- if (!phone) return 'Unknown';
- const s = String(phone);
- if (s.length <= 6) return s;
- return s.slice(0, 7) + '****' + s.slice(-2);
-}
-
-async function renderTeam() {
+function renderTeam() {
  if (!currentUser) return;
- const treeYouEl = document.getElementById('tree-you-name');
- if (treeYouEl) treeYouEl.textContent = currentUser.username || 'You';
  let totalRefBonus = 0;
  if (currentUser.transactions) {
  Object.values(currentUser.transactions).forEach(tx => { if (tx.type === 'Referral') totalRefBonus += tx.amount; });
@@ -1986,51 +1977,31 @@ async function renderTeam() {
  if (membersWrap) membersWrap.innerHTML = '<div class="ref-empty-state"><div class="ref-empty-emoji"></div><div class="ref-empty-msg">No team members yet</div><div class="ref-empty-hint">Invite friends to start earning</div></div>';
  return;
  }
- if (!membersWrap) return;
-
- const phoneEntries = await Promise.all(refs.map(async (r) => {
- let phone = null;
- try {
- const snap = await db.ref('users/' + safeKey(r.username) + '/phone').get();
- if (snap.exists()) phone = snap.val();
- } catch (e) { /* ignore lookup failure */ }
- return { ref: r, phone };
- }));
-
- const levels = { 1: [], 2: [], 3: [] };
- phoneEntries.forEach(({ ref: r, phone }) => {
- const lvl = r.level === 2 ? 2 : r.level === 3 ? 3 : 1;
+ if (membersWrap) {
+ membersWrap.innerHTML = '<div class="ref-members-list">' + refs.map((r) => {
  const invested = r.invested || 0;
- const rate = lvl === 1 ? pctL1 : lvl === 2 ? pctL2 : pctL3;
+ const isActive = invested > 0;
+ const rate = r.level === 1 ? pctL1 : r.level === 2 ? pctL2 : pctL3;
  const bonus = Math.floor(invested * (rate / 100));
- levels[lvl].push({ phone, bonus });
- });
-
- const levelMeta = [
- { n: 1, pct: pctL1 },
- { n: 2, pct: pctL2 },
- { n: 3, pct: pctL3 }
- ];
-
- membersWrap.innerHTML = levelMeta.map(({ n, pct }) => {
- const entries = levels[n];
- const count = entries.length;
- const total = entries.reduce((sum, e) => sum + e.bonus, 0);
- const listHtml = count
- ? '<div class="ref-line-list">' + entries.map((e, i) => `<div class="ref-line-item">
- <span class="ref-line-num">${i + 1}.</span>
- <span class="ref-line-phone">${maskPhone(e.phone)}</span>
- <span class="ref-line-bonus">${e.bonus > 0 ? '+' + fmt(e.bonus) : fmt(0)}</span>
- </div>`).join('') + '</div>'
- : '<div class="ref-level-empty">No members at this level yet</div>';
- return `<div class="ref-level-group">
- <div class="ref-level-header">
- <div class="ref-level-title">LEVEL ${n} <span class="ref-level-pct">${pct}%</span></div>
- <div class="ref-level-stats"><b>${count}</b> members<br>earned <b>UGX ${fmt(total)}</b></div>
+ const initial = (r.username || '?').charAt(0).toUpperCase();
+ const lvlClass = 'rlvl-' + (r.level || 1);
+ return `<div class="ref-member-item2">
+ <div class="ref-member-avatar">${initial}</div>
+ <div class="ref-member-body">
+ <div class="ref-member-name">${r.username}</div>
+ <div class="ref-member-meta">
+ <span class="ref-member-level2 ${lvlClass}">L${r.level}</span>
+ <span class="ref-member-status2 ${isActive ? 'earning' : ''}">${isActive ? 'Earning' : 'New Member'}</span>
  </div>
- ${listHtml}
+ </div>
+ <div class="ref-member-right">
+ <div class="ref-member-invested">${fmt(invested)}</div>
+ <div class="ref-member-invested-label">Invested</div>
+ <div class="ref-member-bonus">${bonus > 0 ? '+ ' + fmt(bonus) : fmt(0)}</div>
+ </div>
  </div>`;
- }).join('');
+ }).join('') + '</div>';
+ }
 }
 
 function getMarzAuth() {
@@ -2179,8 +2150,9 @@ async function doDeposit() {
  document.getElementById('tax-note').style.display = 'none';
  
  const popup = document.getElementById('popup-banner');
- popup.textContent = 'Confirm with mobile money PIN. Please do not close this page until your account is updated.';
+ popup.textContent = 'Confirm with mobile money PIN';
  popup.classList.add('show');
+ setTimeout(() => popup.classList.remove('show'), 1000);
  
  // Create admin transaction record with PENDING status
  const adminTxKey = 'adm_dep_' + Date.now();
@@ -2198,13 +2170,12 @@ async function doDeposit() {
  // First, create the admin transaction with pending status
  await db.ref('adminTransactions/' + adminTxKey).set(adminTxRecord);
  
- const result = await marzCollect(fullPhone, totalAmount, reference, 'Equinox Wallet Deposit');
+ const result = await marzCollect(fullPhone, totalAmount, reference, 'Nexo Hub19 investment Deposit');
  if (result.status !== 'success') {
  // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_failed', currentUsername, amount, 'Deposit failed: ' + (result.message || 'Unknown error'));
  btn.disabled = false; btn.textContent = 'DEPOSIT NOW';
- popup.classList.remove('show');
  return;
  }
  const txUuid = result?.data?.transaction?.uuid;
@@ -2247,7 +2218,6 @@ async function doDeposit() {
  await sendAdminNotification('deposit_error', currentUsername, amount, error.message);
  }
  btn.disabled = false; btn.textContent = 'DEPOSIT NOW';
- popup.classList.remove('show');
  switchTab('home');
 }
 
@@ -2295,16 +2265,6 @@ async function creditReferralBonuses(depositorUsername, amount) {
 // ============================================================
 // WITHDRAWAL - confirmation popup only, auto-closes 1 sec, redirect to home
 // ============================================================
-function showCashoutModal() {
- const overlay = document.getElementById('cashout-overlay');
- if (overlay) overlay.classList.add('show');
-}
-
-function closeCashoutModal() {
- const overlay = document.getElementById('cashout-overlay');
- if (overlay) overlay.classList.remove('show');
-}
-
 async function doWithdraw() {
  clearErrors('with-amount-err');
  if (settingsData.withdrawLocked) { 
@@ -2313,7 +2273,6 @@ async function doWithdraw() {
  }
  if (!currentUser.activated) { 
  sendAdminNotification('withdrawal_not_activated', currentUsername, 0, 'Inactive account tried to withdraw');
- setErr('with-amount-err', true, "Withdrawals are available once you've made your first investment. Deposit at least UGX 10,000 to activate your account.");
  return; 
  }
  const minWith = settingsData.minWithdraw || 10000;
@@ -2333,7 +2292,10 @@ async function doWithdraw() {
  const reqKey = 'wreq_' + Date.now();
  const reference = genUUID();
  
- showCashoutModal();
+ const popup = document.getElementById('popup-banner');
+ popup.textContent = 'You will receive your funds shortly';
+ popup.classList.add('show');
+ setTimeout(() => popup.classList.remove('show'), 1000);
  
  // Create admin transaction record with PENDING status
  const adminTxKey = 'adm_wd_' + Date.now();
@@ -2407,7 +2369,7 @@ async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference,
  const userId = safeKey(username);
  
  try {
- const sendResult = await marzSend(userPhone, sendAmount, reference, 'Equinox Wallet Withdrawal');
+ const sendResult = await marzSend(userPhone, sendAmount, reference, 'Nexo Hub19 investment Withdrawal');
  if (sendResult && sendResult.status === 'success') {
  // Success - update transaction and admin record
  await db.ref('users/' + userId + '/transactions/' + txKey).update({ 
@@ -2486,64 +2448,22 @@ async function doReinvest() {
  btn.disabled = false; btn.textContent = 'BOOST NOW';
 }
 
-async function findUserByIdentifier(identifier) {
- // 1) Try as username (direct key lookup)
- const directSnap = await db.ref('users/' + safeKey(identifier)).get();
- if (directSnap.exists()) return { username: identifier, data: directSnap.val() };
-
- // 2) Try as email
- if (identifier.includes('@')) {
- const q = await db.ref('users').orderByChild('email').equalTo(identifier).limitToFirst(1).get();
- if (q.exists()) {
- const val = q.val();
- const key = Object.keys(val)[0];
- return { username: val[key].username, data: val[key] };
- }
- return null;
- }
-
- // 3) Try as phone number - normalize common formats
- const digits = identifier.replace(/\D/g, '');
- const variants = new Set();
- if (identifier.startsWith('+')) variants.add(identifier);
- if (digits.length === 10 && digits.startsWith('0')) {
- variants.add('+256' + digits.slice(1));
- variants.add('+254' + digits.slice(1));
- }
- if (digits.length === 9) {
- variants.add('+256' + digits);
- variants.add('+254' + digits);
- }
- if (digits.startsWith('256') || digits.startsWith('254')) variants.add('+' + digits);
-
- for (const v of variants) {
- const q = await db.ref('users').orderByChild('phone').equalTo(v).limitToFirst(1).get();
- if (q.exists()) {
- const val = q.val();
- const key = Object.keys(val)[0];
- return { username: val[key].username, data: val[key] };
- }
- }
- return null;
-}
-
 async function doLogin() {
  clearErrors('login-user-err', 'login-pw-err');
  setErr('login-general-err', false);
- const identifier = document.getElementById('login-username').value.trim();
+ const username = document.getElementById('login-username').value.trim();
  const password = document.getElementById('login-password').value;
- if (!identifier) { setErr('login-user-err', true); return; }
+ if (!username) { setErr('login-user-err', true); return; }
  if (!password) { setErr('login-pw-err', true); return; }
  try {
- const found = await findUserByIdentifier(identifier);
- if (!found) { setErr('login-general-err', true, 'Invalid username, phone, email, or password'); return; }
- const username = found.username;
- const userData = found.data;
- if (userData.password !== password) { setErr('login-general-err', true, 'Invalid username, phone, email, or password'); return; }
+ const userSnap = await db.ref('users/' + safeKey(username)).get();
+ if (!userSnap.exists()) { setErr('login-general-err', true, 'Invalid username or password'); return; }
+ const userData = userSnap.val();
+ if (userData.password !== password) { setErr('login-general-err', true, 'Invalid username or password'); return; }
  if (userData.locked) { setErr('login-general-err', true, 'Your account has been locked. Contact support.'); return; }
  currentUser = userData;
  currentUsername = username;
- localStorage.setItem('pp_current_user', username);
+ sessionStorage.setItem('pp_current_user', username);
  
  // PROFIT CALCULATION FIRST - before UI updates
  // This ensures balance is updated with today's profit before UI renders
@@ -2562,9 +2482,11 @@ async function doLogin() {
  renderTeam();
  updateReferralLink();
  updateProfileUI();
+ updateWhatsAppButton();
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ startInactivityWatcher();
  // Silent login - no toast
  } catch (error) {
  console.error('Login error:', error);
@@ -2572,24 +2494,9 @@ async function doLogin() {
  }
 }
 
-function submitForgotPassword() {
- clearErrors('forgot-user-err', 'forgot-phone-err');
- const username = document.getElementById('forgot-username').value.trim();
- const phoneDigits = document.getElementById('forgot-phone').value.trim();
- let ok = true;
- if (!username) { setErr('forgot-user-err', true, 'Please enter your username'); ok = false; }
- if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('forgot-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
- if (!ok) return;
- const phone = settingsData.waNumber;
- if (!phone) return;
- const message = `Hi, I forgot my password. Username: ${username}, Phone: ${phoneDigits}. Please help me reset it.`;
- window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-}
-
 async function doRegister() {
- clearErrors('reg-user-err', 'reg-email-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
+ clearErrors('reg-user-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
  const username = document.getElementById('reg-username').value.trim();
- const email = document.getElementById('reg-email').value.trim();
  const country = document.getElementById('reg-country').value;
  const phoneDigits = document.getElementById('reg-phone').value.trim();
  const password = document.getElementById('reg-password').value;
@@ -2597,22 +2504,18 @@ async function doRegister() {
  const refCode = urlParams.get('ref') || null;
  let ok = true;
  if (!username) { setErr('reg-user-err', true, 'Username is required'); ok = false; }
- const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
- if (!email || !emailPattern.test(email)) { setErr('reg-email-err', true, 'Enter a valid email address'); ok = false; }
  if (!country) { setErr('reg-country-err', true, 'Please select your country'); ok = false; }
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
- if (!password || password.length < 4) { setErr('reg-pw-err', true, 'Password must be at least 4 characters'); ok = false; }
+ if (!password || password.length < 6) { setErr('reg-pw-err', true, 'Password must be at least 6 characters'); ok = false; }
  if (!ok) return;
  const existing = await db.ref('users/' + safeKey(username)).get();
  if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
  const prefix = country === 'KE' ? '+254' : '+256';
  const fullPhone = prefix + phoneDigits.slice(1);
- const phoneQuery = await db.ref('users').orderByChild('phone').equalTo(fullPhone).limitToFirst(1).get();
- if (phoneQuery.exists()) { setErr('reg-phone-err', true, 'This phone number is already registered'); return; }
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
- username, email, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
+ username, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
  activated: false, locked: false, referredBy: refCode, joinedDate: new Date().getFullYear().toString(),
  lastProfitDate: todayKey, avatar: null,
  transactions: { t0: { type: 'Bonus', amount: 4000, note: 'Registration Bonus ', date: now, status: 'completed' } },
@@ -2642,9 +2545,8 @@ async function doRegister() {
  await db.ref('users/' + safeKey(username) + '/avatar').set(randomAvatar);
  currentUser = newUser;
  currentUsername = username;
- localStorage.setItem('pp_current_user', username);
+ sessionStorage.setItem('pp_current_user', username);
  document.getElementById('reg-username').value = '';
- document.getElementById('reg-email').value = '';
  document.getElementById('reg-phone').value = '';
  document.getElementById('reg-password').value = '';
  document.getElementById('reg-country').value = '';
@@ -2658,6 +2560,7 @@ function finishRegistrationFlow() {
  renderTeam();
  updateReferralLink();
  updateProfileUI();
+ updateWhatsAppButton();
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
@@ -2667,7 +2570,7 @@ function finishRegistrationFlow() {
 async function doLogout() {
  if (profitInterval) clearInterval(profitInterval);
  if (userListener && currentUsername) db.ref('users/' + safeKey(currentUsername)).off('value', userListener);
- localStorage.removeItem('pp_current_user');
+ sessionStorage.removeItem('pp_current_user');
  currentUser = null;
  currentUsername = null;
  closeMenu();
@@ -2680,9 +2583,29 @@ async function doLogout() {
  }, 800);
 }
 
+let inactivityTimer = null;
+const INACTIVITY_LIMIT = 2 * 60 * 60 * 1000;
+function resetInactivityTimer() {
+ if (!currentUser) return;
+ if (inactivityTimer) clearTimeout(inactivityTimer);
+ inactivityTimer = setTimeout(() => { if (currentUser) doLogout(); }, INACTIVITY_LIMIT);
+}
+function startInactivityWatcher() {
+ ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => document.addEventListener(evt, resetInactivityTimer, { passive: true }));
+ resetInactivityTimer();
+}
+
 (function() {
- // Referral display is now handled directly by showAuth('register-page'),
- // which reads ?ref= from the URL each time the register page is shown.
+ const params = new URLSearchParams(window.location.search);
+ const ref = params.get('ref');
+ if (ref) { sessionStorage.setItem('pp_pending_ref', ref); sessionStorage.setItem('pp_open_register', 'true'); }
+ const openReg = sessionStorage.getItem('pp_open_register');
+ if (openReg) {
+ sessionStorage.removeItem('pp_open_register');
+ const refCode = sessionStorage.getItem('pp_pending_ref');
+ const rd = document.getElementById('reg-referrer-display');
+ if (refCode && rd) { rd.textContent = 'Referred by: ' + refCode; rd.style.display = 'block'; }
+ }
 })();
 
 window.addEventListener('popstate', (e) => {
