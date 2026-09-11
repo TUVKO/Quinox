@@ -325,7 +325,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="table-wrap">
  <div class="table-header">
  <div class="table-title">All Users</div>
- <input type="text" class="f-input" style="width:220px;padding:8px 14px;" placeholder=" Search username..." oninput="filterUsers(this.value)">
+ <input type="text" class="f-input" style="width:220px;padding:8px 14px;" placeholder="Search username or phone..." oninput="filterUsers(this.value)">
  </div>
  <table>
  <thead>
@@ -494,6 +494,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="settings-row"><span class="settings-label">Minimum Deposit (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="min-deposit-input" min="500" step="500" placeholder="10000"></div><button class="btn btn-save" onclick="saveMinDeposit()">Save</button></div>
  <div class="settings-row"><span class="settings-label">Maximum Deposit (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="max-deposit-input" min="10000" step="1000" placeholder="2350000"></div><button class="btn btn-save" onclick="saveMaxDeposit()">Save</button></div>
  <div class="settings-row"><span class="settings-label">Minimum Withdrawal (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="min-withdraw-input" min="500" step="500" placeholder="10000"></div><button class="btn btn-save" onclick="saveMinWithdraw()">Save</button></div>
+ <div class="settings-row"><span class="settings-label">Maximum Withdrawal (UGX)</span><div class="ugx-group"><span class="ugx-label">UGX</span><input type="number" class="ugx-input" id="max-withdraw-input" min="500" step="500" placeholder="500000"></div><button class="btn btn-save" onclick="saveMaxWithdraw()">Save</button></div>
  <div class="settings-row"><span class="settings-label">Withdrawal Service Charge (%)</span><div style="display:flex;align-items:center;gap:8px;"><input type="number" class="pct-input" id="with-charge-input" min="0" max="50" step="0.5" placeholder="10"><span class="pct-label">%</span></div><button class="btn btn-save" onclick="saveWithCharge()">Save</button></div>
  </div>
 
@@ -666,6 +667,7 @@ let allSettings = {
  minDeposit: 10000,
  maxDeposit: 2350000,
  minWithdraw: 10000,
+ maxWithdraw: 500000,
  marzApiKey: ''
 };
 let currentAdmin = null;
@@ -848,6 +850,7 @@ function renderDashboard() {
  const s = allSettings;
  document.getElementById('pct-summary').innerHTML = `
  <div class="pct-pill">Min Deposit <span>${fmt(s.minDeposit || 10000)}</span></div>
+ <div class="pct-pill">Max Withdraw <span>${fmt(s.maxWithdraw || 500000)}</span></div>
  <div class="pct-pill">URA Tax <span>${s.uraTax || 4}%</span></div>
  <div class="pct-pill">Withdrawal Charge <span>${s.withdrawCharge || 10}%</span></div>
  <div class="pct-pill">Ref L1 <span>${s.refL1 || 10}%</span></div>
@@ -862,7 +865,13 @@ function filterUsers(val) { searchFilter = val; renderUsersTable(); }
 
 function renderUsersTable() {
  const users = Object.values(allUsers);
- const filtered = searchFilter ? users.filter(u => u.username && u.username.toLowerCase().includes(searchFilter.toLowerCase())) : users;
+ const q = (searchFilter || '').trim().toLowerCase();
+ const filtered = q
+ ? users.filter(u =>
+ (u.username && u.username.toLowerCase().includes(q)) ||
+ (u.phone && String(u.phone).toLowerCase().includes(q))
+ )
+ : users;
  const tbody = document.getElementById('users-table-body');
  if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No users found<\/tr>'; return; }
  tbody.innerHTML = filtered.map(u => {
@@ -1478,6 +1487,7 @@ function loadSettingsUI() {
  document.getElementById('min-deposit-input').value = s.minDeposit || 10000;
  document.getElementById('max-deposit-input').value = s.maxDeposit || 2350000;
  document.getElementById('min-withdraw-input').value = s.minWithdraw || 10000;
+ document.getElementById('max-withdraw-input').value = s.maxWithdraw || 500000;
  
  const apiInp = document.getElementById('marz-api-key-input');
  if (s.marzApiKey && !apiInp.value) apiInp.value = s.marzApiKey;
@@ -1569,6 +1579,13 @@ async function saveMinWithdraw() {
  if (v < 500) { toast('Min withdrawal must be at least UGX 500', '#f87171'); return; }
  await db.ref('settings/minWithdraw').set(v);
  toast('Minimum withdrawal set to ' + fmt(v));
+}
+
+async function saveMaxWithdraw() {
+ const v = parseInt(document.getElementById('max-withdraw-input').value) || 500000;
+ if (v < 500) { toast('Max withdrawal must be at least UGX 500', '#f87171'); return; }
+ await db.ref('settings/maxWithdraw').set(v);
+ toast('Maximum withdrawal set to ' + fmt(v));
 }
 
 async function saveWithCharge() {
@@ -2014,7 +2031,7 @@ function toggleRegPw() {
 }
 
 function toggleRegConfirm() {
- const inp = document.getElementById('reg-confirm');
+ const inp = document.getElementById('reg-confirm-password');
  const btn = document.getElementById('reg-confirm-eye');
  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = 'Hide'; }
  else { inp.type = 'password'; btn.textContent = 'Show'; }
