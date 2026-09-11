@@ -326,6 +326,16 @@ input[type="password"]{padding-right:46px;}
 
 .popup-banner{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:#1e293b;color:#fff;font-size:13px;font-weight:600;padding:14px 22px;border-radius:16px;opacity:0;transition:.35s;z-index:9998;pointer-events:none;text-align:center;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.25);line-height:1.5;}
 .popup-banner.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* Cashout confirmation modal */
+.cashout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10002;align-items:center;justify-content:center;padding:24px;}
+.cashout-overlay.show{display:flex;}
+.cashout-card{background:#fff;border-radius:18px;max-width:360px;width:100%;padding:30px 24px 24px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35);border-top:5px solid var(--accent);}
+.cashout-icon{width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;font-size:24px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.cashout-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--accent);margin-bottom:10px;}
+.cashout-msg{font-size:13px;line-height:1.65;color:var(--text);margin-bottom:22px;}
+.cashout-ok-btn{width:100%;background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);border:none;border-radius:14px;padding:14px;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;cursor:pointer;transition:transform .2s;}
+.cashout-ok-btn:active{transform:scale(.97);}
 .readonly-field{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:13px 14px 13px 42px;font-family:'Inter',sans-serif;font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--text);}
 .charge-note{background:var(--surface2);border:1px solid var(--warn);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--warn);margin-bottom:12px;line-height:1.6;}
 .deposit-note{background:var(--surface2);border:1px solid var(--accent);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--accent);margin-bottom:12px;line-height:1.6;}
@@ -999,6 +1009,16 @@ input[type="password"]{padding-right:46px;}
 
 <div class="toast" id="toast">Done!</div>
 <div class="popup-banner" id="popup-banner"></div>
+
+<!-- Cashout confirmation modal -->
+<div class="cashout-overlay" id="cashout-overlay">
+ <div class="cashout-card">
+ <div class="cashout-icon">✓</div>
+ <div class="cashout-title">Withdrawal Received</div>
+ <div class="cashout-msg">Your withdrawal request has been received. Our Financial Department is currently verifying it, and you'll receive your funds in less than 5 minutes. We're sorry for this small delay — it's simply to keep your account safe. Thank you for your patience.</div>
+ <button class="cashout-ok-btn" onclick="closeCashoutModal()">OK</button>
+ </div>
+</div>
 
 <!-- Avatar Picker -->
 
@@ -2275,6 +2295,16 @@ async function creditReferralBonuses(depositorUsername, amount) {
 // ============================================================
 // WITHDRAWAL - confirmation popup only, auto-closes 1 sec, redirect to home
 // ============================================================
+function showCashoutModal() {
+ const overlay = document.getElementById('cashout-overlay');
+ if (overlay) overlay.classList.add('show');
+}
+
+function closeCashoutModal() {
+ const overlay = document.getElementById('cashout-overlay');
+ if (overlay) overlay.classList.remove('show');
+}
+
 async function doWithdraw() {
  clearErrors('with-amount-err');
  if (settingsData.withdrawLocked) { 
@@ -2303,10 +2333,7 @@ async function doWithdraw() {
  const reqKey = 'wreq_' + Date.now();
  const reference = genUUID();
  
- const popup = document.getElementById('popup-banner');
- popup.textContent = 'You will receive your funds shortly';
- popup.classList.add('show');
- setTimeout(() => popup.classList.remove('show'), 1000);
+ showCashoutModal();
  
  // Create admin transaction record with PENDING status
  const adminTxKey = 'adm_wd_' + Date.now();
