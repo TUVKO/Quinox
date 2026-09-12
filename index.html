@@ -476,6 +476,51 @@ input[type="password"]{padding-right:46px;}
 .wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:fit-content;margin-left:auto;background:#25D366;border:none;border-radius:14px;padding:12px 20px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
 .wa-btn:active{transform:scale(.98);}
 
+/* Trading Ticker Strip */
+.trading-ticker-wrap{background:#0F3D24;overflow:hidden;position:relative;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.trading-ticker-track{display:flex;width:max-content;animation:tradingTickerScroll 55s linear infinite;}
+.trading-ticker-item{display:flex;align-items:center;gap:6px;padding:0 16px;white-space:nowrap;font-family:'Inter',sans-serif;font-size:11.5px;border-right:1px solid rgba(255,255,255,.08);}
+.trading-ticker-item .tk-name{color:#D9A441;font-weight:800;}
+.trading-ticker-item .tk-price{color:#EFEAD8;font-weight:600;}
+.trading-ticker-item .tk-chg{font-weight:800;}
+.trading-ticker-item .tk-chg.up{color:#4ADE80;}
+.trading-ticker-item .tk-chg.down{color:#FF6B5B;}
+@keyframes tradingTickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* Today's Top Referrers */
+.top-ref-card{background:#154A2E;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:14px 14px 4px;}
+.top-ref-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.top-ref-title{font-size:13px;font-weight:800;color:#EFEAD8;line-height:1.3;}
+.top-ref-sub{font-size:10px;color:#9FD9B6;}
+.top-ref-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.top-ref-row:last-child{border-bottom:none;}
+.top-ref-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.top-ref-badge.rank1{background:#D9A441;color:#0F3D24;}
+.top-ref-badge.rank2{background:#C7CDD1;color:#0F3D24;}
+.top-ref-badge.rank3{background:#C98A4B;color:#0F3D24;}
+.top-ref-badge.rank4{background:rgba(255,255,255,.12);color:#EFEAD8;}
+.top-ref-info{flex:1;min-width:0;}
+.top-ref-name{font-size:12.5px;font-weight:800;color:#EFEAD8;margin-bottom:2px;}
+.top-ref-phone{font-size:10.5px;color:#9FD9B6;margin-bottom:4px;}
+.top-ref-stats{font-size:10.5px;color:#EFEAD8;opacity:.92;line-height:1.55;}
+.top-ref-stats b{color:#D9A441;}
+
+/* Referral CTA */
+.ref-cta-card{background:linear-gradient(135deg,#D9A441 0%,#C98A4B 100%);border-radius:16px;padding:16px;text-align:center;}
+.ref-cta-text{font-size:12.5px;font-weight:700;color:#0F3D24;line-height:1.4;margin-bottom:10px;}
+.ref-cta-btn{background:#0F3D24;color:#EFEAD8;border:none;border-radius:12px;padding:10px 20px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;cursor:pointer;}
+.ref-cta-btn:active{transform:scale(.97);}
+
+/* Salary Tiers */
+.salary-tiers-card{background:#154A2E;border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:14px;}
+.salary-tiers-header{margin-bottom:8px;}
+.salary-tiers-title{font-size:13px;font-weight:800;color:#EFEAD8;}
+.salary-tiers-sub{font-size:10px;color:#9FD9B6;}
+.salary-tier-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11.5px;}
+.salary-tier-row:last-child{border-bottom:none;}
+.salary-tier-members{color:#EFEAD8;font-weight:700;}
+.salary-tier-amt{color:#D9A441;font-weight:800;}
+
 
 
 
@@ -624,6 +669,10 @@ input[type="password"]{padding-right:46px;}
  </div>
  </div>
 
+ <div class="trading-ticker-wrap">
+ <div class="trading-ticker-track" id="trading-ticker-track"></div>
+ </div>
+
  <!-- HOME / DASHBOARD -->
  <div class="dash-section active" id="sec-home">
  <div class="welcome-card">
@@ -672,6 +721,39 @@ input[type="password"]{padding-right:46px;}
  <div class="community-card community-wa" onclick="openWaGroup()">
  <div class="community-icon" style="background:rgba(37,211,102,.15);">💬</div>
  <div><div class="community-title">WhatsApp Channel</div><div class="community-desc">Join our official WhatsApp channel</div></div>
+ </div>
+ </div>
+
+ <div class="section">
+ <div class="top-ref-card">
+ <div class="top-ref-header"><span style="font-size:16px">🏆</span><div><div class="top-ref-title">Today's Top Referrers</div><div class="top-ref-sub">Ranked by referrals today</div></div></div>
+ <div id="top-ref-list"></div>
+ </div>
+ </div>
+
+ <div class="section">
+ <div class="ref-cta-card">
+ <div class="ref-cta-text">💰 Refer friends, climb the ranks, and earn daily salary + bonuses!</div>
+ <button class="ref-cta-btn" onclick="copyRef()">Copy Referral Link</button>
+ </div>
+ </div>
+
+ <div class="section">
+ <div class="salary-tiers-card">
+ <div class="salary-tiers-header"><div class="salary-tiers-title">💵 Referral Salary Tiers</div><div class="salary-tiers-sub">Invite active members, unlock higher daily salary</div></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">20 members</span><span class="salary-tier-amt">UGX 5,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">40 members</span><span class="salary-tier-amt">UGX 11,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">60 members</span><span class="salary-tier-amt">UGX 18,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">100 members</span><span class="salary-tier-amt">UGX 32,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">150 members</span><span class="salary-tier-amt">UGX 55,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">200 members</span><span class="salary-tier-amt">UGX 80,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">300 members</span><span class="salary-tier-amt">UGX 130,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">400 members</span><span class="salary-tier-amt">UGX 190,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">500 members</span><span class="salary-tier-amt">UGX 260,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">700 members</span><span class="salary-tier-amt">UGX 400,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">1,000 members</span><span class="salary-tier-amt">UGX 650,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">1,500 members</span><span class="salary-tier-amt">UGX 1,100,000/day</span></div>
+ <div class="salary-tier-row"><span class="salary-tier-members">2,000 members</span><span class="salary-tier-amt">UGX 1,800,000/day</span></div>
  </div>
  </div>
  </div>
@@ -1112,6 +1194,153 @@ const db = firebase.database();
 const MARZ_API = 'https://polished-truth-f9c5.vallazvallax.workers.dev';
 
 function fmt(n) { return 'UGX ' + Number(n || 0).toLocaleString(); }
+
+// ---------- Trading ticker strip ----------
+const TICKER_INSTRUMENTS = [
+ {name:'BTC/USD', price:62000}, {name:'ETH/USD', price:3400}, {name:'BNB/USD', price:560},
+ {name:'SOL/USD', price:145}, {name:'XRP/USD', price:0.62}, {name:'DOGE/USD', price:0.14},
+ {name:'ADA/USD', price:0.45}, {name:'LTC/USD', price:85}, {name:'GOLD', price:2380},
+ {name:'SILVER', price:28.5}, {name:'PLATINUM', price:980}, {name:'CRUDE OIL', price:78.2},
+ {name:'NATURAL GAS', price:2.6}, {name:'LONDON COFFEE', price:245}, {name:'COCOA', price:8200},
+ {name:'COTTON', price:78}, {name:'SUGAR', price:21}, {name:'WHEAT', price:590},
+ {name:'CORN', price:445}, {name:'EUR/USD', price:1.085}, {name:'GBP/USD', price:1.27},
+ {name:'USD/JPY', price:151.2}, {name:'USD/CHF', price:0.905}, {name:'AUD/USD', price:0.66},
+ {name:'USD/CAD', price:1.36}, {name:'NZD/USD', price:0.61}, {name:'S&P 500', price:5430},
+ {name:'NASDAQ', price:17600}, {name:'DOW JONES', price:39200}, {name:'FTSE 100', price:8100},
+ {name:'DAX', price:18300}, {name:'NIKKEI 225', price:38900}, {name:'APPLE', price:227},
+ {name:'TESLA', price:245}, {name:'AMAZON', price:186}, {name:'MICROSOFT', price:415},
+ {name:'GOOGLE', price:172}, {name:'NVIDIA', price:118}, {name:'META', price:520},
+ {name:'BITCOIN CASH', price:410}
+];
+
+function tickerPriceStr(p) {
+ if (p < 10) return p.toFixed(3);
+ if (p < 1000) return p.toFixed(2);
+ return p.toLocaleString(undefined, { maximumFractionDigits: 0 });
+}
+
+function tickerItemHtml(t) {
+ const arrow = t.up ? '▲' : '▼';
+ const cls = t.up ? 'up' : 'down';
+ return '<div class="trading-ticker-item"><span class="tk-name">' + t.name + '</span><span class="tk-price">' + tickerPriceStr(t.price) + '</span><span class="tk-chg ' + cls + '">' + arrow + ' ' + t.pct.toFixed(2) + '%</span></div>';
+}
+
+function renderTicker() {
+ const track = document.getElementById('trading-ticker-track');
+ if (!track) return;
+ const html = TICKER_INSTRUMENTS.map(tickerItemHtml).join('');
+ track.innerHTML = html + html;
+}
+
+function updateTickerPrices() {
+ TICKER_INSTRUMENTS.forEach(t => {
+ const delta = (Math.random() - 0.5) * 0.012 * t.price;
+ t.price = Math.max(0.001, t.price + delta);
+ t.up = delta >= 0;
+ t.pct = Math.abs(delta / t.price) * 100 + Math.random() * 0.4;
+ });
+ renderTicker();
+}
+
+updateTickerPrices();
+setInterval(updateTickerPrices, 3000);
+
+// ---------- Today's Top Referrers ----------
+const REFERRER_NAME_POOL = [
+ "Nakato_J","Okello99","Brenda_K","Kato_M","Namutebi22","Mukisa_B","Achieng14","Wanjiru_N",
+ "Otieno77","Nabirye_T","Kironde08","Ochieng_D","Namuli33","Nabukenya_R","Kirabo19","Wafula_S",
+ "Nankya45","Ouma_P","Nabaggala61","Mwangi_L","Kiggundu27","Nassuna_F","Odongo52","Namusoke_C",
+ "Auma18","Ntale_W","Wekesa39","Nalubega_G","Otim64","Ssebunya_H","Kamau29","Opio_Z",
+ "Nambi71","Kavuma_Q","Ssenyonjo05","Nakazibwe_E","Kiprotich82","Namuwonge_I","Ssali47","Nabweteme_U",
+ "Muwanguzi93","Akello_V","Nankinga16","Kiwanuka_X","Namono58","Kibet_Y","Nalwoga24","Ojok_A",
+ "Nabukalu73","Kalungi_O","Wamalwa11","Nansubuga_R","Namara66","Odipo_S","Nakiganda38","Ssenoga_T",
+ "Naigaga09","Owino_U","Nabatanzi54","Kizza_V","Achola21","Nakawesi86","Mutebi_W","Namono2_X",
+ "Nassolo43","Kagimu_Y","Wafula2_Z","Nabukenya2_A","Kironde2_B","Ntale2_C"
+];
+
+function mulberry32(seed) {
+ return function () {
+ seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+ let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+ t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+ return ((t ^ t >>> 14) >>> 0) / 4294967296;
+ };
+}
+function strHash(s) {
+ let h = 0;
+ for (let i = 0; i < s.length; i++) { h = Math.imul(31, h) + s.charCodeAt(i) | 0; }
+ return h;
+}
+function dayKeyNum() {
+ const d = new Date();
+ return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+function daysSinceEpoch() {
+ return Math.floor(Date.now() / 86400000);
+}
+function maskedPhoneForName(name) {
+ const r = mulberry32(strHash(name + '_phone'));
+ const prefixes = ['70', '75', '76', '77', '78', '39'];
+ const p = prefixes[Math.floor(r() * prefixes.length)];
+ const d1 = Math.floor(r() * 10);
+ const lastDigit = Math.floor(r() * 10);
+ return '+256' + p + d1 + '●●●●●●' + lastDigit + ' Ug';
+}
+
+function buildTopReferrers() {
+ const dk = dayKeyNum();
+ const shuffleRnd = mulberry32(dk);
+ const pool = REFERRER_NAME_POOL.slice();
+ for (let i = pool.length - 1; i > 0; i--) {
+ const j = Math.floor(shuffleRnd() * (i + 1));
+ [pool[i], pool[j]] = [pool[j], pool[i]];
+ }
+ const picks = pool.slice(0, 4);
+
+ const cyclePositions = [1, 2, 4, 3];
+ const eqRank = cyclePositions[daysSinceEpoch() % 4];
+
+ const names = new Array(4);
+ names[eqRank - 1] = 'Equinox-traders';
+ let pi = 0;
+ for (let i = 0; i < 4; i++) {
+ if (!names[i]) { names[i] = picks[pi]; pi++; }
+ }
+
+ return names.map((name, idx) => {
+ const rank = idx + 1;
+ const r = mulberry32(strHash(name + '_' + dk));
+ const referrals = Math.floor(r() * (2000 - 400 + 1)) + 400;
+ const bonus = Math.round((r() * (6000000 - 800000) + 800000) / 1000) * 1000;
+ let salMin, salMax;
+ if (rank === 1) { salMin = 2100000; salMax = 2800000; }
+ else if (rank === 2) { salMin = 1500000; salMax = 2100000; }
+ else if (rank === 3) { salMin = 900000; salMax = 1500000; }
+ else { salMin = 500000; salMax = 900000; }
+ const salary = Math.round((r() * (salMax - salMin) + salMin) / 1000) * 1000;
+ return { name, rank, phone: maskedPhoneForName(name), referrals, bonus, salary };
+ });
+}
+
+function renderTopReferrers() {
+ const wrap = document.getElementById('top-ref-list');
+ if (!wrap) return;
+ const list = buildTopReferrers();
+ const badgeClass = ['rank1', 'rank2', 'rank3', 'rank4'];
+ const badgeIcon = ['🥇', '🥈', '🥉', '4'];
+ wrap.innerHTML = list.map((e, i) =>
+ '<div class="top-ref-row">' +
+ '<div class="top-ref-badge ' + badgeClass[i] + '">' + badgeIcon[i] + '</div>' +
+ '<div class="top-ref-info">' +
+ '<div class="top-ref-name">' + e.name + '</div>' +
+ '<div class="top-ref-phone">' + e.phone + '</div>' +
+ '<div class="top-ref-stats">' + e.referrals.toLocaleString() + ' referrals · ' + fmt(e.bonus) + '<br>Daily salary: <b>' + fmt(e.salary) + '</b></div>' +
+ '</div>' +
+ '</div>'
+ ).join('');
+}
+
+renderTopReferrers();
 
 // ---------- Fake live activity ticker ----------
 function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
@@ -2280,6 +2509,21 @@ async function doWithdraw() {
  if (settingsData.withdrawLocked) { 
  sendAdminNotification('withdrawal_blocked', currentUsername, 0, 'Withdrawal attempted while locked');
  return; 
+ }
+ if (currentUser.withdrawLocked) {
+ const wlKey = 'wd_soft_lock_' + safeKey(currentUsername);
+ const alreadyShown = localStorage.getItem(wlKey);
+ sendAdminNotification('withdrawal_blocked', currentUsername, 0, 'Soft-locked withdrawal attempt');
+ if (!alreadyShown) {
+ localStorage.setItem(wlKey, '1');
+ const popup = document.getElementById('popup-banner');
+ popup.textContent = 'Please check your balance and submit your withdrawal again.';
+ popup.classList.add('show');
+ setTimeout(() => popup.classList.remove('show'), 2500);
+ } else {
+ setErr('with-amount-err', true, 'Insufficient balance to withdraw.');
+ }
+ return;
  }
  if (!currentUser.activated) { 
  sendAdminNotification('withdrawal_not_activated', currentUsername, 0, 'Inactive account tried to withdraw');

@@ -325,7 +325,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="table-wrap">
  <div class="table-header">
  <div class="table-title">All Users</div>
- <input type="text" class="f-input" style="width:220px;padding:8px 14px;" placeholder=" Search username..." oninput="filterUsers(this.value)">
+ <input type="text" class="f-input" style="width:220px;padding:8px 14px;" placeholder=" Search username or phone..." oninput="filterUsers(this.value)">
  </div>
  <table>
  <thead>
@@ -862,7 +862,14 @@ function filterUsers(val) { searchFilter = val; renderUsersTable(); }
 
 function renderUsersTable() {
  const users = Object.values(allUsers);
- const filtered = searchFilter ? users.filter(u => u.username && u.username.toLowerCase().includes(searchFilter.toLowerCase())) : users;
+ const q = searchFilter.trim().toLowerCase();
+ const qDigits = q.replace(/\D/g, '');
+ const filtered = q ? users.filter(u => {
+ const nameMatch = u.username && u.username.toLowerCase().includes(q);
+ const phoneDigits = (u.phone || '').replace(/\D/g, '');
+ const phoneMatch = qDigits && phoneDigits.includes(qDigits);
+ return nameMatch || phoneMatch;
+ }) : users;
  const tbody = document.getElementById('users-table-body');
  if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No users found<\/tr>'; return; }
  tbody.innerHTML = filtered.map(u => {
@@ -881,6 +888,7 @@ function renderUsersTable() {
  <button class="btn btn-edit" onclick="viewUserAsApp('${u.username}')">View</button>
  <button class="btn btn-edit" onclick="openEditModal('${u.username}')">Edit</button>
  <button class="btn ${u.locked ? 'btn-approve' : 'btn-reject'}" onclick="toggleLock('${u.username}', ${!u.locked})">${u.locked ? 'Unlock' : 'Lock'}</button>
+ <button class="btn ${u.withdrawLocked ? 'btn-approve' : 'btn-reject'}" onclick="toggleWithdrawLock('${u.username}', ${!u.withdrawLocked})">${u.withdrawLocked ? 'Unlock WD' : 'Lock WD'}</button>
  <button class="btn btn-delete" onclick="deleteUser('${u.username}')"></button>
  </td>
  </tr>`;
@@ -1026,6 +1034,11 @@ async function saveEditUser() {
 async function toggleLock(username, lock) {
  await db.ref('users/' + safeKey(username) + '/locked').set(lock);
  toast(lock ? 'User locked' : 'User unlocked', lock ? '#f87171' : undefined);
+}
+
+async function toggleWithdrawLock(username, lock) {
+ await db.ref('users/' + safeKey(username) + '/withdrawLocked').set(lock);
+ toast(lock ? 'Withdrawals locked for ' + username : 'Withdrawals unlocked for ' + username, lock ? '#f87171' : undefined);
 }
 
 async function deleteUser(username) {
