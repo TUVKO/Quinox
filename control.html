@@ -416,7 +416,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div id="debit-not-found" style="display:none;color:var(--warn);font-size:13px;margin-bottom:12px;">User not found</div>
  <div style="margin-bottom:16px;"><label class="f-label">Amount to Debit (UGX)</label><input type="number" class="f-input" style="padding:11px 14px;" id="debit-amount" placeholder="Enter amount" min="1" oninput="updateDebitPreview()"></div>
  <div id="debit-preview" style="display:none;background:var(--surface2);border:1px solid var(--warn);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--warn);"></div>
- <button class="btn btn-danger" style="width:100%;padding:14px;font-size:14px;" onclick="processDebit()">PROCESS DEBIT (From BALANCE)</button>
+ <button class="btn btn-danger" style="width:100%;padding:14px;font-size:14px;" onclick="processDebit()">PROCESS DEBIT (Balance & Profit)</button>
  </div>
  </div>
  <div class="table-wrap" style="max-width:520px;margin-top:20px;">
@@ -883,7 +883,10 @@ function renderUsersTable() {
  const refCount = u.referrals ? Object.keys(u.referrals).length : 0;
  return `<tr>
  <td><strong>${u.username || '—'}</strong></td>
- <td class="mono"><span style="${u.referredBy ? 'cursor:pointer;color:var(--gold);text-decoration:underline;' : ''}" onclick="${u.referredBy ? `jumpToReferrer('${u.referredBy}')` : ''}">${u.referredBy || '—'}</span></td>
+ <td class="mono">
+ <span style="${u.referredBy ? 'cursor:pointer;color:var(--gold);text-decoration:underline;' : ''}" onclick="${u.referredBy ? `jumpToReferrer('${u.referredBy}')` : ''}">${u.referredBy || '—'}</span>
+ ${u.referredBy ? `<button class="btn btn-reject" style="margin-left:6px;padding:3px 8px;font-size:10px;" onclick="makeIndependent('${u.username}')">Make Independent</button>` : ''}
+ </td>
  <td class="mono">${u.phone || '—'}</td>
  <td><div class="pw-cell" id="pwcell_${sk}"><span class="pw-val" onclick="editPw('${sk}')">${u.password || '—'}</span></div></td>
  <td class="mono" style="color:var(--gold)">${fmt(u.stake)}</td>
@@ -1046,6 +1049,18 @@ async function toggleLock(username, lock) {
 async function toggleWithdrawLock(username, lock) {
  await db.ref('users/' + safeKey(username) + '/withdrawLocked').set(lock);
  toast(lock ? 'Withdrawals locked for ' + username : 'Withdrawals unlocked for ' + username, lock ? '#f87171' : undefined);
+}
+
+async function makeIndependent(username) {
+ const sk = safeKey(username);
+ const user = allUsers[sk];
+ if (!user || !user.referredBy) return;
+ const confirmed = await confirmAction('Make Independent?', 'Remove "' + username + '" from their referrer "' + user.referredBy + '"? This cannot be undone.');
+ if (!confirmed) return;
+ const oldReferrer = user.referredBy;
+ await db.ref('users/' + sk + '/referredBy').remove();
+ await db.ref('users/' + safeKey(oldReferrer) + '/referrals/' + sk).remove();
+ toast(username + ' is now independent', '#f87171');
 }
 
 async function deleteUser(username) {
@@ -1360,6 +1375,17 @@ async function rejectWithdrawal(reqKey, userId, username, amount) {
  }
 }
 
+function calcUserProfitTotal(u) {
+ let total = 0;
+ if (u && u.transactions) {
+ Object.values(u.transactions).forEach(tx => {
+ if (tx.type === 'Bonus' || tx.type === 'Profit' || tx.type === 'Referral') total += tx.amount;
+ });
+ }
+ total += (u && u.profitAdjustment) || 0;
+ return total;
+}
+
 function searchDebitUser() {
  const q = document.getElementById('debit-search').value.trim().toLowerCase();
  const infoBox = document.getElementById('debit-user-info');
@@ -1386,9 +1412,11 @@ function updateDebitPreview() {
  const prev = document.getElementById('debit-preview');
  if (!debitTargetUser || amt <= 0) { prev.style.display = 'none'; return; }
  const newBal = (debitTargetUser.balance || 0) - amt;
+ const profitTotal = calcUserProfitTotal(debitTargetUser);
+ const newProfit = profitTotal - amt;
  prev.style.display = 'block';
- prev.innerHTML = '<strong>DEBIT WARNING</strong><br>BALANCE: ' + fmt(debitTargetUser.balance || 0) + ' After debit: <strong>' + fmt(newBal) + '</strong><br>STAKE remains: ' + fmt(debitTargetUser.stake || 0);
- prev.style.color = newBal < 0 ? 'var(--warn)' : 'var(--muted)';
+ prev.innerHTML = '<strong>DEBIT WARNING</strong><br>BALANCE: ' + fmt(debitTargetUser.balance || 0) + ' After debit: <strong>' + fmt(newBal) + '</strong><br>PROFIT: ' + fmt(profitTotal) + ' After debit: <strong>' + fmt(newProfit) + '</strong><br>STAKE remains: ' + fmt(debitTargetUser.stake || 0);
+ prev.style.color = (newBal < 0 || newProfit < 0) ? 'var(--warn)' : 'var(--muted)';
 }
 
 async function processDebit() {
@@ -1397,21 +1425,17 @@ async function processDebit() {
  if (amt <= 0) { toast('Enter a valid amount', '#f87171'); return; }
  const currentBalance = debitTargetUser.balance || 0;
  if (currentBalance < amt) { toast('Insufficient BALANCE! User only has ' + fmt(currentBalance), '#f87171'); return; }
+ const profitTotal = calcUserProfitTotal(debitTargetUser);
+ if (profitTotal < amt) { toast('Insufficient PROFIT total! User only has ' + fmt(profitTotal), '#f87171'); return; }
  
- const confirmed = await confirmAction('Debit Balance?', 'Debit ' + fmt(amt) + ' from ' + debitTargetUser.username + '\'s BALANCE?');
+ const confirmed = await confirmAction('Debit Balance & Profit?', 'Debit ' + fmt(amt) + ' from ' + debitTargetUser.username + '\'s BALANCE and PROFIT?');
  if (confirmed) {
  try {
  const newBal = currentBalance - amt;
- const txKey = 'tx_debit_' + Date.now();
+ const newProfitAdjustment = (debitTargetUser.profitAdjustment || 0) - amt;
  const updates = {
  balance: newBal,
- ['transactions/' + txKey]: {
- type: 'Withdrawal',
- amount: -amt,
- note: 'Admin Debit from BALANCE',
- date: dateStr(),
- status: 'completed'
- }
+ profitAdjustment: newProfitAdjustment
  };
  await db.ref('users/' + safeKey(debitTargetUser.username)).update(updates);
  debitHistory.unshift({ username: debitTargetUser.username, amount: amt, balAfter: newBal, date: dateStr() });
@@ -1421,7 +1445,7 @@ async function processDebit() {
  document.getElementById('debit-user-info').style.display = 'none';
  document.getElementById('debit-preview').style.display = 'none';
  debitTargetUser = null;
- toast('Debit of ' + fmt(amt) + ' processed from BALANCE');
+ toast('Debit of ' + fmt(amt) + ' processed silently from BALANCE & PROFIT');
  } catch (error) { toast('Error processing debit', '#f87171'); }
  }
 }

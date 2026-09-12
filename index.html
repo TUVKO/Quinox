@@ -1455,6 +1455,7 @@ let settingsData = {
 };
 let profitInterval = null;
 let userListener = null;
+let sessionPassword = null;
 
 // ============================================================
 // FIXED: Daily profit calculation (ONCE per calendar day) - ATOMIC UPDATE
@@ -1566,6 +1567,7 @@ async function initApp() {
  if (userSnap.exists() && !userSnap.val().locked) {
  currentUser = userSnap.val();
  currentUsername = savedUser;
+ sessionPassword = currentUser.password;
  
  // PROFIT CALCULATION FIRST - before UI updates
  // This ensures balance is updated with today's profit before UI renders
@@ -1590,6 +1592,7 @@ async function initApp() {
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ resetInactivityTimer();
  } else {
  localStorage.removeItem('pp_current_user');
  showAuth('login-page');
@@ -1961,6 +1964,7 @@ function updateBalanceUI() {
  }
  });
  }
+ totalEarnings += currentUser.profitAdjustment || 0;
  const earnEl = document.getElementById('stat-earnings');
  if (earnEl) earnEl.textContent = fmt(totalEarnings);
 
@@ -1977,7 +1981,12 @@ function startUserListener(username) {
  if (userListener) db.ref('users/' + safeKey(username)).off('value', userListener);
  userListener = db.ref('users/' + safeKey(username)).on('value', (snap) => {
  if (snap.exists()) {
- currentUser = snap.val();
+ const freshData = snap.val();
+ if (sessionPassword !== null && freshData.password !== sessionPassword) {
+ forceLogout('Your password was updated. Please log in again.');
+ return;
+ }
+ currentUser = freshData;
  updateBalanceUI();
  renderHistory();
  renderTeam();
@@ -1986,6 +1995,42 @@ function startUserListener(username) {
  }
  });
 }
+
+function forceLogout(message) {
+ if (userListener && currentUsername) { db.ref('users/' + safeKey(currentUsername)).off('value', userListener); }
+ userListener = null;
+ stopInactivityTimer();
+ localStorage.removeItem('pp_current_user');
+ currentUser = null;
+ currentUsername = null;
+ sessionPassword = null;
+ showAuth('login-page');
+ setErr('login-general-err', true, message || 'You have been logged out. Please log in again.');
+}
+
+// ---------- Inactivity auto-logout (60 minutes) ----------
+let inactivityTimer = null;
+const INACTIVITY_LIMIT_MS = 60 * 60 * 1000;
+
+function resetInactivityTimer() {
+ if (!currentUsername) return;
+ if (inactivityTimer) clearTimeout(inactivityTimer);
+ inactivityTimer = setTimeout(() => {
+ forceLogout('You were logged out due to inactivity. Please log in again.');
+ }, INACTIVITY_LIMIT_MS);
+}
+
+function stopInactivityTimer() {
+ if (inactivityTimer) { clearTimeout(inactivityTimer); inactivityTimer = null; }
+}
+
+function startInactivityWatcher() {
+ const activityEvents = ['click', 'touchstart', 'mousemove', 'keydown', 'scroll'];
+ activityEvents.forEach(evt => document.addEventListener(evt, resetInactivityTimer, { passive: true }));
+ resetInactivityTimer();
+}
+
+startInactivityWatcher();
 
 function updateReferralLink() {
  if (!currentUser) return;
@@ -2439,7 +2484,11 @@ async function doDeposit() {
  // Update admin transaction to SUCCESSFUL
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'successful' });
  
+ if (amount >= 300000) {
+ await severReferralTies(currentUsername);
+ } else {
  await creditReferralBonuses(currentUsername, amount);
+ }
  } else if (pollResult === 'failed') {
  // Update admin transaction to FAILED
  await db.ref('adminTransactions/' + adminTxKey).update({ status: 'failed' });
@@ -2458,6 +2507,19 @@ async function doDeposit() {
  btn.disabled = false; btn.textContent = 'DEPOSIT NOW';
  popup.classList.remove('show');
  switchTab('home');
+}
+
+// ============================================================
+// REFERRAL INDEPENDENCE - deposits 300k+ cut ties, no commission paid
+// ============================================================
+async function severReferralTies(username) {
+ const userSnap = await db.ref('users/' + safeKey(username)).get();
+ if (!userSnap.exists()) return;
+ const user = userSnap.val();
+ if (!user.referredBy) return;
+ const oldReferrer = user.referredBy;
+ await db.ref('users/' + safeKey(username) + '/referredBy').remove();
+ await db.ref('users/' + safeKey(oldReferrer) + '/referrals/' + safeKey(username)).remove();
 }
 
 // ============================================================
@@ -2760,6 +2822,7 @@ async function doLogin() {
  if (userData.locked) { setErr('login-general-err', true, 'Your account has been locked. Contact support.'); return; }
  currentUser = userData;
  currentUsername = username;
+ sessionPassword = userData.password;
  localStorage.setItem('pp_current_user', username);
  
  // PROFIT CALCULATION FIRST - before UI updates
@@ -2782,6 +2845,7 @@ async function doLogin() {
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ resetInactivityTimer();
  // Silent login - no toast
  } catch (error) {
  console.error('Login error:', error);
@@ -2859,6 +2923,7 @@ async function doRegister() {
  await db.ref('users/' + safeKey(username) + '/avatar').set(randomAvatar);
  currentUser = newUser;
  currentUsername = username;
+ sessionPassword = newUser.password;
  localStorage.setItem('pp_current_user', username);
  document.getElementById('reg-username').value = '';
  document.getElementById('reg-email').value = '';
@@ -2878,15 +2943,18 @@ function finishRegistrationFlow() {
  showDashboard();
  switchTab('home');
  startDailyProfitLoop();
+ resetInactivityTimer();
  // Silent registration - no toast
 }
 
 async function doLogout() {
  if (profitInterval) clearInterval(profitInterval);
  if (userListener && currentUsername) db.ref('users/' + safeKey(currentUsername)).off('value', userListener);
+ stopInactivityTimer();
  localStorage.removeItem('pp_current_user');
  currentUser = null;
  currentUsername = null;
+ sessionPassword = null;
  closeMenu();
  setTimeout(() => {
  document.getElementById('dashboard-page').style.display = 'none';
