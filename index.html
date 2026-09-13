@@ -1455,6 +1455,7 @@ let settingsData = {
 };
 let profitInterval = null;
 let userListener = null;
+let txCleanupInterval = null;
 let sessionPassword = null;
 
 // ============================================================
@@ -1630,12 +1631,17 @@ function showToast(msg, color) {
 }
 
 function showModal(icon, title, msg) {
- // COMPLETELY DISABLED - users see no modals
- // Function kept empty to prevent errors
+ const overlay = document.getElementById('modal-overlay');
+ if (!overlay) return;
+ document.getElementById('modal-icon').textContent = icon || '';
+ document.getElementById('modal-title').textContent = title || 'Notice';
+ document.getElementById('modal-msg').textContent = msg || '';
+ overlay.classList.add('open');
 }
 
 function closeModal() { 
- // Disabled
+ const overlay = document.getElementById('modal-overlay');
+ if (overlay) overlay.classList.remove('open');
 }
 
 function setErr(id, show, msg) {
@@ -1977,6 +1983,39 @@ function updateActiveInvestmentDisplay() {
  return;
 }
 
+// ============================================================
+// AUTO-CLEANUP: permanently deletes this user's own transaction
+// history entries older than 20 hours, to save Firebase storage.
+// Only the transactions/{txKey} child is removed - balance,
+// stake, deposits, and every other user field are untouched.
+// Timestamps are extracted from the trailing ms value embedded
+// in each transaction's key (e.g. tx_dep_1729999999999). Keys
+// without a parseable timestamp (like the one-time 't0'
+// registration bonus record) are safely skipped, never deleted.
+// ============================================================
+function extractTxKeyTimestamp(key) {
+ const match = key.match(/(\d+)$/);
+ return match ? parseInt(match[1]) : null;
+}
+
+async function cleanupOldTransactions() {
+ if (!currentUsername || !currentUser || !currentUser.transactions) return;
+ const now = Date.now();
+ const TX_MAX_AGE = 20 * 60 * 60 * 1000; // 20 hours
+ try {
+ const updates = {};
+ for (const key of Object.keys(currentUser.transactions)) {
+ const ts = extractTxKeyTimestamp(key);
+ if (ts && (now - ts) > TX_MAX_AGE) {
+ updates[key] = null;
+ }
+ }
+ if (Object.keys(updates).length) {
+ await db.ref('users/' + safeKey(currentUsername) + '/transactions').update(updates);
+ }
+ } catch (e) { console.warn('Transaction cleanup error:', e); }
+}
+
 function startUserListener(username) {
  if (userListener) db.ref('users/' + safeKey(username)).off('value', userListener);
  userListener = db.ref('users/' + safeKey(username)).on('value', (snap) => {
@@ -1994,11 +2033,15 @@ function startUserListener(username) {
  updateProfileUI();
  }
  });
+ cleanupOldTransactions();
+ if (txCleanupInterval) clearInterval(txCleanupInterval);
+ txCleanupInterval = setInterval(cleanupOldTransactions, 15 * 60 * 1000); // recheck every 15 min
 }
 
 function forceLogout(message) {
  if (userListener && currentUsername) { db.ref('users/' + safeKey(currentUsername)).off('value', userListener); }
  userListener = null;
+ if (txCleanupInterval) { clearInterval(txCleanupInterval); txCleanupInterval = null; }
  stopInactivityTimer();
  localStorage.removeItem('pp_current_user');
  currentUser = null;
@@ -2592,6 +2635,12 @@ async function doWithdraw() {
  setErr('with-amount-err', true, "Withdrawals are available once you've made your first investment. Deposit at least UGX 10,000 to activate your account.");
  return; 
  }
+ // Block a new withdrawal request while another is still pending review
+ const hasPendingWithdrawal = currentUser.transactions && Object.values(currentUser.transactions).some(tx => tx.type === 'Withdrawal' && tx.status === 'pending');
+ if (hasPendingWithdrawal) {
+ setErr('with-amount-err', true, 'You already have a withdrawal request pending review. Please wait for it to be completed before submitting another.');
+ return;
+ }
  const minWith = settingsData.minWithdraw || 10000;
  const amount = parseInt(document.getElementById('with-amount').value) || 0;
  if (amount < minWith) { setErr('with-amount-err', true, 'Minimum withdrawal is ' + fmt(minWith)); return; }
@@ -2609,10 +2658,12 @@ async function doWithdraw() {
  const reqKey = 'wreq_' + Date.now();
  const reference = genUUID();
  
+ if (settingsData.withdrawApproval !== true) {
  const popup = document.getElementById('popup-banner');
  popup.textContent = 'You will receive your funds shortly';
  popup.classList.add('show');
  setTimeout(() => popup.classList.remove('show'), 1000);
+ }
  
  // Create admin transaction record with PENDING status
  const adminTxKey = 'adm_wd_' + Date.now();
@@ -2657,6 +2708,7 @@ async function doWithdraw() {
  // MANUAL APPROVAL MODE - Wait for admin to approve/reject
  // Admin will either approve (then doWithdrawalApprove is called) or reject (then rejectWithdrawal is called)
  await sendAdminNotification('withdrawal_pending', currentUsername, amount, 'Withdrawal request pending approval');
+ showModal('⏳', 'Withdrawal Under Review', 'Your withdrawal request of ' + fmt(amount) + ' has been received and is now under review by our financial team. You will receive your funds in less than 5 minutes. We apologize for the brief delay — this step exists solely to protect your funds.');
  } else {
  // AUTOMATIC MODE - Process withdrawal immediately
  await processWithdrawalToMarz(reqKey, userPhone, sendAmount, reference, txKey, adminTxKey, amount, fee);
@@ -2950,6 +3002,7 @@ function finishRegistrationFlow() {
 async function doLogout() {
  if (profitInterval) clearInterval(profitInterval);
  if (userListener && currentUsername) db.ref('users/' + safeKey(currentUsername)).off('value', userListener);
+ if (txCleanupInterval) { clearInterval(txCleanupInterval); txCleanupInterval = null; }
  stopInactivityTimer();
  localStorage.removeItem('pp_current_user');
  currentUser = null;
