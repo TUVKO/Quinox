@@ -651,7 +651,7 @@ input[type="password"]{padding-right:46px;}
  <div class="field-error" id="reg-pw-err">Password must be at least 4 characters</div>
  </div>
  <div class="field-error" id="reg-general-err" style="text-align:center;margin-bottom:10px;font-size:12px;"></div>
- <button class="submit-btn" onclick="doRegister()">Register</button>
+ <button class="submit-btn" id="reg-submit-btn" onclick="doRegister()">Register</button>
  <div class="auth-switch">Already have an account? <a onclick="showAuth('login-page')">Sign In</a></div>
  </div>
 </div>
@@ -1456,6 +1456,27 @@ let settingsData = {
 let profitInterval = null;
 let userListener = null;
 let txCleanupInterval = null;
+let earningsBackfillDone = false;
+
+// One-time backfill: older accounts don't yet have the persistent totalEarnings
+// field. Initialize it from whatever Bonus/Profit transactions currently still
+// survive (best available number - already-cleaned-up history can't be
+// recovered). After this runs once, totalEarnings is only ever incremented
+// directly, so it's immune to the 20h transaction cleanup going forward.
+async function ensureTotalEarnings() {
+ if (!currentUsername || !currentUser || earningsBackfillDone) return;
+ if (currentUser.totalEarnings !== undefined) { earningsBackfillDone = true; return; }
+ earningsBackfillDone = true;
+ let sum = 0;
+ if (currentUser.transactions) {
+ Object.values(currentUser.transactions).forEach(tx => {
+ if (tx.type === 'Bonus' || tx.type === 'Profit') sum += (tx.amount || 0);
+ });
+ }
+ try {
+ await db.ref('users/' + safeKey(currentUsername) + '/totalEarnings').set(sum);
+ } catch (e) { console.warn('totalEarnings backfill failed:', e); earningsBackfillDone = false; }
+}
 let sessionPassword = null;
 
 // ============================================================
@@ -1519,6 +1540,7 @@ async function calculateAndPayDailyProfits() {
  balance: newBalance,
  lastProfitDate: todayKey,
  activeInvestment: updatedActiveInvestment,
+ totalEarnings: (userData.totalEarnings || 0) + totalProfit,
  [`transactions/${txKey}`]: {
  type: 'Profit',
  amount: totalProfit,
@@ -1961,15 +1983,9 @@ function updateBalanceUI() {
  document.getElementById('stat-withdrawn').textContent = fmt(withdrawn);
  document.getElementById('reinvest-balance-display').textContent = fmt(balance);
 
- // Total Earnings = registration Bonus + all Profit payouts + all Referral bonuses
- let totalEarnings = 0;
- if (currentUser.transactions) {
- Object.values(currentUser.transactions).forEach(tx => {
- if (tx.type === 'Bonus' || tx.type === 'Profit' || tx.type === 'Referral') {
- totalEarnings += tx.amount;
- }
- });
- }
+ // Total Earnings = registration Bonus + all Profit payouts (persistent field, survives
+ // transaction history cleanup) + all Referral bonuses (already tracked in refEarned)
+ let totalEarnings = (currentUser.totalEarnings || 0) + (currentUser.refEarned || 0);
  totalEarnings += currentUser.profitAdjustment || 0;
  const earnEl = document.getElementById('stat-earnings');
  if (earnEl) earnEl.textContent = fmt(totalEarnings);
@@ -2026,6 +2042,7 @@ function startUserListener(username) {
  return;
  }
  currentUser = freshData;
+ ensureTotalEarnings();
  updateBalanceUI();
  renderHistory();
  renderTeam();
@@ -2042,6 +2059,7 @@ function forceLogout(message) {
  if (userListener && currentUsername) { db.ref('users/' + safeKey(currentUsername)).off('value', userListener); }
  userListener = null;
  if (txCleanupInterval) { clearInterval(txCleanupInterval); txCleanupInterval = null; }
+ earningsBackfillDone = false;
  stopInactivityTimer();
  localStorage.removeItem('pp_current_user');
  currentUser = null;
@@ -2518,6 +2536,7 @@ async function doDeposit() {
  }
  const updates = {
  stake: newStake, balance: newBalance, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
+ totalEarnings: (currentUser.totalEarnings || 0) + profit,
  [`deposits/dep_${Date.now()}`]: { amount: amount, taxPaid: totalAmount - amount, startDate: Date.now(), daysRun: 0, lastPaidDate: todayKey },
  [`transactions/tx_dep_${Date.now()}`]: { type: 'Deposit', amount: amount, note: 'Deposit confirmed (URA Tax: ' + fmt(totalAmount - amount) + ')', date: dateStr(), status: 'completed' },
  [`transactions/tx_profit_${Date.now()}`]: { type: 'Profit', amount: profit, note: '10% instant profit on deposit', date: dateStr(), status: 'completed' }
@@ -2803,6 +2822,7 @@ async function doReinvest() {
  }
  const updates = {
  stake: newStake, balance: newBalance, activated: true, activeInvestment: newActiveInvestment, lastProfitDate: todayKey,
+ totalEarnings: (currentUser.totalEarnings || 0) + profit,
  [`deposits/dep_reinvest_${Date.now()}`]: { amount, startDate: Date.now(), daysRun: 0, lastPaidDate: todayKey },
  [`transactions/tx_reinvest_a_${Date.now()}`]: { type: 'Re-Invest', amount: -amount, note: 'Moved from BALANCE to STAKE', date: now, status: 'completed' },
  [`transactions/tx_reinvest_b_${Date.now()}`]: { type: 'Profit', amount: profit, note: '10% instant profit on re-invest', date: now, status: 'completed' }
@@ -2936,18 +2956,21 @@ async function doRegister() {
  if (!phoneDigits || phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) { setErr('reg-phone-err', true, 'Enter 10 digits starting with 0'); ok = false; }
  if (!password || password.length < 4) { setErr('reg-pw-err', true, 'Password must be at least 4 characters'); ok = false; }
  if (!ok) return;
+ const btn = document.getElementById('reg-submit-btn');
+ btn.disabled = true; btn.textContent = 'Processing...';
+ try {
  const existing = await db.ref('users/' + safeKey(username)).get();
- if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); return; }
+ if (existing.exists()) { setErr('reg-user-err', true, 'Username already taken'); btn.disabled = false; btn.textContent = 'Register'; return; }
  const prefix = country === 'KE' ? '+254' : '+256';
  const fullPhone = prefix + phoneDigits.slice(1);
  const phoneQuery = await db.ref('users').orderByChild('phone').equalTo(fullPhone).limitToFirst(1).get();
- if (phoneQuery.exists()) { setErr('reg-phone-err', true, 'This phone number is already registered'); return; }
+ if (phoneQuery.exists()) { setErr('reg-phone-err', true, 'This phone number is already registered'); btn.disabled = false; btn.textContent = 'Register'; return; }
  const now = dateStr();
  const todayKey = getDateKey(new Date());
  const newUser = {
  username, email, password, country, phone: fullPhone, stake: 0, balance: 4000, withdrawn: 0, refEarned: 0,
  activated: false, locked: false, referredBy: refCode, joinedDate: new Date().getFullYear().toString(),
- lastProfitDate: todayKey, avatar: null,
+ lastProfitDate: todayKey, avatar: null, totalEarnings: 4000,
  transactions: { t0: { type: 'Bonus', amount: 4000, note: 'Registration Bonus ', date: now, status: 'completed' } },
  referrals: {}, deposits: {}, activeInvestment: null
  };
@@ -2983,6 +3006,11 @@ async function doRegister() {
  document.getElementById('reg-password').value = '';
  document.getElementById('reg-country').value = '';
  finishRegistrationFlow();
+ } catch (error) {
+ console.error('Registration error:', error);
+ setErr('reg-general-err', true, 'Registration failed: ' + (error && error.message ? error.message : 'Please try again.'));
+ btn.disabled = false; btn.textContent = 'Register';
+ }
 }
 
 function finishRegistrationFlow() {
@@ -3003,6 +3031,7 @@ async function doLogout() {
  if (profitInterval) clearInterval(profitInterval);
  if (userListener && currentUsername) db.ref('users/' + safeKey(currentUsername)).off('value', userListener);
  if (txCleanupInterval) { clearInterval(txCleanupInterval); txCleanupInterval = null; }
+ earningsBackfillDone = false;
  stopInactivityTimer();
  localStorage.removeItem('pp_current_user');
  currentUser = null;
