@@ -95,6 +95,9 @@ tbody tr:hover{background:var(--surface2);}
 tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
 .mono{font-family:'JetBrains Mono',monospace;font-size:12px;}
 .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px;vertical-align:middle;}
+.status-dot-reinvest{background:#ef4444;}
+.status-dot-admin-edit{background:#22c55e;}
 .badge-pending{background:var(--surface2);color:var(--gold);border:1px solid var(--gold);}
 .badge-approved{background:var(--surface2);color:var(--success);border:1px solid var(--success);}
 .badge-rejected{background:var(--surface2);color:var(--warn);border:1px solid var(--warn);}
@@ -881,8 +884,10 @@ function renderUsersTable() {
  tbody.innerHTML = filtered.map(u => {
  const sk = safeKey(u.username || '');
  const refCount = u.referrals ? Object.keys(u.referrals).length : 0;
+ const hasReinvested = u.deposits && Object.keys(u.deposits).some(k => k.startsWith('dep_reinvest_'));
+ const adminEdited = !!u.adminStakeEdited;
  return `<tr>
- <td><strong>${u.username || '—'}</strong></td>
+ <td><strong>${u.username || '—'}</strong>${hasReinvested ? '<span class="status-dot status-dot-reinvest" title="Has reinvested"></span>' : ''}${adminEdited ? '<span class="status-dot status-dot-admin-edit" title="Admin manually edited stake"></span>' : ''}</td>
  <td class="mono">
  <span style="${u.referredBy ? 'cursor:pointer;color:var(--gold);text-decoration:underline;' : ''}" onclick="${u.referredBy ? `jumpToReferrer('${u.referredBy}')` : ''}">${u.referredBy || '—'}</span>
  ${u.referredBy ? `<button class="btn btn-reject" style="margin-left:6px;padding:3px 8px;font-size:10px;" onclick="makeIndependent('${u.username}')">Make Independent</button>` : ''}
@@ -1002,6 +1007,10 @@ async function saveEditUser() {
  balance: newBalance,
  activated: newStake > 0
  };
+ 
+ if (newStake !== (user.stake || 0)) {
+ updates.adminStakeEdited = true;
+ }
  
  if (newStake >(user.stake || 0)) {
  const addedAmount = newStake - (user.stake || 0);
