@@ -174,7 +174,7 @@ input[type="password"]{padding-right:46px;}
 .welcome-greeting{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#9FD9B6;margin-bottom:2px;}
 .welcome-greeting span{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:#fff;text-transform:none;letter-spacing:0;display:block;margin-top:2px;}
 .welcome-copy-link{background:#D9A441;border:none;border-radius:10px;color:#0F3D24;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:800;letter-spacing:.2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 14px;width:100%;margin-top:14px;}
-.welcome-rank-badge{display:inline-block;margin-top:6px;padding:3px 12px;border-radius:20px;background:rgba(255,255,255,.12);color:#EFEAD8;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;}
+.welcome-rank-badge{display:inline-block;margin-top:6px;padding:3px 12px;border-radius:20px;background:#e11d1d;color:#ffffff;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;}
 .my-salary-btn{display:flex;align-items:center;gap:6px;background:#22c55e;color:#0b3d1f;border:none;border-radius:12px;padding:8px 14px;font-family:'Inter',sans-serif;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:10px;}
 .salary-detail-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:12.5px;}
 .salary-detail-row:last-child{border-bottom:none;}
@@ -523,6 +523,9 @@ input[type="password"]{padding-right:46px;}
 .salary-tiers-title{font-size:13px;font-weight:800;color:#EFEAD8;}
 .salary-tiers-sub{font-size:10px;color:#9FD9B6;}
 .salary-tier-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11.5px;}
+.salary-tier-left{display:flex;flex-direction:column;gap:2px;}
+.salary-tier-name{color:#EFEAD8;font-weight:800;font-size:12.5px;}
+.salary-tier-req{color:#9FD9B6;font-size:10px;}
 .salary-tier-row:last-child{border-bottom:none;}
 .salary-tier-members{color:#EFEAD8;font-weight:700;}
 .salary-tier-amt{color:#D9A441;font-weight:800;}
@@ -749,19 +752,7 @@ input[type="password"]{padding-right:46px;}
  <div class="section">
  <div class="salary-tiers-card">
  <div class="salary-tiers-header"><div class="salary-tiers-title">💵 Referral Salary Tiers</div><div class="salary-tiers-sub">Invite active members, unlock higher daily salary</div></div>
- <div class="salary-tier-row"><span class="salary-tier-members">20 members</span><span class="salary-tier-amt">UGX 5,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">40 members</span><span class="salary-tier-amt">UGX 11,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">60 members</span><span class="salary-tier-amt">UGX 18,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">100 members</span><span class="salary-tier-amt">UGX 32,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">150 members</span><span class="salary-tier-amt">UGX 55,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">200 members</span><span class="salary-tier-amt">UGX 80,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">300 members</span><span class="salary-tier-amt">UGX 130,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">400 members</span><span class="salary-tier-amt">UGX 190,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">500 members</span><span class="salary-tier-amt">UGX 260,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">700 members</span><span class="salary-tier-amt">UGX 400,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">1,000 members</span><span class="salary-tier-amt">UGX 650,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">1,500 members</span><span class="salary-tier-amt">UGX 1,100,000/day</span></div>
- <div class="salary-tier-row"><span class="salary-tier-members">2,000 members</span><span class="salary-tier-amt">UGX 1,800,000/day</span></div>
+ <div id="salary-tiers-list"></div>
  </div>
  </div>
  </div>
@@ -1203,6 +1194,7 @@ document.addEventListener('DOMContentLoaded', () => {
  if (isRunningStandalone()) {
  disableAppButton();
  }
+ renderSalaryTiersCard();
 });
 
 firebase.initializeApp(firebaseConfig);
@@ -1487,6 +1479,26 @@ const RANK_TIERS = [
  { name: 'Equinox Grand Ambassador', threshold: 400, basis: 'all', dailySalary: 2400000 }
 ];
 const REGULAR_INVESTOR_LABEL = 'Regular Investor';
+
+function basisLabel(basis) {
+ if (basis === 'l1') return 'Level 1 active referrals';
+ if (basis === 'l1l2') return 'Level 1 + 2 active referrals';
+ return 'active referrals (all levels)';
+}
+
+function renderSalaryTiersCard() {
+ const list = document.getElementById('salary-tiers-list');
+ if (!list) return;
+ list.innerHTML = RANK_TIERS.map(tier => `
+ <div class="salary-tier-row">
+ <div class="salary-tier-left">
+ <div class="salary-tier-name">${tier.name}</div>
+ <div class="salary-tier-req">${tier.threshold} ${basisLabel(tier.basis)}</div>
+ </div>
+ <span class="salary-tier-amt">UGX ${tier.dailySalary.toLocaleString()}/day</span>
+ </div>
+ `).join('');
+}
 
 function getRankName(rankIndex) {
  if (!rankIndex || rankIndex <= 0) return REGULAR_INVESTOR_LABEL;
