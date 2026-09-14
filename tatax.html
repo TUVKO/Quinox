@@ -290,6 +290,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="sidebar-nav">
  <div class="nav-item active" onclick="showPage('pg-dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
  <div class="nav-item" onclick="showPage('pg-users')"><span class="nav-icon">👥</span><span>Users</span></div>
+ <div class="nav-item" onclick="showPage('pg-positions')"><span class="nav-icon">🏅</span><span>Positions</span></div>
  <div class="nav-item" onclick="showPage('pg-tube')"><span class="nav-icon">📈</span><span>Investors</span></div>
  <div class="nav-item" onclick="showPage('pg-transactions')"><span class="nav-icon">💳</span><span>Transactions</span></div>
  <div class="nav-item" onclick="showPage('pg-withdrawals')"><span class="nav-icon">💸</span><span>Withdrawals</span><span class="nav-badge" id="withdrawals-nav-badge">0</span></div>
@@ -335,6 +336,23 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <tr><th>Username</th><th>Referred By</th><th>Phone</th><th>Password</th><th>STAKE</th><th>BALANCE</th><th>Withdrawn</th><th>Referrals</th><th>Status</th><th>Actions</th></tr>
  </thead>
  <tbody id="users-table-body"><tr class="empty-row"><td colspan="9">Loading...</td></tr></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- POSITIONS (Referral Salary Ranks) -->
+ <div class="page" id="pg-positions">
+ <div class="page-title">Positions</div>
+ <div class="page-sub">All users currently holding a paid referral salary position</div>
+ <div class="table-wrap">
+ <div class="table-header">
+ <div class="table-title">Position Holders</div>
+ </div>
+ <table>
+ <thead>
+ <tr><th>Username</th><th>Position</th><th>L1 Active</th><th>L2 Active</th><th>L3 Active</th><th>Total Active</th><th>Daily Salary</th><th>Actions</th></tr>
+ </thead>
+ <tbody id="positions-table-body"><tr class="empty-row"><td colspan="8">Loading...</td></tr></tbody>
  </table>
  </div>
  </div>
@@ -682,6 +700,34 @@ let allWithdrawals = {};
 let awHistory = [];
 let allAdminTransactions = {};
 
+// Mirrors RANK_TIERS in index.html - keep both in sync if tiers ever change
+const RANK_TIERS = [
+ { name: 'Local Coordinator', threshold: 10, basis: 'l1', dailySalary: 3000 },
+ { name: 'Area Coordinator', threshold: 20, basis: 'l1', dailySalary: 6000 },
+ { name: 'Zone Leader', threshold: 35, basis: 'l1', dailySalary: 11000 },
+ { name: 'Parish Chief', threshold: 50, basis: 'l1l2', dailySalary: 18000 },
+ { name: 'Sub-County Chief', threshold: 75, basis: 'l1l2', dailySalary: 40000 },
+ { name: 'County Coordinator', threshold: 100, basis: 'all', dailySalary: 65000 },
+ { name: 'District Officer', threshold: 130, basis: 'all', dailySalary: 95000 },
+ { name: 'District Chairperson', threshold: 160, basis: 'all', dailySalary: 135000 },
+ { name: 'Regional Coordinator', threshold: 200, basis: 'all', dailySalary: 190000 },
+ { name: 'Regional Minister', threshold: 250, basis: 'all', dailySalary: 260000 },
+ { name: 'Regional Governor', threshold: 280, basis: 'all', dailySalary: 350000 },
+ { name: 'Provincial Governor', threshold: 300, basis: 'all', dailySalary: 460000 },
+ { name: 'National Coordinator', threshold: 320, basis: 'all', dailySalary: 590000 },
+ { name: 'National Director', threshold: 335, basis: 'all', dailySalary: 740000 },
+ { name: 'National Minister', threshold: 350, basis: 'all', dailySalary: 920000 },
+ { name: 'Deputy Prime Minister', threshold: 365, basis: 'all', dailySalary: 1130000 },
+ { name: 'Prime Minister', threshold: 375, basis: 'all', dailySalary: 1380000 },
+ { name: 'Presidential Advisor', threshold: 385, basis: 'all', dailySalary: 1680000 },
+ { name: 'National Ambassador', threshold: 392, basis: 'all', dailySalary: 2020000 },
+ { name: 'Equinox Grand Ambassador', threshold: 400, basis: 'all', dailySalary: 2400000 }
+];
+function getRankName(rankIndex) {
+ if (!rankIndex || rankIndex <= 0) return 'Regular Investor';
+ return RANK_TIERS[rankIndex - 1] ? RANK_TIERS[rankIndex - 1].name : 'Regular Investor';
+}
+
 let usersUnsubscribe = null;
 let settingsUnsubscribe = null;
 let withdrawalsUnsubscribe = null;
@@ -704,6 +750,7 @@ function startRealtimeListeners() {
  allUsers = snap.val() || {};
  renderDashboard();
  renderUsersTable();
+ renderPositionsTable();
  renderTube();
  renderTransactions();
  });
@@ -908,6 +955,66 @@ function renderUsersTable() {
  </td>
  </tr>`;
  }).join('');
+}
+
+// ============================================================
+// POSITIONS (Referral Salary Ranks) - admin view + manual demote
+// ============================================================
+function computeActiveCountsFromAllUsers(user) {
+ const counts = { l1: 0, l2: 0, l3: 0 };
+ if (user && user.referrals) {
+ Object.values(user.referrals).forEach(r => {
+ if (!r || !r.username) return;
+ const refUser = allUsers[safeKey(r.username)];
+ if (refUser && refUser.activated === true) {
+ if (r.level === 1) counts.l1++;
+ else if (r.level === 2) counts.l2++;
+ else if (r.level === 3) counts.l3++;
+ }
+ });
+ }
+ return counts;
+}
+
+function renderPositionsTable() {
+ const tbody = document.getElementById('positions-table-body');
+ if (!tbody) return;
+ const rows = [];
+ Object.values(allUsers).forEach(u => {
+ if (!u) return;
+ const rank = u.currentRank || 0;
+ if (rank <= 0) return; // only show users who currently hold a paid position
+ const counts = computeActiveCountsFromAllUsers(u);
+ const total = counts.l1 + counts.l2 + counts.l3;
+ const salary = RANK_TIERS[rank - 1] ? RANK_TIERS[rank - 1].dailySalary : 0;
+ rows.push({ username: u.username, rank, rankName: getRankName(rank), counts, total, salary });
+ });
+ rows.sort((a, b) => b.rank - a.rank);
+ if (!rows.length) {
+ tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No users currently hold a paid position.</td></tr>';
+ return;
+ }
+ tbody.innerHTML = rows.map(r => `<tr>
+ <td><strong>${r.username}</strong></td>
+ <td>${r.rankName}</td>
+ <td class="mono">${r.counts.l1}</td>
+ <td class="mono">${r.counts.l2}</td>
+ <td class="mono">${r.counts.l3}</td>
+ <td class="mono">${r.total}</td>
+ <td class="mono" style="color:var(--success);font-weight:700">${fmt(r.salary)}</td>
+ <td><button class="btn btn-danger" onclick="demotePosition('${r.username}')">Demote</button></td>
+ </tr>`).join('');
+}
+
+async function demotePosition(username) {
+ const ok = await confirmAction('Demote User?', `This will drop ${username} one position down immediately.`);
+ if (!ok) return;
+ const sk = safeKey(username);
+ const user = allUsers[sk];
+ if (!user) return;
+ const newRank = Math.max(0, (user.currentRank || 0) - 1);
+ await db.ref('users/' + sk + '/currentRank').set(newRank);
+ toast(`${username} demoted to ${getRankName(newRank)}`, 'var(--success)');
 }
 
 function editPw(sk) {
@@ -2092,11 +2199,12 @@ function showPage(id) {
  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
- const map = { 'pg-dashboard': 0, 'pg-users': 1, 'pg-tube': 2, 'pg-transactions': 3, 'pg-withdrawals': 4, 'pg-debit': 5, 'pg-sog': 6, 'pg-settings': 7, 'pg-admin-withdraw': 8 };
+ const map = { 'pg-dashboard': 0, 'pg-users': 1, 'pg-positions': 2, 'pg-tube': 3, 'pg-transactions': 4, 'pg-withdrawals': 5, 'pg-debit': 6, 'pg-sog': 7, 'pg-settings': 8, 'pg-admin-withdraw': 9 };
  if (map[id] !== undefined) document.querySelectorAll('.nav-item')[map[id]].classList.add('active');
  if (id === 'pg-transactions') renderAdminTransactions();
  if (id === 'pg-withdrawals') renderWithdrawalsTable();
  if (id === 'pg-debit') renderDebitHistory();
+ if (id === 'pg-positions') renderPositionsTable();
 }
 
 function showTerms() { 
