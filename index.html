@@ -1523,15 +1523,15 @@ function groupReferralsByLevel(user) {
 async function getActiveReferralCounts(user) {
  const groups = groupReferralsByLevel(user);
  const counts = { l1: 0, l2: 0, l3: 0 };
- for (const level of [1, 2, 3]) {
+ await Promise.all([1, 2, 3].map(async (level) => {
  const usernames = groups[level];
- for (const uname of usernames) {
- try {
- const snap = await db.ref('users/' + safeKey(uname) + '/activated').get();
- if (snap.exists() && snap.val() === true) counts['l' + level]++;
- } catch (e) { /* skip unreadable referral */ }
- }
- }
+ const results = await Promise.all(usernames.map(uname =>
+ db.ref('users/' + safeKey(uname) + '/activated').get().catch(() => null)
+ ));
+ results.forEach(snap => {
+ if (snap && snap.exists() && snap.val() === true) counts['l' + level]++;
+ });
+ }));
  return counts;
 }
 
@@ -1556,16 +1556,16 @@ async function getRecentDownlineActivityCount(user, days) {
  const allUsernames = [...groups[1], ...groups[2], ...groups[3]];
  const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000);
  let count = 0;
- for (const uname of allUsernames) {
- try {
- const snap = await db.ref('users/' + safeKey(uname) + '/deposits').get();
- if (snap.exists()) {
+ const results = await Promise.all(allUsernames.map(uname =>
+ db.ref('users/' + safeKey(uname) + '/deposits').get().catch(() => null)
+ ));
+ results.forEach(snap => {
+ if (snap && snap.exists()) {
  Object.values(snap.val()).forEach(dep => {
  if (dep && dep.startDate && dep.startDate >= cutoff) count++;
  });
  }
- } catch (e) { /* skip unreadable referral */ }
- }
+ });
  return count;
 }
 
