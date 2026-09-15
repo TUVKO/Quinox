@@ -2263,7 +2263,7 @@ function startUserListener(username) {
  if (snap.exists()) {
  const freshData = snap.val();
  if (sessionPassword !== null && freshData.password !== sessionPassword) {
- forceLogout('Your password was updated. Please log in again.');
+ forceLogout(null, true);
  return;
  }
  currentUser = freshData;
@@ -2280,7 +2280,7 @@ function startUserListener(username) {
  txCleanupInterval = setInterval(cleanupOldTransactions, 15 * 60 * 1000); // recheck every 15 min
 }
 
-function forceLogout(message) {
+function forceLogout(message, silent) {
  if (userListener && currentUsername) { db.ref('users/' + safeKey(currentUsername)).off('value', userListener); }
  userListener = null;
  if (txCleanupInterval) { clearInterval(txCleanupInterval); txCleanupInterval = null; }
@@ -2291,7 +2291,7 @@ function forceLogout(message) {
  currentUsername = null;
  sessionPassword = null;
  showAuth('login-page');
- setErr('login-general-err', true, message || 'You have been logged out. Please log in again.');
+ if (!silent) setErr('login-general-err', true, message || 'You have been logged out. Please log in again.');
 }
 
 // ---------- Inactivity auto-logout (60 minutes) ----------
