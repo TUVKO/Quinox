@@ -293,6 +293,7 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <div class="nav-item" onclick="showPage('pg-positions')"><span class="nav-icon">🏅</span><span>Positions</span></div>
  <div class="nav-item" onclick="showPage('pg-tube')"><span class="nav-icon">📈</span><span>Investors</span></div>
  <div class="nav-item" onclick="showPage('pg-transactions')"><span class="nav-icon">💳</span><span>Transactions</span></div>
+ <div class="nav-item" onclick="showPage('pg-us-trans')"><span class="nav-icon">🗂️</span><span>US TRANS</span></div>
  <div class="nav-item" onclick="showPage('pg-withdrawals')"><span class="nav-icon">💸</span><span>Withdrawals</span><span class="nav-badge" id="withdrawals-nav-badge">0</span></div>
  <div class="nav-item" onclick="showPage('pg-debit')"><span class="nav-icon">➖</span><span>Debit User</span></div>
  <div class="nav-item" onclick="showPage('pg-sog')"><span class="nav-icon">🔍</span><span>SOG</span></div>
@@ -383,6 +384,25 @@ tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
  <tr><th>Date</th><th>Username</th><th>Phone</th><th>Type</th><th>Amount</th><th>Reference</th><th>Status</th><th>Actions</th></tr>
  </thead>
  <tbody id="adm-tx-table-body"><tr class="empty-row"><td colspan="8">Loading...</td></tr></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- US TRANS: search a user's own transaction history, delete any entry -->
+ <div class="page" id="pg-us-trans">
+ <div class="page-title">US TRANS</div>
+ <div class="page-sub">Search any user's transaction history and delete individual entries</div>
+ <div class="table-wrap">
+ <div class="table-header">
+ <div class="table-title">Search User</div>
+ <input type="text" class="f-input" id="us-trans-search-input" style="width:240px;padding:8px 14px;" placeholder=" Enter exact username..." onkeydown="if(event.key==='Enter') searchUserTransactions()">
+ <button class="btn btn-save" onclick="searchUserTransactions()">Search</button>
+ </div>
+ <table>
+ <thead>
+ <tr><th>Date</th><th>Type</th><th>Amount</th><th>Note</th><th>Status</th><th>Actions</th></tr>
+ </thead>
+ <tbody id="us-trans-table-body"><tr class="empty-row"><td colspan="6">Search for a username above.</td></tr></tbody>
  </table>
  </div>
  </div>
@@ -751,6 +771,7 @@ function startRealtimeListeners() {
  renderDashboard();
  renderUsersTable();
  renderPositionsTable();
+ if (usTransCurrentUsername) renderUserTransactionsTable();
  renderTube();
  renderTransactions();
  });
@@ -1015,6 +1036,76 @@ async function demotePosition(username) {
  const newRank = Math.max(0, (user.currentRank || 0) - 1);
  await db.ref('users/' + sk + '/currentRank').set(newRank);
  toast(`${username} demoted to ${getRankName(newRank)}`, 'var(--success)');
+}
+
+// ============================================================
+// US TRANS: search any user's own transaction history, delete
+// individual entries permanently from Firebase.
+// ============================================================
+let usTransCurrentUsername = null;
+
+function searchUserTransactions() {
+ const raw = document.getElementById('us-trans-search-input').value.trim();
+ const tbody = document.getElementById('us-trans-table-body');
+ if (!raw) {
+ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Search for a username above.</td></tr>';
+ usTransCurrentUsername = null;
+ return;
+ }
+ const sk = safeKey(raw);
+ const user = allUsers[sk];
+ if (!user) {
+ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No user found with that username.</td></tr>';
+ usTransCurrentUsername = null;
+ return;
+ }
+ usTransCurrentUsername = user.username || raw;
+ renderUserTransactionsTable();
+}
+
+function renderUserTransactionsTable() {
+ const tbody = document.getElementById('us-trans-table-body');
+ if (!usTransCurrentUsername) return;
+ const sk = safeKey(usTransCurrentUsername);
+ const user = allUsers[sk];
+ if (!user) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">User no longer found.</td></tr>'; return; }
+ const txs = user.transactions || {};
+ const keys = Object.keys(txs);
+ if (!keys.length) {
+ tbody.innerHTML = `<tr class="empty-row"><td colspan="6">${usTransCurrentUsername} has no transactions.</td></tr>`;
+ return;
+ }
+ // Newest first, using the trailing timestamp embedded in most tx keys
+ keys.sort((a, b) => {
+ const ta = parseInt((a.match(/(\d+)$/) || [0])[0]) || 0;
+ const tb = parseInt((b.match(/(\d+)$/) || [0])[0]) || 0;
+ return tb - ta;
+ });
+ tbody.innerHTML = keys.map(k => {
+ const tx = txs[k] || {};
+ return `<tr>
+ <td class="mono">${tx.date || '—'}</td>
+ <td>${tx.type || '—'}</td>
+ <td class="mono">${fmt(tx.amount || 0)}</td>
+ <td>${tx.note || ''}</td>
+ <td>${tx.status || '—'}</td>
+ <td><button class="btn btn-danger" onclick="deleteUserTransaction('${k}')">Delete</button></td>
+ </tr>`;
+ }).join('');
+}
+
+async function deleteUserTransaction(txKey) {
+ if (!usTransCurrentUsername) return;
+ const ok = await confirmAction('Delete Transaction?', 'This permanently deletes this transaction record. This cannot be undone.');
+ if (!ok) return;
+ const sk = safeKey(usTransCurrentUsername);
+ try {
+ await db.ref('users/' + sk + '/transactions/' + txKey).remove();
+ toast('Transaction deleted', 'var(--success)');
+ renderUserTransactionsTable();
+ } catch (e) {
+ toast('Failed to delete transaction', 'var(--warn)');
+ }
 }
 
 function editPw(sk) {
@@ -2199,7 +2290,7 @@ function showPage(id) {
  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
- const map = { 'pg-dashboard': 0, 'pg-users': 1, 'pg-positions': 2, 'pg-tube': 3, 'pg-transactions': 4, 'pg-withdrawals': 5, 'pg-debit': 6, 'pg-sog': 7, 'pg-settings': 8, 'pg-admin-withdraw': 9 };
+ const map = { 'pg-dashboard': 0, 'pg-users': 1, 'pg-positions': 2, 'pg-tube': 3, 'pg-transactions': 4, 'pg-us-trans': 5, 'pg-withdrawals': 6, 'pg-debit': 7, 'pg-sog': 8, 'pg-settings': 9, 'pg-admin-withdraw': 10 };
  if (map[id] !== undefined) document.querySelectorAll('.nav-item')[map[id]].classList.add('active');
  if (id === 'pg-transactions') renderAdminTransactions();
  if (id === 'pg-withdrawals') renderWithdrawalsTable();
