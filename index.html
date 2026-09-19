@@ -90,6 +90,35 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .welcome-qtab:active{transform:scale(.96);}
 .welcome-qtab-icon{font-size:15px;margin-bottom:3px;}
 .welcome-qtab-label{font-size:10px;font-weight:700;color:var(--text);}
+/* New announcement welcome card (poster style) */
+#welcome-new-overlay{z-index:10002;}
+.wn-card{position:relative;width:100%;max-width:360px;border-radius:18px;overflow:hidden;color:#dcebe1;text-align:center;
+ background:radial-gradient(120% 55% at 50% 0%,rgba(120,225,175,.38) 0%,rgba(14,74,47,0) 62%),radial-gradient(90% 35% at 50% 100%,rgba(95,205,155,.28) 0%,rgba(14,74,47,0) 70%),linear-gradient(180deg,#0e4a2f 0%,#0a3a24 55%,#062a1a 100%);
+ border:1px solid rgba(232,196,110,.6);box-shadow:0 20px 50px rgba(0,0,0,.55),inset 0 0 0 3px rgba(6,42,26,.9),inset 0 0 0 4px rgba(232,196,110,.28);}
+.wn-card::before{content:"";position:absolute;left:50%;top:0;width:360px;height:180px;transform:translateX(-50%);background:repeating-conic-gradient(from -60deg at 50% 0,rgba(255,255,255,.10) 0 5deg,rgba(255,255,255,0) 5deg 12deg);-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent);pointer-events:none;z-index:0;}
+.wn-corner{position:absolute;bottom:0;width:54px;height:54px;pointer-events:none;z-index:0;background:linear-gradient(135deg,#f6e3a1 0%,#d9b45a 45%,#a87c2a 100%);opacity:.9;}
+.wn-corner.l{left:0;clip-path:polygon(0 38%,0 100%,62% 100%,0 38%,0 62%,38% 100%);}
+.wn-corner.r{right:0;clip-path:polygon(100% 38%,100% 100%,38% 100%,100% 38%,100% 62%,62% 100%);}
+.wn-close{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;border:1px solid #d9b45a;background:rgba(6,42,26,.9);color:#f3d98a;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;}
+.wn-scroll{position:relative;z-index:1;max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);overflow-y:auto;padding:14px 16px 12px;-webkit-overflow-scrolling:touch;}
+.wn-brand{display:inline-flex;align-items:center;gap:6px;padding:3px 12px 3px 5px;background:rgba(0,0,0,.35);border:1px solid rgba(232,196,110,.6);border-radius:10px;}
+.wn-brand img{width:24px;height:24px;border-radius:7px;object-fit:cover;}
+.wn-brand span{font-family:'Fraunces',serif;font-weight:800;font-size:13px;color:#fff;letter-spacing:.6px;}
+.wn-title{font-family:'Fraunces',serif;font-weight:800;font-size:20px;line-height:1.1;margin:8px 0 6px;background:linear-gradient(180deg,#fff4bf 0%,#e8c45f 55%,#b98a2b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(0,0,0,.45));}
+.wn-banner{display:block;margin:0 0 8px;padding:4px 8px;font-family:'Fraunces',serif;font-weight:700;font-size:11px;color:#0b3a24;background:linear-gradient(180deg,#f8ecc0,#e3c877 60%,#d2ac52);border:1px solid #f3dc93;box-shadow:0 0 0 2px #0a3a24,0 0 0 3px #d9b45a;}
+.wn-badge{display:inline-block;margin:7px 0 4px;padding:1px;background:linear-gradient(180deg,#f6e3a1,#c8a044);clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,9px 100%,0 50%);}
+.wn-badge span{display:block;padding:3px 20px;font-size:8.5px;font-weight:800;letter-spacing:.8px;color:#f6dc8c;background:linear-gradient(180deg,#0d5a37,#083d25);clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,9px 100%,0 50%);}
+.wn-text{margin:0;font-size:10.5px;line-height:1.5;text-align:left;color:#dcebe1;}
+.wn-hl{color:#ffd76a;font-weight:800;text-decoration:underline;text-underline-offset:2px;}
+.wn-link{cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.wn-btn{display:block;width:100%;margin:7px 0 0;padding:8px 10px;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:800;color:#0b3a24;background:linear-gradient(180deg,#fbeeb0 0%,#e6c25c 55%,#c9a03f 100%);box-shadow:0 2px 0 #8f6a1e,0 4px 10px rgba(0,0,0,.35);cursor:pointer;}
+.wn-btn:active{transform:translateY(1px);box-shadow:0 1px 0 #8f6a1e;}
+.wn-hint{display:none;margin-top:5px;font-size:9.5px;color:#ffd76a;}
+.wn-hint + .wn-badge{margin-top:11px;}
+.wn-foot{margin:10px 0 7px;font-size:9px;font-style:italic;color:#e8c96f;}
+.wn-continue{display:block;width:58%;margin:0 auto;padding:6px 8px;border-radius:8px;border:1px solid #d9b45a;background:rgba(6,42,26,.55);color:#f6dc8c;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;}
+.wn-continue:active{transform:scale(.97);}
+
 .auth-page.active{display:flex;}
 .auth-hero{text-align:center;margin-bottom:28px;}
 .auth-logo{width:72px;height:72px;background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);border-radius:22px;display:grid;place-items:center;font-size:34px;margin:0 auto 14px;color:#fff;box-shadow:0 8px 24px rgba(22,35,74,.25);overflow:hidden;}
@@ -1124,6 +1153,39 @@ input[type="password"]{padding-right:46px;}
 </div>
 
 
+<!-- New announcement welcome card (shown first; dismissing it opens the old welcome card) -->
+<div class="welcome-overlay" id="welcome-new-overlay">
+ <div class="wn-card">
+  <span class="wn-corner l"></span><span class="wn-corner r"></span>
+  <button class="wn-close" onclick="closeWelcomeNewModal()" aria-label="Close">✕</button>
+  <div class="wn-scroll">
+   <div class="wn-brand"><img src="logo.png" alt="Equinox Wallet"><span>EQUINOX WALLET</span></div>
+   <div class="wn-title">Important Update</div>
+   <div class="wn-banner">New Community Group</div>
+
+   <div class="wn-badge"><span>ANNOUNCEMENT</span></div>
+   <p class="wn-text">Dear Investor, our previous WhatsApp group was <span class="wn-hl">suspended</span> because too many links were being shared. We're sorry for the inconvenience, and we've created a <span class="wn-hl">brand-new home</span> for our family 💚 Please join our new group today.</p>
+   <button class="wn-btn" onclick="openWelcomeWaGroup()">💬 WhatsApp Group</button>
+   <div class="wn-hint" id="wn-wa-hint">Group link coming soon. Please check back shortly.</div>
+
+   <div class="wn-badge"><span>NEED HELP?</span></div>
+   <p class="wn-text">Having any issue with your account? Our <span class="wn-hl wn-link" onclick="openSupportChat()">Customer Care</span> team is always happy to help.</p>
+
+   <div class="wn-badge"><span>START INVESTING</span></div>
+   <p class="wn-text">Tap the <span class="wn-hl">INVEST</span> tab below or <span class="wn-hl wn-link" onclick="welcomeNewInvest()">click here</span> to invest and watch your earnings grow every day 🌱</p>
+
+   <div class="wn-badge"><span>EARN DAILY</span></div>
+   <p class="wn-text">Withdraw your profits daily, minimum <span class="wn-hl">UGX 5,000</span>.</p>
+
+   <div class="wn-badge"><span>REFER &amp; EARN</span></div>
+   <p class="wn-text">Refer friends and earn <span class="wn-hl">10% · 4% · 2%</span> of their deposits, according to their level.</p>
+
+   <div class="wn-foot">Thank you for trusting Equinox Wallet.</div>
+   <button class="wn-continue" onclick="closeWelcomeNewModal()">Continue</button>
+  </div>
+ </div>
+</div>
+
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -1943,8 +2005,31 @@ function showDashboard() {
 }
 
 function maybeShowWelcomeModal() {
+ // New announcement card shows first; dismissing it opens the old welcome card
+ const nu = document.getElementById('welcome-new-overlay');
+ if (nu) { nu.classList.add('show'); return; }
  const overlay = document.getElementById('welcome-overlay');
  if (overlay) overlay.classList.add('show');
+}
+
+function closeWelcomeNewModal() {
+ const nu = document.getElementById('welcome-new-overlay');
+ if (nu) nu.classList.remove('show');
+ const overlay = document.getElementById('welcome-overlay');
+ if (overlay) overlay.classList.add('show');
+}
+
+function openWelcomeWaGroup() {
+ if (settingsData && settingsData.waGroup) { window.open(settingsData.waGroup, '_blank'); return; }
+ const h = document.getElementById('wn-wa-hint');
+ if (h) { h.style.display = 'block'; setTimeout(() => { h.style.display = 'none'; }, 3500); }
+}
+
+function welcomeNewInvest() {
+ const nu = document.getElementById('welcome-new-overlay');
+ if (nu) nu.classList.remove('show');
+ closeWelcomeModal();
+ switchTab('deposit');
 }
 
 function closeWelcomeModal() {
